@@ -5,51 +5,53 @@ import { useVacancies } from "../domain/vacancy/useVacancies";
 import { SearchBar } from "./SearchBar";
 import { VacancyCard } from "./VacancyCard";
 import { FiltersSidebar } from "./FiltersSidebar";
+import { SearchFilters } from "../config/types";
 import {
-  JOB_LOCATION_OPTIONS,
-  POSTING_DATE_OPTIONS,
-  JOB_EXPIERENCE,
-} from "../config/categories";
-import clsx from "clsx";
+  FILTER_JOB_LOCATIONS,
+  FILTER_JOB_EXPERIENCE,
+  FILTER_POSTING_DATES,
+} from "../config/searchOptions";
+import { SalarySlider } from "./SalaryRange";
+import { SalaryPeriod, getSalaryInUah } from "@/app/store/useFilterStore";
 
 export function SearchInput() {
   const [search, setSearch] = useState("");
   const [visibleCount, setVisibleCount] = useState(5);
   const [showSidebar, setShowSidebar] = useState(false);
-  const [filters, setFilters] = useState({
-    location: string[],
-    geo: "any",
+  const [filters, setFilters] = useState<SearchFilters>({
+    search: "",
+    location: "any",
+    geo: "all",
     postingDate: "any",
     salaryPeriod: "month",
     stack: [] as string[],
     level: "any",
   });
 
-  const { location, getLocation } = useUserLocation();
+  const { location: userCoords, getLocation } = useUserLocation();
   const { visible: visibleVacancies, total } = useVacancies(
-    search,
+    { ...filters, search },
     visibleCount,
-    filters.postingDate,
-    location,
+    userCoords,
     50,
-    filters.level,
-    filters.location,
-    filters.geo,
+    getSalaryInUah,
+    SalaryPeriod
   );
-
   useEffect(() => {
     if (filters.location === "near") {
       getLocation();
     }
-  }, [filters.location]);
+    if (showSidebar) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    setSearch(search);
+    document.body.style.overflow = "auto";
+  }, [filters.location, search]);
 
   return (
-    <div
-      className={clsx(
-        "w-full flex flex-col items-center relative p-4",
-        showSidebar ? "shadow-2xl" : ""
-      )}
-    >
+    <div className="flex flex-col p-4">
       <SearchBar search={search} setSearch={setSearch} />
 
       <div className="flex gap-2 mt-4">
@@ -83,40 +85,41 @@ export function SearchInput() {
         >
           Salary
         </button>
+        <div className="max-h-[50px]">{<SalarySlider />}</div>
         {showSidebar && (
           <div className="absolute top-0 right-0 flex flex-col">
             <FiltersSidebar
               title="Job Location"
-              options={JOB_LOCATION_OPTIONS}
+              options={FILTER_JOB_LOCATIONS}
               selectedValue={filters.location}
               setSelectedValue={(value) =>
-                setFilters((prev) => ({ ...prev, location: value }))
+                setFilters((prev) => ({ ...prev, location: value as any }))
               }
               handleLocationRequest={getLocation}
             />
 
             <FiltersSidebar
               title="Date of Publish"
-              options={POSTING_DATE_OPTIONS}
+              options={FILTER_POSTING_DATES}
               selectedValue={filters.postingDate}
               setSelectedValue={(value) =>
-                setFilters((prev) => ({ ...prev, postingDate: value }))
+                setFilters((prev) => ({ ...prev, postingDate: value as any }))
               }
             />
 
             <FiltersSidebar
               title="Job expierence"
-              options={JOB_EXPIERENCE}
+              options={FILTER_JOB_EXPERIENCE}
               selectedValue={filters.level}
               setSelectedValue={(value) =>
-                setFilters((prev) => ({ ...prev, level: value }))
+                setFilters((prev) => ({ ...prev, level: value as any }))
               }
             />
           </div>
         )}
       </div>
 
-      <div className="flex flex-col items-center mt-4">
+      <div className=" mt-4">
         {visibleVacancies.map((v) => (
           <VacancyCard key={v.id} vacancy={v} />
         ))}

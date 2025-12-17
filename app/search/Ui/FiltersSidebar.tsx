@@ -1,7 +1,11 @@
 import clsx from "clsx";
 
 interface FiltersSidebarProps {
-  options: { value: string; label: string; requiresLocation?: boolean }[];
+  readonly options: readonly {
+    readonly value: string;
+    readonly label: string;
+    readonly requiresLocation?: boolean;
+  }[];
   selectedValue: string;
   setSelectedValue: (value: string) => void;
   title: string;

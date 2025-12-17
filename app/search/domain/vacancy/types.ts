@@ -1,27 +1,10 @@
-import { CITIES } from "../geo/cities";
+import { SALARY_RULES } from "../../config/salaryRules";
+import { MOCK_TITLES } from "../../config/searchOptions";
+import { Vacancy } from "../../config/types";
 import { cityKeys, jobLocations } from "./mock";
 
 export type JobLocation = (typeof jobLocations)[number];
 
-export interface Vacancy {
-  id: string;
-  title: string;
-  company: string;
-  salaryFrom: number | null;
-  salaryTo: number | null;
-  negotiable: boolean;
-  level: string[];
-  jobLocation: JobLocation;
-  stack: string[];
-  city?: keyof typeof CITIES;
-  postedAt: string;
-}
-
-const titles = [
-  "Frontend Developer",
-  "Backend Developer",
-  "Fullstack Developer",
-];
 const companies = ["Acme", "Globex", "Umbrella", "Initech"];
 const levels = ["intern", "junior", "middle", "senior"] as const;
 const stacks = [
@@ -32,13 +15,24 @@ const stacks = [
 
 export const vacancies: Vacancy[] = Array.from({ length: 200 }, (_, i) => {
   const hasSalary = Math.random() > 0.3;
+  const currency = (
+    Math.random() > 0.8 ? "USD" : "UAH"
+  ) as keyof typeof SALARY_RULES;
+  const salaryPeriod = Math.random() > 0.5 ? "hour" : "month";
+
+  const rule = SALARY_RULES[currency][salaryPeriod];
+
+  const sFrom = Math.floor(rule.min + Math.random() * rule.range);
+  const sTo = sFrom ? Math.floor(sFrom * (1.1 + Math.random() * 0.3)) : null;
 
   return {
     id: (i + 1).toString(),
-    title: titles[Math.floor(Math.random() * titles.length)],
+    title: MOCK_TITLES[Math.floor(Math.random() * MOCK_TITLES.length)],
     company: companies[Math.floor(Math.random() * companies.length)],
-    salaryFrom: hasSalary ? 1000 + Math.floor(Math.random() * 2000) : null,
-    salaryTo: hasSalary ? 1000 + Math.floor(Math.random() * 3000) : null,
+    salaryFrom: sFrom,
+    salaryTo: sTo,
+    currency: currency,
+    salaryPeriod: salaryPeriod,
     negotiable: !hasSalary,
     level: [levels[Math.floor(Math.random() * levels.length)]],
     jobLocation: jobLocations[Math.floor(Math.random() * jobLocations.length)],

@@ -1,19 +1,20 @@
-import { useEffect, useMemo } from "react";
-import { vacancies, Vacancy } from "./types";
+import { useMemo } from "react";
+import { vacancies } from "./types";
 import { CITIES } from "../geo/cities";
 import { getDistanceKm } from "../geo/getDistanceKm";
-import { POSTING_DATE_OPTIONS } from "../../config/categories";
+import { SearchFilters, Vacancy } from "../../config/types";
+import { getSalaryInUah } from "../../config/salaryRules";
 
 export function useVacancies(
-  search: string,
+  filters: SearchFilters,
   visibleCount: number,
-  postingDate: string,
   userLocation: { lat: number; lon: number } | null,
   maxDistanceKm: number,
-  level: string,
-  jobLocation: "all" | "remote" | "office" | "hybrid",
-  geo: "all" | "near"
+  minSalary: number,
+  selectedPeriod: "hour" | "month"
 ) {
+  const { search, location, postingDate, level, geo } = filters;
+
   return useMemo(() => {
     let result: Vacancy[] = vacancies;
 
@@ -23,9 +24,9 @@ export function useVacancies(
       );
     }
 
-    if (jobLocation !== "all") {
-      if (["remote", "office", "hybrid"].includes(jobLocation)) {
-        result = result.filter((v) => v.jobLocation === jobLocation);
+    if (location !== "any") {
+      if (["remote", "office", "hybrid"].includes(location)) {
+        result = result.filter((v) => v.jobLocation === location);
       }
     }
 
@@ -69,12 +70,36 @@ export function useVacancies(
       );
     }
 
-    if (level && level !== "" && level !== "any") {
-      result = result.filter((e) => e.level.includes(level));
+    if (minSalary > 0) {
+      result = result.filter((v) => {
+        if (v.salaryFrom === null || v.salaryFrom === undefined) {
+          return true;
+        }
+
+        const comparableSalary = getSalaryInUah(v, selectedPeriod);
+
+        return comparableSalary >= minSalary;
+      });
     }
+
+    if (level && level !== "any") {
+      result = result.filter((v) => (v.level as string[]).includes(level));
+    }
+
     return {
       visible: result.slice(0, visibleCount),
       total: result.length,
     };
-  }, [search, visibleCount, userLocation, maxDistanceKm, postingDate, level]);
+  }, [
+    search,
+    location,
+    postingDate,
+    level,
+    geo,
+    visibleCount,
+    userLocation,
+    maxDistanceKm,
+    minSalary,
+    selectedPeriod,
+  ]);
 }
