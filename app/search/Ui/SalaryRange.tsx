@@ -1,9 +1,16 @@
 import * as Slider from "@radix-ui/react-slider";
 import { useFilterStore } from "@/app/store/useFilterStore";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useDebounce } from "@/app/hooks/useDebounce";
 
 export function SalarySlider() {
   const { selectedPeriod, minSalary, setMinSalary } = useFilterStore();
+  const [localValue, setLocalValue] = useState(minSalary);
+  const debouncedValue = useDebounce(localValue, 300);
+
+  useEffect(() => {
+    setMinSalary(debouncedValue);
+  }, [debouncedValue, setMinSalary]);
 
   const isHour = selectedPeriod === "hour";
   const maxLimit = isHour ? 2000 : 200000;
@@ -28,11 +35,9 @@ export function SalarySlider() {
   };
 
   return (
-    <div className="flex flex-col py-4 px-2">
-      <h3 className="text-sm font-semibold text-gray-700">
-        Минимальная зарплата
-      </h3>
-      <div className="py-3 flex flex-row items-center">
+    <div className="flex flex-col py-4 px-2 bg-white">
+      <h3 className="text-base font-semibold text-gray-700 ">Min salary</h3>
+      <div className="pb-3 flex flex-row items-center">
         <input
           type="text"
           value={`${minSalary}+`}

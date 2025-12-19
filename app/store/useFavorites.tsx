@@ -4,26 +4,35 @@ import { persist } from "zustand/middleware";
 
 interface VacancyState {
   favoriteVacancies: Vacancy[];
-  addFavoritesVacancy: (vacancy: any) => void;
-  deleteFavoriteVacancy: (id: string) => void;
+  isFavorite: (id: string) => boolean;
+  tooggleFavorites: (vacancy: Vacancy) => void;
 }
 
-const useAuthVacancy = create<VacancyState>()(
+export const useAuthVacancy = create<VacancyState>()(
   persist(
     (set, get) => ({
       favoriteVacancies: [],
-      addFavoritesVacancy: (vacancy) =>
-        set((state) => ({
-          ...state,
-          favoriteVacancies: [...state.favoriteVacancies, vacancy],
-        })),
-      deleteFavoriteVacancy: (id) =>
-        set((state) => ({
-          ...state,
-          favoriteVacancies: state.favoriteVacancies.filter(
-            (item) => item.id !== id
-          ),
-        })),
+
+      isFavorite: (id) => get().favoriteVacancies.some((v) => v.id === id),
+      tooggleFavorites: (vacancy) => {
+        const currentFavorites = get().favoriteVacancies;
+
+        const isAlreadyFav = currentFavorites.some(
+          (item) => item.id === vacancy.id
+        );
+
+        if (isAlreadyFav) {
+          set({
+            favoriteVacancies: currentFavorites.filter(
+              (item) => item.id !== vacancy.id
+            ),
+          });
+        } else {
+          set({
+            favoriteVacancies: [...currentFavorites, vacancy],
+          });
+        }
+      },
     }),
     {
       name: "favorite-vacancies",

@@ -1,6 +1,10 @@
+"use client";
+import Link from "next/link";
 import { NAV_ITEMS } from "./NavItem";
+import { usePathname } from "next/navigation";
 
 export function LeftColumn() {
+  const pathname = usePathname();
   return (
     <div className="flex flex-col p-6 max-w-[300px]">
       <div></div>
@@ -25,19 +29,27 @@ export function LeftColumn() {
       <div>
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
+          const isActive = pathname === item.href;
+
           return (
-            <div
-              className="py-3 px-4 flex items-center justify-start hover:bg-[#6380A61A] rounded-lg cursor-pointer"
+            <Link
+              href={item.href}
               key={item.name}
+              className={`py-3 px-4 flex items-center justify-start rounded-lg cursor-pointer transition-colors duration-200 
+          ${
+            isActive
+              ? "bg-[#6380A61A] text-blue-700"
+              : "hover:bg-[#6380A61A] text-[#2d3540]"
+          }
+        `}
             >
-              <div className="flex flex-row gap-2">
-                <span className="text-blue-600">
-                  {" "}
+              <div className="flex flex-row gap-2 items-center">
+                <span className={isActive ? "text-blue-700" : "text-blue-600"}>
                   <Icon size={22} />
                 </span>
-                <span className="text-[#2d3540]">{item.label}</span>
+                <span className="font-medium">{item.label}</span>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

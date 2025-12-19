@@ -23,6 +23,8 @@ export interface Vacancy {
   company: string;
   salaryFrom: number | null;
   salaryTo: number | null;
+  currency: "USD" | "UAH" | "EUR";
+  salaryPeriod: "hour" | "month";
   negotiable: boolean;
   level: JobLevel[];
   jobLocation: JobLocationType;

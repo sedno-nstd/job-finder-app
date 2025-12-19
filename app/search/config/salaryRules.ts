@@ -1,3 +1,5 @@
+import { Vacancy } from "./types";
+
 export const SALARY_RULES = {
   USD: { hour: { min: 5, range: 30 }, month: { min: 1000, range: 4000 } },
   UAH: {
@@ -11,7 +13,7 @@ const US_UAH = 41.5;
 const H_IN_M = 168;
 
 export const getSalaryInUah = (
-  vacancy: any,
+  vacancy: Vacancy,
   targetPeriod: "hour" | "month"
 ) => {
   if (!vacancy.salaryFrom) return 0;

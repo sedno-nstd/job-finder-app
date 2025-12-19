@@ -73,7 +73,7 @@ export function useVacancies(
     if (minSalary > 0) {
       result = result.filter((v) => {
         if (v.salaryFrom === null || v.salaryFrom === undefined) {
-          return true;
+          return false;
         }
 
         const comparableSalary = getSalaryInUah(v, selectedPeriod);

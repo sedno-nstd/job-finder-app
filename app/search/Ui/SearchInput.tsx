@@ -12,12 +12,16 @@ import {
   FILTER_POSTING_DATES,
 } from "../config/searchOptions";
 import { SalarySlider } from "./SalaryRange";
-import { SalaryPeriod, getSalaryInUah } from "@/app/store/useFilterStore";
+import { useFilterStore } from "@/app/store/useFilterStore";
+import { useAuthVacancy } from "@/app/store/useFavorites";
+import { OptionsJobParams } from "../config/optionsJobParams";
 
 export function SearchInput() {
   const [search, setSearch] = useState("");
   const [visibleCount, setVisibleCount] = useState(5);
   const [showSidebar, setShowSidebar] = useState(false);
+  const { minSalary, selectedPeriod } = useFilterStore();
+  const { tooggleFavorites, isFavorite } = useAuthVacancy();
   const [filters, setFilters] = useState<SearchFilters>({
     search: "",
     location: "any",
@@ -34,8 +38,8 @@ export function SearchInput() {
     visibleCount,
     userCoords,
     50,
-    getSalaryInUah,
-    SalaryPeriod
+    minSalary,
+    selectedPeriod
   );
   useEffect(() => {
     if (filters.location === "near") {
@@ -55,39 +59,13 @@ export function SearchInput() {
       <SearchBar search={search} setSearch={setSearch} />
 
       <div className="flex gap-2 mt-4">
-        <button
-          onClick={() => setShowSidebar(!showSidebar)}
-          className="bg-white py-2 px-5 rounded-2xl hover:text-blue-600 cursor-pointer hover:border hover:border-blue-600"
-        >
-          Date of Publish
-        </button>
-        <button
-          onClick={() => setShowSidebar(!showSidebar)}
-          className="bg-white py-2 px-5 rounded-2xl hover:text-blue-600 cursor-pointer hover:border hover:border-blue-600"
-        >
-          Type of employment
-        </button>
-        <button
-          onClick={() => setShowSidebar(!showSidebar)}
-          className="bg-white py-2 px-5 rounded-2xl hover:text-blue-600 cursor-pointer hover:border hover:border-blue-600"
-        >
-          Job expierence
-        </button>
-        <button
-          onClick={() => setShowSidebar(!showSidebar)}
-          className="bg-white py-2 px-5 rounded-2xl hover:text-blue-600 cursor-pointer hover:border hover:border-blue-600"
-        >
-          Location
-        </button>
-        <button
-          onClick={() => setShowSidebar(!showSidebar)}
-          className="bg-white py-2 px-5 rounded-2xl hover:text-blue-600 cursor-pointer hover:border hover:border-blue-600"
-        >
-          Salary
-        </button>
-        <div className="max-h-[50px]">{<SalarySlider />}</div>
+        <OptionsJobParams
+          setShowSidebar={setShowSidebar}
+          showSideBar={showSidebar}
+        />
         {showSidebar && (
-          <div className="absolute top-0 right-0 flex flex-col">
+          <div className="absolute top-0 right-0 flex flex-col bg-white">
+            <h1 className="text-2xl p-2">Filters</h1>
             <FiltersSidebar
               title="Job Location"
               options={FILTER_JOB_LOCATIONS}
@@ -115,13 +93,19 @@ export function SearchInput() {
                 setFilters((prev) => ({ ...prev, level: value as any }))
               }
             />
+            <div className="max-h-[50px]">{<SalarySlider />}</div>
           </div>
         )}
       </div>
 
       <div className=" mt-4">
         {visibleVacancies.map((v) => (
-          <VacancyCard key={v.id} vacancy={v} />
+          <VacancyCard
+            key={v.id}
+            vacancy={v}
+            isFavorite={isFavorite(v.id)}
+            toggleFavorites={tooggleFavorites}
+          />
         ))}
         {visibleCount < total && (
           <button
