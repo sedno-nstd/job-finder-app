@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 interface SearchBarProps {
   search: string;
   setSearch: (v: string) => void;

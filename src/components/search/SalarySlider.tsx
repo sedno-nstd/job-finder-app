@@ -52,7 +52,7 @@ export function SalarySlider() {
       </div>
       <Slider.Root
         className="relative flex items-center select-none touch-none w-full h-5 cursor-pointer"
-        value={[debouncedValue]}
+        value={[minSalary]}
         onValueChange={(value) => setMinSalary(value[0])}
         max={maxLimit}
         step={step}

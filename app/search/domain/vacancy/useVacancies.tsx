@@ -11,7 +11,9 @@ export function useVacancies(
   userLocation: { lat: number; lon: number } | null,
   maxDistanceKm: number,
   minSalary: number,
-  selectedPeriod: "hour" | "month"
+  selectedPeriod: "hour" | "month",
+
+  setSearch: string
 ) {
   const { search, location, postingDate, level, geo } = filters;
 
@@ -86,6 +88,10 @@ export function useVacancies(
       result = result.filter((v) => (v.level as string[]).includes(level));
     }
 
+    if (setSearch) {
+      result = result.map((v) => v).filter((v) => v.title === setSearch);
+    }
+
     return {
       visible: result.slice(0, visibleCount),
       total: result.length,
@@ -101,5 +107,6 @@ export function useVacancies(
     maxDistanceKm,
     minSalary,
     selectedPeriod,
+    setSearch,
   ]);
 }

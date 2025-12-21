@@ -1,7 +1,6 @@
 import { memo } from "react";
-import { Vacancy } from "../config/types";
+import { Vacancy } from "@/app/search/config/types";
 import { Heart, Clock, MapPin } from "lucide-react";
-import { vacancies } from "../domain/vacancy/types";
 import clsx from "clsx";
 
 interface VacancyProps {
@@ -9,6 +8,7 @@ interface VacancyProps {
   toggleFavorites: (vacancy: Vacancy) => void;
   isFavorite: boolean;
   DescriptionClasses?: string;
+  VacancyClasses?: string;
 }
 
 const RANDOM_DESCRIPTIONS = [
@@ -22,11 +22,18 @@ function VacancyCardComponent({
   toggleFavorites,
   isFavorite,
   DescriptionClasses,
+  VacancyClasses,
 }: VacancyProps) {
   const descriptionIndex = Number(vacancy.id) % RANDOM_DESCRIPTIONS.length;
   const description = RANDOM_DESCRIPTIONS[descriptionIndex];
+
   return (
-    <div className="p-4 mt-4 w-full rounded-2xl flex flex-col bg-white shadow">
+    <div
+      className={clsx(
+        "p-4 mt-4 w-full rounded-2xl flex flex-col bg-white shadow",
+        VacancyClasses
+      )}
+    >
       <div className="flex flex-row justify-between">
         <span className="text-[#0b64d9] text-2xl font-semibold">
           {vacancy.title} ({vacancy.level})
