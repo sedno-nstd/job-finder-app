@@ -9,9 +9,6 @@ interface HeaderProps {
   filters: any;
   setFilters: any;
   showSidebar: boolean;
-
-  // search: string;
-  // setSearch: () => string;
 }
 
 export function SearchHeader({

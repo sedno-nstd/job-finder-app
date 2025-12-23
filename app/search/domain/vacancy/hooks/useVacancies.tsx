@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { vacancies } from "./types";
-import { CITIES } from "../geo/cities";
-import { getDistanceKm } from "../geo/getDistanceKm";
-import { SearchFilters, Vacancy } from "../../config/types";
-import { getSalaryInUah } from "../../config/salaryRules";
+import { vacancies } from "../types";
+import { CITIES } from "../../geo/cities";
+import { getDistanceKm } from "../../geo/getDistanceKm";
+import { SearchFilters, Vacancy } from "../../../config/types";
+import { getSalaryInUah } from "../../../config/salaryRules";
 
 export function useVacancies(
   filters: SearchFilters,
@@ -13,18 +13,13 @@ export function useVacancies(
   minSalary: number,
   selectedPeriod: "hour" | "month",
 
-  setSearch: string
+  finalSearch: string,
+  applySearch: boolean
 ) {
   const { search, location, postingDate, level, geo } = filters;
 
   return useMemo(() => {
     let result: Vacancy[] = vacancies;
-
-    if (search) {
-      result = result.filter((v) =>
-        v.title.toLowerCase().includes(search.toLowerCase())
-      );
-    }
 
     if (location !== "any") {
       if (["remote", "office", "hybrid"].includes(location)) {
@@ -77,10 +72,16 @@ export function useVacancies(
         if (v.salaryFrom === null || v.salaryFrom === undefined) {
           return false;
         }
+        const vFrom = getSalaryInUah(v, selectedPeriod);
+        const vTo = v.salaryTo
+          ? getSalaryInUah({ ...v, salaryFrom: v.salaryTo }, selectedPeriod)
+          : vFrom;
 
-        const comparableSalary = getSalaryInUah(v, selectedPeriod);
+        const isWorthLooking = vTo >= minSalary;
 
-        return comparableSalary >= minSalary;
+        const isNotCrazyHigh = vFrom <= minSalary * 2.5;
+
+        return isWorthLooking && isNotCrazyHigh;
       });
     }
 
@@ -88,8 +89,10 @@ export function useVacancies(
       result = result.filter((v) => (v.level as string[]).includes(level));
     }
 
-    if (setSearch) {
-      result = result.map((v) => v).filter((v) => v.title === setSearch);
+    if (applySearch && finalSearch) {
+      result = result.filter((v) =>
+        v.title.toLowerCase().includes(finalSearch.toLowerCase())
+      );
     }
 
     return {
@@ -107,6 +110,7 @@ export function useVacancies(
     maxDistanceKm,
     minSalary,
     selectedPeriod,
-    setSearch,
+    finalSearch,
+    applySearch,
   ]);
 }

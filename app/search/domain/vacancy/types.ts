@@ -23,7 +23,7 @@ export const vacancies: Vacancy[] = Array.from({ length: 200 }, (_, i) => {
   const rule = SALARY_RULES[currency][salaryPeriod];
 
   const sFrom = Math.floor(rule.min + Math.random() * rule.range);
-  const sTo = sFrom ? Math.floor(sFrom * (1.1 + Math.random() * 0.3)) : null;
+  const sTo = sFrom ? Math.floor(sFrom * (1.2 + Math.random() * 0.4)) : null;
 
   return {
     id: (i + 1).toString(),

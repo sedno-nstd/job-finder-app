@@ -1,6 +1,6 @@
 "use client";
 import { VacancyList } from "@/src/components/vacancy/VacancyList";
-import { useAuthVacancy } from "../store/useFavorites";
+import { useAuthVacancy } from "../../src/store/useFavorites";
 import { Heart } from "lucide-react";
 
 export default function Page() {

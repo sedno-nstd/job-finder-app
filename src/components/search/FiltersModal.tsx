@@ -4,7 +4,7 @@ import {
   FILTER_POSTING_DATES,
 } from "@/app/search/config/searchOptions";
 import { SearchFilters } from "@/app/search/config/types";
-import { FiltersSidebar } from "@/app/search/Ui/FiltersSidebar";
+import { FiltersSidebar } from "@/src/components/search/FiltersSidebar";
 import { SalarySlider } from "./SalarySlider";
 
 interface ModalParams {

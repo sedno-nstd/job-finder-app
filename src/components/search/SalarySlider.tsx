@@ -1,7 +1,7 @@
 import * as Slider from "@radix-ui/react-slider";
-import { useFilterStore } from "@/app/store/useFilterStore";
+import { useFilterStore } from "@/src/store/useFilterStore";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useDebounce } from "@/app/hooks/useDebounce";
+import { useDebounce } from "@/src/hooks/useDebounce";
 
 export function SalarySlider() {
   const { selectedPeriod, minSalary, setMinSalary } = useFilterStore();

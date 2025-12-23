@@ -4,11 +4,20 @@ import { persist } from "zustand/middleware";
 interface SearchProps {
   searchQuery: string;
   locationQuery: string;
-  isSearching: boolean;
+
+  applySearch: boolean;
+
   setSearchQuery: (value: string) => void;
   setLocationQuery: (value: string) => void;
+
   triggerSearch: () => void;
-  resetSearch: () => void;
+  resetSearchQuery: () => void;
+  resetSearchLocation: () => void;
+
+  finalSearch: string;
+
+  focusedField: "search" | "location" | null;
+  setFocusedField: (field: "search" | "location" | null) => void;
 }
 
 export const useSearchStore = create<SearchProps>()(
@@ -16,26 +25,34 @@ export const useSearchStore = create<SearchProps>()(
     (set) => ({
       searchQuery: "",
       locationQuery: "",
-      isSearching: false,
+      applySearch: false,
+      finalSearch: "",
+      focusedField: null,
       setSearchQuery: (value) =>
         set((state) => ({
           ...state,
           searchQuery: value,
-          isSearching: false,
+          // applySearch: false,
         })),
       setLocationQuery: (value) =>
         set((state) => ({
           ...state,
           locationQuery: value,
-          isSearching: false,
+          // applySearch: false,
         })),
-      triggerSearch: () => set({ isSearching: true }),
-      resetSearch: () =>
+      triggerSearch: () =>
+        set((state) => ({ applySearch: true, finalSearch: state.searchQuery })),
+      resetSearchQuery: () =>
         set({
           searchQuery: "",
-          locationQuery: "",
-          isSearching: false,
+          applySearch: false,
         }),
+      resetSearchLocation: () =>
+        set({
+          locationQuery: "",
+          applySearch: false,
+        }),
+      setFocusedField: (field) => set({ focusedField: field }),
     }),
     { name: "search-storage" }
   )

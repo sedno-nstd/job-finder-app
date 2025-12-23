@@ -1,5 +1,5 @@
 import { VacancyCard } from "./VacancyCard";
-import { useAuthVacancy } from "@/app/store/useFavorites";
+import { useAuthVacancy } from "@/src/store/useFavorites";
 import { Vacancy } from "@/app/search/config/types";
 
 interface VacanciesProps {
