@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Vacancy } from "../../app/search/config/types";
+import { Vacancy } from "../config/types";
 import { persist } from "zustand/middleware";
 
 interface VacancyState {

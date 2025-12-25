@@ -1,9 +1,8 @@
 import { useSearchStore } from "@/src/store/useSearchStore";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Search, MapPin, X } from "lucide-react";
-import { vacancies } from "@/app/search/domain/vacancy/types";
+import { vacancies } from "@/src/domain/vacancy/types";
 import clsx from "clsx";
-import { json } from "stream/consumers";
 
 export function SearchControll() {
   const {
@@ -12,7 +11,6 @@ export function SearchControll() {
     setLocationQuery,
     focusedField,
     setFocusedField,
-    resetSearchLocation,
   } = useSearchStore();
   const [search, setSearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -47,21 +45,21 @@ export function SearchControll() {
       <div className="flex flex-row">
         <div
           className={clsx(
-            "flex flex-row items-center relative w-[436px] h-[56px] pl-4 border-2 rounded-xl",
-            "border-transparent",
-            "hover:border-blue-500/50 hover:border-[1px]",
-            "focus-within:!border-blue-600 focus-within:!border-2"
+            "flex flex-row items-center relative w-[436px] h-[56px] rounded-xl duration-200",
+            "ring-0 ring-transparent",
+            "focus-within:ring-2 focus-within:ring-blue-600 focus-within:shadow-sm",
+            "hover:not-focus-within:ring-1 hover:not-focus-within:ring-blue-500/90"
           )}
         >
           <Search
             size={22}
-            className=" text-gray-400 group-focus-within:text-blue-500"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 pointer-events-none"
           />
           <input
             type="text"
             value={search}
             placeholder="I search vacancies..."
-            className="py-1 pl-3 pr-5 rounded flex-1 h-full outline-0"
+            className=" pr-10 pl-12 rounded flex-1 h-full outline-0"
             onChange={(e) => {
               setSearch(e.target.value);
               setShowSuggestions(true);
@@ -84,13 +82,13 @@ export function SearchControll() {
               onClick={() => {
                 setSearch("");
               }}
-              className="absolute right-2 p-[6px] hover:bg-gray-400/10 cursor-pointer text-[#a1afc1]  hover:text-black/80 duration-200 transition-all rounded-md"
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-100 text-[#a1afc1] hover:text-black/80 transition-all rounded-md"
             >
               <X size={22} className="" />
             </button>
-          )}
-          <div className="absolute top-full pt-6 left-0 w-[450px]">
-            {showSuggestions && suggestions.length > 0 && (
+          )}{" "}
+          {showSuggestions && suggestions.length > 0 && (
+            <div className="absolute top-full pt-6 left-0 w-[450px]">
               <div className="absolute left-0 w-full bg-white border border-gray-200 rounded-xl shadow-2xl z-50 overflow-hidden py-2">
                 <ul className="flex flex-col">
                   {suggestions.map((title, index) => (
@@ -107,16 +105,16 @@ export function SearchControll() {
                   ))}
                 </ul>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
         <div className="bg-[#a1afc1] w-[1px] h-full mx-1"></div>
         <div
           className={clsx(
-            "flex flex-row items-center w-[436px] pl-2 border-2 rounded-xl relative",
-            "border-transparent",
-            "hover:border-blue-500/50 hover:border-[1px]",
-            "focus-within:!border-blue-600 focus-within:!border-2"
+            "flex flex-row items-center w-[436px] pl-2 rounded-xl relative duration-200",
+            "ring-0 ring-transparent",
+            "focus-within:ring-2 focus-within:ring-blue-600 focus-within:shadow-sm",
+            "hover:not-focus-within:ring-1 hover:not-focus-within:ring-blue-500/90"
           )}
         >
           <MapPin size={22} className="text-gray-400" />

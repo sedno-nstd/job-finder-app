@@ -3,8 +3,13 @@ import { persist } from "zustand/middleware";
 
 interface User {
   name: string;
+  surname: string;
   email: string;
-  avatar: string;
+  image?: string;
+  avatar?: string;
+  role: string;
+  bio: string;
+  resumeUrl: string;
 }
 
 interface UserState {
@@ -12,6 +17,7 @@ interface UserState {
   login: (user: User) => void;
   logout: () => void;
   prevUserState: User | null;
+  updatedProfile: (data: Partial<User>) => void;
 }
 
 export const useUserState = create<UserState>()(
@@ -41,6 +47,10 @@ export const useUserState = create<UserState>()(
         set({
           user: null,
         }),
+      updatedProfile: (data) =>
+        set((state) => ({
+          user: state.user ? { ...state.user, data } : null,
+        })),
     }),
     { name: "user-storage" }
   )

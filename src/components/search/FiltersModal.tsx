@@ -2,8 +2,8 @@ import {
   FILTER_JOB_EXPERIENCE,
   FILTER_JOB_LOCATIONS,
   FILTER_POSTING_DATES,
-} from "@/app/search/config/searchOptions";
-import { SearchFilters } from "@/app/search/config/types";
+} from "@/src/config/searchOptions";
+import { SearchFilters } from "@/src/config/types";
 import { FiltersSidebar } from "@/src/components/search/FiltersSidebar";
 import { SalarySlider } from "./SalarySlider";
 
