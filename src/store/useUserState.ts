@@ -7,9 +7,9 @@ interface User {
   email: string;
   image?: string;
   avatar?: string;
-  role: string;
-  bio: string;
-  resumeUrl: string;
+  role?: string;
+  bio?: string;
+  resumeUrl?: string;
 }
 
 interface UserState {

@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import { Sidebar } from "@/src/components/layout/SideBar";
+import { Sidebar } from "@/src/components/SideBar/SideBar";
 import { VacancyList } from "@/src/components/vacancy/list/VacancyList";
 import { useUserLocation } from "@/src/hooks/useUserLocation";
 import { useFilterStore } from "@/src/store/useFilterStore";
 import { useVacancies } from "@src/domain/vacancy/hooks/useVacancies";
 import { SearchFilters } from "@src/config/types";
-import { SearchHeader } from "@/src/components/search/SearchHeader/SearchHeader";
+import { SearchHeader } from "@/src/components/search/SearchControls/SearchHeader";
 import { useSearchStore } from "@src/store/useSearchStore";
 
 export default function SearchPage() {

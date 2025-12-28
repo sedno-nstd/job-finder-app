@@ -6,7 +6,7 @@ import { useVacancies } from "@/src/domain/vacancy/hooks/useVacancies";
 import { useFilterStore } from "@/src/store/useFilterStore";
 import { useSearchStore } from "@/src/store/useSearchStore";
 import { useUserLocation } from "@/src/hooks/useUserLocation";
-import { SearchHeader } from "@/src/components/search/SearchHeader/SearchHeader";
+import { SearchHeader } from "@/src/components/search/SearchControls/SearchHeader";
 
 export default function VacanciesPage() {
   const { filters, setFilters, setShowSideBar, showSideBar } =

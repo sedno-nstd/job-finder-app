@@ -20,7 +20,12 @@ export function SearchHeader({
 }: HeaderProps) {
   return (
     <div className="w-full">
-      <SearchControll />
+      <SearchControll
+        borderBariant="hero"
+        firstInputClasses="w-[436px]"
+        secondInputSlasses="w-[436px]"
+        buttonClasses="max-h-[40px]"
+      />
       <FilterButtons
         showSideBar={showSidebar}
         setShowSidebar={setShowSidebar}

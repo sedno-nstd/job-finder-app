@@ -1,10 +1,29 @@
+"use client";
 import { useSearchStore } from "@/src/store/useSearchStore";
 import { useMemo, useRef, useState } from "react";
 import { Search, MapPin, X } from "lucide-react";
 import { vacancies } from "@/src/domain/vacancy/types";
 import clsx from "clsx";
+import {
+  getVariantClasses,
+  InputVariant,
+  variants,
+} from "./SearchControls/search-variants";
 
-export function SearchControll() {
+interface SearchProps {
+  firstInputClasses: string;
+  secondInputSlasses: string;
+  buttonClasses: string;
+
+  borderBariant: InputVariant;
+}
+
+export function SearchControll({
+  firstInputClasses,
+  secondInputSlasses,
+  buttonClasses,
+  borderBariant,
+}: SearchProps) {
   const {
     setSearchQuery,
     triggerSearch,
@@ -38,17 +57,14 @@ export function SearchControll() {
     setShowSuggestions(false);
   };
 
-  console.log(location);
-
   return (
     <div className="flex flex-row rounded-xl justify-between bg-white w-full mb-3 ">
       <div className="flex flex-row">
         <div
           className={clsx(
-            "flex flex-row items-center relative w-[436px] h-[56px] rounded-xl duration-200",
-            "ring-0 ring-transparent",
-            "focus-within:ring-2 focus-within:ring-blue-600 focus-within:shadow-sm",
-            "hover:not-focus-within:ring-1 hover:not-focus-within:ring-blue-500/90"
+            "flex flex-row items-center relative h-[56px] rounded-xl duration-200",
+            getVariantClasses(borderBariant),
+            firstInputClasses
           )}
         >
           <Search
@@ -111,10 +127,9 @@ export function SearchControll() {
         <div className="bg-[#a1afc1] w-[1px] h-full mx-1"></div>
         <div
           className={clsx(
-            "flex flex-row items-center w-[436px] pl-2 rounded-xl relative duration-200",
-            "ring-0 ring-transparent",
-            "focus-within:ring-2 focus-within:ring-blue-600 focus-within:shadow-sm",
-            "hover:not-focus-within:ring-1 hover:not-focus-within:ring-blue-500/90"
+            "flex flex-row items-center pl-2 rounded-xl relative duration-200",
+            getVariantClasses(borderBariant),
+            secondInputSlasses
           )}
         >
           <MapPin size={22} className="text-gray-400" />
@@ -141,7 +156,6 @@ export function SearchControll() {
             <button
               onMouseDown={() => {
                 setLocation("");
-                console.log("reset-location");
               }}
               className="absolute z-50 right-3 top-1/2 -translate-y-1/2 p-2 flex items-center justify-center hover:bg-gray-100 cursor-pointer text-[#a1afc1] hover:text-black/80 duration-200 transition-all rounded-md"
             >
@@ -149,9 +163,12 @@ export function SearchControll() {
             </button>
           )}
         </div>
-        <div className="flex items-center pr-2 py-1 pl-2 ">
+        <div className="flex items-center ml-1">
           <button
-            className="max-h-[40px] cursor-pointer bg-[#0B64D9] hover:bg-[#0A58BF] duration-200 transition-all text-white px-3 rounded-lg h-full font-semibold"
+            className={clsx(
+              "cursor-pointer bg-[#0B64D9] hover:bg-[#0A58BF] duration-200 transition-all text-white px-3 rounded-lg h-full font-semibold mr-2",
+              buttonClasses
+            )}
             onClick={() => {
               setSearchQuery(search);
               setLocationQuery(location);

@@ -4,11 +4,13 @@ import { persist } from "zustand/middleware";
 interface SearchProps {
   searchQuery: string;
   locationQuery: string;
+  isSuggestionsOpen: boolean;
 
   applySearch: boolean;
 
   setSearchQuery: (value: string) => void;
   setLocationQuery: (value: string) => void;
+  setIsSuggestionsOpen: (v: boolean) => void;
 
   triggerSearch: () => void;
   resetSearchQuery: () => void;
@@ -25,6 +27,7 @@ export const useSearchStore = create<SearchProps>()(
     (set) => ({
       searchQuery: "",
       locationQuery: "",
+      suggestion: false,
       applySearch: false,
       finalSearch: "",
       focusedField: null,
@@ -32,14 +35,16 @@ export const useSearchStore = create<SearchProps>()(
         set((state) => ({
           ...state,
           searchQuery: value,
-          // applySearch: false,
         })),
       setLocationQuery: (value) =>
         set((state) => ({
           ...state,
           locationQuery: value,
-          // applySearch: false,
         })),
+      setSuggestion: (value) =>
+        set({
+          suggestion: value,
+        }),
       triggerSearch: () =>
         set((state) => ({ applySearch: true, finalSearch: state.searchQuery })),
       resetSearchQuery: () =>

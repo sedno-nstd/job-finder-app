@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Sidebar } from "@/src/components/layout/SideBar";
-import { SearchHeader } from "@/src/components/search/SearchHeader/SearchHeader";
+import { Sidebar } from "@/src/components/SideBar/SideBar";
+import { SearchHeader } from "@/src/components/search/SearchControls/SearchHeader";
 import { useUserLocation } from "@/src/hooks/useUserLocation";
 import {
   VacanciesProvider,
@@ -19,7 +19,9 @@ function VacanciesContent({ children }: { children: React.ReactNode }) {
       <div
         className={clsx(
           "grid w-full max-w-[1280px] gap-6 px-4 py-6",
-          isDetailPage ? "grid-cols-[244px_1fr_300px]" : "grid-cols-[244px_1fr]"
+          isDetailPage
+            ? "grid-cols-[244px_1fr_300px]"
+            : "grid-cols-[244px_964px]"
         )}
       >
         <aside className="shrink-0">
