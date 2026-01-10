@@ -4,20 +4,10 @@ import { SalarySlider } from "../SalarySlider";
 import { SearchControll } from "../SearchControls";
 
 interface HeaderProps {
-  setShowSidebar: any;
   getLocation: () => void;
-  filters: any;
-  setFilters: any;
-  showSidebar: boolean;
 }
 
-export function SearchHeader({
-  setShowSidebar,
-  filters,
-  getLocation,
-  setFilters,
-  showSidebar,
-}: HeaderProps) {
+export function SearchHeader({ getLocation }: HeaderProps) {
   return (
     <div className="w-full">
       <SearchControll
@@ -26,16 +16,8 @@ export function SearchHeader({
         secondInputSlasses="w-[436px]"
         buttonClasses="max-h-[40px]"
       />
-      <FilterButtons
-        showSideBar={showSidebar}
-        setShowSidebar={setShowSidebar}
-      />
-      <FilterModal
-        filters={filters}
-        getLocation={getLocation}
-        setFilters={setFilters}
-        showSidebar={showSidebar}
-      />
+      <FilterButtons />
+      <FilterModal getLocation={getLocation} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+// import "./globals.css";
+import "@/src/app/globals.css";
 import { NextAuthProvider } from "../components/providers/NextAuthProvider";
 
 const geistSans = Geist({
@@ -24,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="overflow-y-scroll">
+    <html lang="en" className="overflow-y-scroll h-full">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

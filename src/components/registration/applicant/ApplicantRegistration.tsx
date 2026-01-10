@@ -1,27 +1,10 @@
 "use client";
-import { useUserState } from "@/src/store/useUserState";
-import { useRouter, useSearchParams } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
 
-export default function RegisterPage() {
+export default function ApplicantRegistration() {
   const searchParams = useSearchParams();
   const role = searchParams.get("role") || "applicant";
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const { login, user } = useUserState();
-
-  useEffect(() => {
-    if (status === "authenticated" && session?.user) {
-      login({
-        name: session.user.name || "",
-        email: session.user.email || "",
-        image: session.user.image || "",
-        role: role,
-      });
-      router.push("/search");
-    }
-  }, [status, session, login, role, router]);
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#0f172a] relative overflow-hidden">
@@ -33,12 +16,10 @@ export default function RegisterPage() {
           Registering as{" "}
           <span className="text-blue-600 font-semibold">{role}</span>
         </p>
-        <span>{user?.name}</span>
-
         <button
           className="flex items-center justify-center gap-3 w-full py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all font-medium text-gray-700"
           onClick={() => {
-            signIn("google", { callbackUrl: "/search" });
+            signIn("google", { callbackUrl: "/registration" });
           }}
         >
           <svg width="20" height="20" viewBox="0 0 24 24">

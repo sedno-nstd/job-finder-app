@@ -33,7 +33,7 @@ export interface Vacancy {
   city?: keyof typeof CITIES;
   postedAt: string;
 }
-
+type SalaryPeriod = "hour" | "month";
 export interface SearchFilters {
   search: string;
   location: FilterLocation;

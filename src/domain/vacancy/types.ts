@@ -1,5 +1,5 @@
 import { SALARY_RULES } from "../../config/salaryRules";
-import { MOCK_TITLES } from "../../config/searchOptions";
+import { POPULAR_PROFESSIONS } from "../../config/searchOptions";
 import { Vacancy } from "../../config/types";
 import { cityKeys, jobLocations } from "./mock";
 
@@ -33,7 +33,10 @@ export const vacancies: Vacancy[] = Array.from({ length: 200 }, (_, i) => {
 
   return {
     id: (i + 1).toString(),
-    title: MOCK_TITLES[Math.floor(Math.random() * MOCK_TITLES.length)],
+    title:
+      POPULAR_PROFESSIONS[
+        Math.floor(Math.random() * POPULAR_PROFESSIONS.length)
+      ],
     company: companies[Math.floor(Math.random() * companies.length)],
     description: RANDOM_DESCRIPTIONS[i % RANDOM_DESCRIPTIONS.length],
     salaryFrom: sFrom,

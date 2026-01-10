@@ -29,42 +29,35 @@ export default function Profile() {
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
-      {!showInputs && !user?.surname ? (
+      {!showInputs && !user ? (
         <div className="flex flex-col gap-4">
-          <h1>Дополните профиль, чтобы быстрее найти работу</h1>
+          <h1>Complete your profile to find a job faster</h1>
           <button
             className="rounded-lg w-full bg-blue-600 text-white px-2 cursor-pointer"
             onClick={() => setShowInputs(!showInputs)}
           >
-            Дополнить профиль
+            Update profile
           </button>
         </div>
       ) : (
-        <div></div>
-      )}
-
-      {showInputs && (
-        <form className="flex flex-col gap-3">
+        <form className="flex flex-col gap-3" onSubmit={handleUpdateDataUser}>
           <input
+            className="border p-2 rounded"
             type="text"
-            placeholder="enter name"
+            placeholder="Имя"
             value={nameValue}
             onChange={(e) => setNameValue(e.target.value)}
           />
           <input
+            className="border p-2 rounded"
             type="text"
-            placeholder="enter surname"
+            placeholder="Фамилия"
             value={surnameValue}
             onChange={(e) => setSurnameValue(e.target.value)}
           />
-          <span className="text-red-500">{error}</span>
-          <button
-            type="submit"
-            onClick={() => {
-              handleUpdateDataUser;
-            }}
-          >
-            continue
+          {error && <span className="text-red-500">{error}</span>}
+          <button type="submit" className="bg-green-600 text-white p-2 rounded">
+            Save and back
           </button>
         </form>
       )}

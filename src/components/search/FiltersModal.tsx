@@ -6,53 +6,44 @@ import {
 import { SearchFilters } from "@/src/config/types";
 import { FiltersSidebar } from "@/src/components/search/FiltersSidebar";
 import { SalarySlider } from "./SalarySlider";
+import { useSearchStore } from "@/src/store/useSearchStore";
 
 interface ModalParams {
-  showSidebar: boolean;
-  filters: SearchFilters;
-  setFilters: React.Dispatch<React.SetStateAction<SearchFilters>>;
   getLocation: () => void;
 }
 
-export function FilterModal({
-  showSidebar,
-  filters,
-  setFilters,
-  getLocation,
-}: ModalParams) {
+export function FilterModal({ getLocation }: ModalParams) {
+  const { locationType, postingDate, level, setFilter, showSideBar } =
+    useSearchStore();
   return (
     <div>
-      {showSidebar && (
+      {showSideBar && (
         <div className="absolute top-0 right-0 flex flex-col bg-white">
           <h1 className="text-2xl p-2">Filters</h1>
           <FiltersSidebar
             title="Job Location"
             options={FILTER_JOB_LOCATIONS}
-            selectedValue={filters.location}
-            setSelectedValue={(value) =>
-              setFilters((prev) => ({ ...prev, location: value as any }))
-            }
+            selectedValue={locationType}
+            setSelectedValue={(value) => setFilter("locationType", value)}
             handleLocationRequest={getLocation}
           />
 
           <FiltersSidebar
             title="Date of Publish"
             options={FILTER_POSTING_DATES}
-            selectedValue={filters.postingDate}
-            setSelectedValue={(value) =>
-              setFilters((prev) => ({ ...prev, postingDate: value as any }))
-            }
+            selectedValue={postingDate}
+            setSelectedValue={(value) => setFilter("postingDate", value)}
           />
 
           <FiltersSidebar
             title="Job expierence"
             options={FILTER_JOB_EXPERIENCE}
-            selectedValue={filters.level}
-            setSelectedValue={(value) =>
-              setFilters((prev) => ({ ...prev, level: value as any }))
-            }
+            selectedValue={level}
+            setSelectedValue={(value) => setFilter("level", value)}
           />
-          <div className="max-h-[50px]">{<SalarySlider />}</div>
+          <div>
+            <SalarySlider />
+          </div>
         </div>
       )}
     </div>

@@ -1,12 +1,5 @@
 "use client";
-import { useState } from "react";
 import { Sidebar } from "@/src/components/SideBar/SideBar";
-import { SearchHeader } from "@/src/components/search/SearchControls/SearchHeader";
-import { useUserLocation } from "@/src/hooks/useUserLocation";
-import {
-  VacanciesProvider,
-  useVacanciesContext,
-} from "../../components/providers/VacanciesContext";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
@@ -44,9 +37,5 @@ export default function VacanciesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <VacanciesProvider>
-      <VacanciesContent>{children}</VacanciesContent>
-    </VacanciesProvider>
-  );
+  return <VacanciesContent>{children}</VacanciesContent>;
 }

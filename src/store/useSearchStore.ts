@@ -1,25 +1,39 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { SalaryPeriod } from "./useFilterStore";
 
 interface SearchProps {
   searchQuery: string;
   locationQuery: string;
-  isSuggestionsOpen: boolean;
+  finalSearch: string;
 
+  minSalary: number;
+  selectedPeriod: SalaryPeriod;
+  locationType: string;
+  postingDate: string;
+  level: string;
   applySearch: boolean;
+  focusedField: "search" | "location" | null;
+  geo: "all" | "near";
+  showSideBar: boolean;
+
+  setShowSideBar: (s: boolean) => void;
 
   setSearchQuery: (value: string) => void;
   setLocationQuery: (value: string) => void;
-  setIsSuggestionsOpen: (v: boolean) => void;
+  setFocusedField: (field: "search" | "location" | null) => void;
 
   triggerSearch: () => void;
+
+  setFilter: (
+    key: "locationType" | "postingDate" | "level" | "geo",
+    value: string
+  ) => void;
+  setMinSalary: (val: number) => void;
+  setPeriod: (p: SalaryPeriod) => void;
+
   resetSearchQuery: () => void;
   resetSearchLocation: () => void;
-
-  finalSearch: string;
-
-  focusedField: "search" | "location" | null;
-  setFocusedField: (field: "search" | "location" | null) => void;
 }
 
 export const useSearchStore = create<SearchProps>()(
@@ -27,35 +41,37 @@ export const useSearchStore = create<SearchProps>()(
     (set) => ({
       searchQuery: "",
       locationQuery: "",
-      suggestion: false,
       applySearch: false,
       finalSearch: "",
       focusedField: null,
-      setSearchQuery: (value) =>
-        set((state) => ({
-          ...state,
-          searchQuery: value,
+      minSalary: 0,
+      selectedPeriod: "month",
+      locationType: "any",
+      level: "any",
+      postingDate: "any",
+      geo: "all",
+      showSideBar: false,
+
+      setPeriod: (period) => set({ selectedPeriod: period }),
+      setMinSalary: (value) => set({ minSalary: value }),
+      setSearchQuery: (value) => set({ searchQuery: value }),
+      setLocationQuery: (value) => set({ locationQuery: value }),
+      setFilter: (key, value) =>
+        set(() => ({
+          [key]: value,
+          applySearch: true,
         })),
-      setLocationQuery: (value) =>
-        set((state) => ({
-          ...state,
-          locationQuery: value,
-        })),
-      setSuggestion: (value) =>
-        set({
-          suggestion: value,
-        }),
+      setShowSideBar: (value) => set({ showSideBar: value }),
+
       triggerSearch: () =>
         set((state) => ({ applySearch: true, finalSearch: state.searchQuery })),
       resetSearchQuery: () =>
         set({
           searchQuery: "",
-          applySearch: false,
         }),
       resetSearchLocation: () =>
         set({
           locationQuery: "",
-          applySearch: false,
         }),
       setFocusedField: (field) => set({ focusedField: field }),
     }),

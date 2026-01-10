@@ -1,10 +1,11 @@
 import * as Slider from "@radix-ui/react-slider";
-import { useFilterStore } from "@/src/store/useFilterStore";
+
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDebounce } from "@/src/hooks/useDebounce";
+import { useSearchStore } from "@/src/store/useSearchStore";
 
 export function SalarySlider() {
-  const { selectedPeriod, minSalary, setMinSalary } = useFilterStore();
+  const { minSalary, setMinSalary, selectedPeriod } = useSearchStore();
   const [localValue, setLocalValue] = useState(minSalary);
   const debouncedValue = useDebounce(localValue, 300);
 
@@ -22,15 +23,15 @@ export function SalarySlider() {
     const numericValue = value.replace(/\D/g, "");
 
     if (value === "") {
-      setMinSalary(0);
+      setLocalValue(0);
       return;
     }
     const numValue = parseInt(numericValue, 10);
 
     if (numValue > maxLimit) {
-      setMinSalary(maxLimit);
+      setLocalValue(maxLimit);
     } else {
-      setMinSalary(numValue);
+      setLocalValue(numValue);
     }
   };
 
@@ -40,7 +41,7 @@ export function SalarySlider() {
       <div className="pb-3 flex flex-row items-center">
         <input
           type="text"
-          value={`${minSalary}+`}
+          value={`${localValue}+`}
           placeholder="etner sum"
           onChange={handleInputChange}
           className="text-2xl font-bold text-blue-600 max-w-[100px]"
@@ -52,8 +53,8 @@ export function SalarySlider() {
       </div>
       <Slider.Root
         className="relative flex items-center select-none touch-none w-full h-5 cursor-pointer"
-        value={[minSalary]}
-        onValueChange={(value) => setMinSalary(value[0])}
+        value={[localValue]}
+        onValueChange={(value) => setLocalValue(value[0])}
         max={maxLimit}
         step={step}
       >

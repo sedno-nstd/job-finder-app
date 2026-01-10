@@ -3,6 +3,9 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function UserChats(userId: string) {
+  if (!userId || userId === "undefined") {
+    return [];
+  }
   const userChats = await prisma.user.findUnique({
     where: { id: userId },
     include: {

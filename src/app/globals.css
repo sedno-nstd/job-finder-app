@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 /* :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -24,22 +23,47 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 } */
+@theme {
+  --color-main: var(--color-text-main);
+  --color-secondary: var(--color-text-secondary);
+  --color-input-border: var(--color-border-input);
+
+  --color-focus-blue: #2563eb;
+}
+:root {
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb: #6380a633;
+  --scrollbar-thumb-hover: #6380a655;
+  --scrollbar-width: 6px;
+
+  --color-text-main: #2d3540;
+  --color-text-secondary: #5a6f87;
+
+  --color-border-input: #a1afc1;
+
+  --color-focus-blue: rgb(var(--focus-glow-rgb));
+}
 
 @layer utilities {
   .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
+    width: var(--scrollbar-width);
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+    background: var(--scrollbar-bg);
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #6380a633;
+    background: var(--scrollbar-thumb);
     border-radius: 10px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #6380a655;
+    background: var(--scrollbar-thumb-hover);
+  }
+
+  .input-focus-glow:focus {
+    @apply border-focus-blue;
+    @apply ring-4 ring-focus-blue/600;
   }
 }

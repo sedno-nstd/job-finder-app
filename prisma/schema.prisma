@@ -18,8 +18,102 @@ model User {
  id            String @id @default(cuid())
  name          String 
  email         String @unique
+ emailVerified DateTime? 
+ image         String?   
+ accounts      Account[] 
+ sessions      Session[]
  conversations Conversation[]
  messages      Message[]
+ detailInfo    DetailInfo?
+}
+
+
+model DetailInfo {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id])
+
+  firstName          String
+  lastName           String
+  resumeUrl          String?
+
+
+  location           String
+  gender             String
+  dateOfBirth        String
+  readyToRelocate    Boolean   @default(false)
+  relocationLocations RelocationLocation[]
+  readyForWorkAbroad Boolean   @default(false)
+
+  desiredJob         DesiredJob[]  
+
+
+  lastWorkplace      String
+  previousPosition   String
+  experienceDuration String  
+  
+  employmentType     EmploymentType[]
+  
+  searchMode         String
+  role               String
+  isCompleted        Boolean  @default(false)
+}
+
+
+model RelocationLocation {
+  id           String     @id @default(cuid())
+  name         String
+  detailInfoId String
+  detailInfo   DetailInfo @relation(fields: [detailInfoId], references: [id])
+}
+
+model DesiredJob {
+  id           String     @id @default(cuid())
+  name         String
+  detailInfoId String
+  detailInfo   DetailInfo @relation(fields: [detailInfoId], references: [id])
+}
+
+model EmploymentType {
+  id           String @id @default(cuid())
+  name         String
+  detailInfoId String
+  detailInfo   DetailInfo @relation(fields: [detailInfoId],references: [id])
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? 
+  access_token       String? 
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? 
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 model Message {

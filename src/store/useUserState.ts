@@ -14,43 +14,34 @@ interface User {
 
 interface UserState {
   user: User | null;
+  tempRole: string | null;
   login: (user: User) => void;
   logout: () => void;
   prevUserState: User | null;
   updatedProfile: (data: Partial<User>) => void;
+
+  isFullRegistration: boolean;
+  startRegistration: (role: "applicant" | "employer", full: boolean) => void;
 }
 
 export const useUserState = create<UserState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       user: null,
+      tempRole: "",
       prevUserState: null,
-      login: async (gogleuser: User) => {
-        const response = await fetch("/api/auth/google/", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(gogleuser),
-        });
-
-        const serverUser = await response.json();
-
-        if (response.ok) {
-          const lastUser = get().user;
-
-          set({
-            prevUserState: lastUser || get().prevUserState,
-            user: serverUser,
-          });
-        }
-      },
-      logout: () =>
-        set({
-          user: null,
-        }),
+      isFullRegistration: false,
+      login: (serverUser: User) => set({ user: serverUser }),
+      logout: () => set({ user: null, tempRole: null }),
       updatedProfile: (data) =>
         set((state) => ({
-          user: state.user ? { ...state.user, data } : null,
+          user: state.user ? { ...state.user, ...data } : ({ ...data } as User),
         })),
+      startRegistration: (role, full) =>
+        set({
+          tempRole: role,
+          isFullRegistration: full,
+        }),
     }),
     { name: "user-storage" }
   )

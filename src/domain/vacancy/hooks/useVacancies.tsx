@@ -2,28 +2,32 @@ import { useMemo } from "react";
 import { vacancies } from "../types";
 import { CITIES } from "../../geo/cities";
 import { getDistanceKm } from "../../geo/getDistanceKm";
-import { SearchFilters, Vacancy } from "../../../config/types";
+import { Vacancy } from "../../../config/types";
 import { getSalaryInUah } from "../../../config/salaryRules";
+import { useSearchStore } from "@/src/store/useSearchStore";
 
 export function useVacancies(
-  filters: SearchFilters,
   visibleCount: number,
   userLocation: { lat: number; lon: number } | null,
-  maxDistanceKm: number,
-  minSalary: number,
-  selectedPeriod: "hour" | "month",
-
-  finalSearch: string,
-  applySearch: boolean
+  maxDistanceKm: number
 ) {
-  const { search, location, postingDate, level, geo } = filters;
+  const {
+    finalSearch,
+    minSalary,
+    selectedPeriod,
+    locationType,
+    postingDate,
+    level,
+    geo,
+    applySearch,
+  } = useSearchStore();
 
   return useMemo(() => {
     let result: Vacancy[] = vacancies;
 
-    if (location !== "any") {
-      if (["remote", "office", "hybrid"].includes(location)) {
-        result = result.filter((v) => v.jobLocation === location);
+    if (locationType !== "any") {
+      if (["remote", "office", "hybrid"].includes(locationType)) {
+        result = result.filter((v) => v.jobLocation === locationType);
       }
     }
 
@@ -100,8 +104,7 @@ export function useVacancies(
       total: result.length,
     };
   }, [
-    search,
-    location,
+    locationType,
     postingDate,
     level,
     geo,

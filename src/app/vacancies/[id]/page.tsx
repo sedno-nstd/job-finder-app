@@ -10,7 +10,7 @@ export default async function Page({
   const { id } = await params;
   const vacancy = vacancies.find((v) => v.id === id);
 
-  if (!vacancy) return <div>Вакансия не найдена</div>;
+  if (!vacancy) return <div>Vacancy not found</div>;
 
   return <VacancyDetails vacancy={vacancy} />;
 }

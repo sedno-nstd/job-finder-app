@@ -20,6 +20,11 @@ export function VacancyList({
   const { tooggleFavorites, isFavorite } = useAuthVacancy();
   const [mounted, setMounted] = useState(false);
 
+  const resetFilters = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+
   useEffect(() => {
     setMounted(true);
   }, [setMounted]);
@@ -33,6 +38,23 @@ export function VacancyList({
             className="h-[200px] w-full bg-gray-100 animate-pulse rounded-2xl"
           />
         ))}
+      </div>
+    );
+  }
+
+  if (vacancies.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
+        <h3 className="text-xl font-bold text-gray-800">No vacancies yet</h3>
+        <p className="text-gray-500 mb-6">
+          Try adjusting your filters or search query
+        </p>
+        <button
+          onClick={resetFilters}
+          className="text-blue-600 font-semibold hover:underline"
+        >
+          Clear all filters
+        </button>
       </div>
     );
   }

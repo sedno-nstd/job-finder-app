@@ -15,8 +15,8 @@ export function ChatList({ chats, userId }: ChatListProps) {
   return (
     <div className="h-full flex flex-col overflow-hidden">
       {chats.length === 0 ? (
-        <span className="flex items-center justify-center">
-          "don't have available chats"
+        <span className="flex items-center justify-center h-full text-gray-400">
+          Don't have available chats
         </span>
       ) : (
         <div className="flex-1 overflow-y-auto custom-scrollbar overflow-x-hidden">

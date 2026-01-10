@@ -2,10 +2,12 @@
 import { VacancyList } from "@/src/components/vacancy/list/VacancyList";
 import { useAuthVacancy } from "@/src/store/useFavorites";
 import { Heart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const { favoriteVacancies } = useAuthVacancy();
   const isEmpty = favoriteVacancies.length === 0;
+  const router = useRouter();
 
   return (
     <main className="w-full min-h-screen bg-[#eff2f6] flex flex-col items-center pt-20 px-4">
@@ -24,7 +26,10 @@ export default function Page() {
             </p>
           </div>
 
-          <button className="w-full sm:w-auto cursor-pointer rounded-xl py-3 px-8 text-blue-600 font-medium border border-blue-100 hover:bg-blue-600 hover:text-white transition-all duration-300">
+          <button
+            className="w-full sm:w-auto cursor-pointer rounded-xl py-3 px-8 text-blue-600 font-medium border border-blue-100 hover:bg-blue-600 hover:text-white transition-all duration-300"
+            onClick={() => router.push("/vacancies")}
+          >
             Go to search
           </button>
         </div>

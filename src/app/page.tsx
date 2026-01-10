@@ -1,10 +1,6 @@
 "use client";
-import SearchPage from "./search/page";
+// import SearchPage from "./search/page";
 
 export default function Home() {
-  return (
-    <div>
-      <SearchPage />
-    </div>
-  );
+  return <div>{/* <SearchPage /> */}</div>;
 }

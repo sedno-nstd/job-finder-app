@@ -1,0 +1,98 @@
+export const COUNTRY_USER = [
+  {
+    country: "USA",
+    cities: [
+      "New York",
+      "Los Angeles",
+      "Chicago",
+      "Miami",
+      "Las Vegas",
+      "Seattle",
+      "Houston",
+    ],
+  },
+  {
+    country: "United Kingdom",
+    cities: [
+      "London",
+      "Manchester",
+      "Liverpool",
+      "Birmingham",
+      "Edinburgh",
+      "Glasgow",
+      "Bristol",
+    ],
+  },
+  {
+    country: "Germany",
+    cities: [
+      "Berlin",
+      "Munich",
+      "Hamburg",
+      "Cologne",
+      "Frankfurt",
+      "Stuttgart",
+      "Düsseldorf",
+    ],
+  },
+  {
+    country: "France",
+    cities: [
+      "Paris",
+      "Lyon",
+      "Marseille",
+      "Toulouse",
+      "Nice",
+      "Nantes",
+      "Strasbourg",
+    ],
+  },
+  {
+    country: "Poland",
+    cities: [
+      "Warsaw",
+      "Krakow",
+      "Wroclaw",
+      "Gdansk",
+      "Poznan",
+      "Lodz",
+      "Katowice",
+    ],
+  },
+  {
+    country: "Ukraine",
+    cities: [
+      "Kyiv",
+      "Lviv",
+      "Kharkiv",
+      "Odessa",
+      "Dnipro",
+      "Zaporizhzhia",
+      "Vinnytsia",
+    ],
+  },
+  {
+    country: "Canada",
+    cities: [
+      "Toronto",
+      "Vancouver",
+      "Montreal",
+      "Calgary",
+      "Ottawa",
+      "Edmonton",
+      "Winnipeg",
+    ],
+  },
+  {
+    country: "Spain",
+    cities: [
+      "Madrid",
+      "Barcelona",
+      "Valencia",
+      "Seville",
+      "Zaragoza",
+      "Malaga",
+      "Murcia",
+    ],
+  },
+];

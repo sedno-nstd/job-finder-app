@@ -1,15 +1,8 @@
 "use client";
 import Image from "next/image";
-import { SearchControll } from "../search/SearchControls";
 import { Heart, MessageSquare, User, Search, MapPin } from "lucide-react";
 import Link from "next/link";
-import {
-  ChangeEventHandler,
-  InputHTMLAttributes,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { vacancies } from "@/src/domain/vacancy/types";
 
@@ -18,8 +11,6 @@ const ACTIONS = [
   { id: "saved", icon: Heart, href: "/saved", label: "Saved" },
   { id: "profile", icon: User, href: "/profile", label: "Profile" },
 ];
-
-const logoWord = "JOOBLE";
 
 export function HeaderNavigation() {
   const [title, setTitle] = useState("");
@@ -99,7 +90,7 @@ export function HeaderNavigation() {
           </div>
           <input
             ref={locationInputRef}
-            className="text-[#5a6f87] h-full pl-6 w-full outline-none"
+            className="text-[#5a6f87] h-full pl-10 w-full outline-none"
             placeholder="In region..."
             type="text"
             value={region}
