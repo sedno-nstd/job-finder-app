@@ -8,14 +8,16 @@ import { ArrowLeft } from "lucide-react";
 export function Step5SelectMode() {
   const { updatedFields, formData, nextStep, prevStep } = useOnboardingStore();
   const [selected, setSelected] = useState<string[]>(
-    Array.isArray(formData.employmentType) ? formData.employmentType : []
+    Array.isArray(formData.onBoarding.employmentType)
+      ? formData.onBoarding.employmentType
+      : [],
   );
   const [error, setError] = useState<string | null>(null);
 
   const toggleOption = (id: string) => {
     setError(null);
     setSelected((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   };
 
@@ -27,12 +29,12 @@ export function Step5SelectMode() {
       return;
     }
 
-    updatedFields({ employmentType: selected });
+    updatedFields("onBoarding", { employmentType: selected });
     nextStep();
   };
 
   return (
-    <div className="w-full min-h-screen flex items-center text-main justify-center">
+    <div className="w-full h-full flex items-center text-main justify-center">
       <div className="relative flex flex-col gap-5 w-full max-w-[448px] bg-white rounded-lg px-6 py-8">
         <button
           type="button"

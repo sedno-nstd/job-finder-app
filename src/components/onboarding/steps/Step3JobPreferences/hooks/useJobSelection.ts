@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-export function useJobSelection() {
+export function useJobSelection(initialJobs: string[]) {
   const { setValue } = useFormContext();
   const [query, setQuery] = useState("");
-  const [joobs, setJoobs] = useState<string[]>([]);
+  const [joobs, setJoobs] = useState<string[]>(initialJobs);
 
   const selectProfession = (value: string) => {
     const isSelected = joobs.includes(value);

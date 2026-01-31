@@ -1,13 +1,18 @@
 import { useUserState } from "@/src/store/useUserState";
 import { User, Flame, Settings, LogOut, SendHorizontal } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function UserMenu() {
   const { logout } = useUserState();
+  const router = useRouter();
   return (
     <div className="absolute justify-start items-center w-full ">
       <div className="bg-white fllex flex-col py-1 rounded-lg select-none">
-        <div className="hover:bg-[#6380a61a] flex flex-row gap-[6px] cursor-pointer p-3">
+        <div
+          className="hover:bg-[#6380a61a] flex flex-row gap-[6px] cursor-pointer p-3"
+          onClick={() => router.push("/profile")}
+        >
           <User size={22} className="text-[#a1afc1]" />
           <span className="text-[#2a3540] font-normal">My profile</span>
         </div>

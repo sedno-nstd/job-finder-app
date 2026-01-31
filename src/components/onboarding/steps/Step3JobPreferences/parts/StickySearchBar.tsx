@@ -13,7 +13,7 @@ export function StickySearchBar({ query, setQuery, isSticky }: Props) {
       className={clsx(
         "z-20 bg-white px-6 py-2 -mx-0 overflow-y-auto sticky top-0 ",
         isSticky &&
-          "border-b border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]"
+          "border-b border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]",
       )}
     >
       <div className="relative border border-input-border flex h-[40px] rounded-lg transition-shadow focus-within:shadow-md">

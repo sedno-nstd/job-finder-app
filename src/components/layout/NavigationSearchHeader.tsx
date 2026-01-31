@@ -1,6 +1,14 @@
 "use client";
 import Image from "next/image";
-import { Heart, MessageSquare, User, Search, MapPin } from "lucide-react";
+import {
+  Heart,
+  MessageSquare,
+  User,
+  Search,
+  MapPin,
+  Bell,
+  Menu,
+} from "lucide-react";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import clsx from "clsx";
@@ -36,12 +44,12 @@ export function HeaderNavigation() {
   };
 
   return (
-    <div className="max-h-[80px] my-4 flex flex-row items-center">
+    <div className="max-h-[80px] my-2 flex flex-row items-center w-full">
       <div className="flex mx-8">
         <Image
           src="/images/HeaderNavigation/logo.png"
-          width={110}
-          height={40}
+          width={120}
+          height={50}
           alt="logo"
         />
       </div>
@@ -84,7 +92,7 @@ export function HeaderNavigation() {
             )}
           </div>
         </div>
-        <div className="flex items-center hover:border-blue-600 focus-within:border-blue-600 border-t border-b border-l border-[#a1afc1] w-[280px]">
+        <div className="flex flex-1 items-center hover:border-blue-600 focus-within:border-blue-600 border-t border-b border-l border-[#a1afc1] w-[280px]">
           <div className="flex items-center pl-2 absolute">
             <MapPin size={22} className="text-[#5a6f87] select-none" />
           </div>
@@ -100,7 +108,7 @@ export function HeaderNavigation() {
         <div className="flex items-center h-full">
           <button
             className={clsx(
-              "cursor-pointer bg-[#0B64D9] hover:bg-[#0A58BF] duration-200 transition-all text-white px-3 rounded-r-md font-semibold h-full"
+              "cursor-pointer shrink-0 bg-[#0B64D9] hover:bg-[#0A58BF] duration-200 transition-all text-white px-3 rounded-r-md font-semibold h-full",
             )}
             onClick={() => {}}
           >
@@ -108,17 +116,30 @@ export function HeaderNavigation() {
           </button>
         </div>
       </div>
-      <div className="flex flex-row px-5 items-center">
-        {ACTIONS.map((item) => (
-          <Link
-            key={item.id}
-            href={item.href}
-            className="p-3 hover:bg-[#6380a61a] rounded-lg relative flex flex-row gap-2 text-[#5a6f87] hover:text-[#2d3540] font-medium"
-          >
-            <item.icon size={24} className="" />
-            <span>{item.label}</span>
-          </Link>
-        ))}
+      <div className="flex flex-1 items-center shrink-0">
+        <div className="flex flex-row px-5 items-center">
+          {ACTIONS.map((item) => (
+            <Link
+              key={item.id}
+              href={item.href}
+              className="p-3 hover:bg-[#6380a61a] rounded-lg relative flex flex-row gap-2 text-[#5a6f87] hover:text-[#2d3540] font-medium"
+            >
+              <item.icon size={24} className="" />
+              <span>{item.label}</span>
+            </Link>
+          ))}
+        </div>
+        <div className="h-8 w-0.5 my-2 mx-4 rounded-sm opacity-50 bg-[rgba(99,128,166,0.3)]"></div>
+        <div className="flex items-center gap-8 ml-5 pr-4">
+          <Bell
+            size={22}
+            className="text-[#5a6f87] hover:text-[#2d3540] cursor-pointer m-2"
+          />
+          <Menu
+            size={22}
+            className="text-[#5a6f87] hover:text-[#2d3540] cursor-pointer"
+          />
+        </div>
       </div>
     </div>
   );

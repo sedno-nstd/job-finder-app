@@ -7,6 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { POPULAR_PROFESSIONS } from "@/src/config/searchOptions";
+import { FormField } from "@/src/components/ui/formInput";
+import { LastWorkPlace } from "./parts/LastWorkPlace";
 
 export function Step4Experience() {
   const { formData, nextStep, updatedFields, prevStep } = useOnboardingStore();
@@ -16,9 +18,9 @@ export function Step4Experience() {
     mode: "onChange",
     resolver: zodResolver(step4Schema),
     defaultValues: {
-      experienceDuration: formData.experienceDuration || "",
-      previousPosition: formData.previousPosition || "",
-      lastWorkplace: formData.lastWorkplace || "",
+      experienceDuration: formData.onBoarding.experienceDuration || "",
+      previousPosition: formData.onBoarding.previousPosition || "",
+      lastWorkplace: formData.onBoarding.lastWorkplace || "",
     },
   });
 
@@ -33,11 +35,11 @@ export function Step4Experience() {
   const previousPosition = watch("previousPosition") || "";
 
   const professionFiltered = POPULAR_PROFESSIONS.filter((item) =>
-    item.toLowerCase().includes(previousPosition.toLowerCase())
+    item.toLowerCase().includes(previousPosition.toLowerCase()),
   );
 
   const onSubmit = (data: Step4Values) => {
-    updatedFields(data);
+    updatedFields("onBoarding", data);
     nextStep();
   };
 
@@ -48,60 +50,50 @@ export function Step4Experience() {
           className="
           flex flex-col w-full bg-white relative py-8 px-6
           sm:max-w-[448px] sm:rounded-lg sm:shadow-sm sm:my-8 
-          max-sm:min-h-screen max-sm:shadow-none max-sm:rounded-none max-sm:justify-center
+          max-sm:h-full max-sm:shadow-none max-sm:rounded-none max-sm:justify-center
           "
           onSubmit={handleSubmit(onSubmit)}
         >
           <button
             type="button"
             className="
-            cursor-pointer absolute
-            max-sm:top-6 max-sm:left-6 
-            sm:top-3 sm:left-3
+            absolute cursor-pointer text-blue-600 top-4 left-4
+            max-sm:top-6 sm:top-6
+            md:hidden
             "
             onClick={() => prevStep()}
           >
-            <ArrowLeft size={26} className="text-blue-600" />
+            <span className="flex flex-row">
+              <ArrowLeft />
+              Back
+            </span>
           </button>
-          <div className="max-sm:mb-12">
+          <div
+            className="max-sm:mt-2
+          sm:mt-2
+          "
+          >
             <h1 className="text-3xl font-medium mb-5 mt-4">
               Last worked place
             </h1>
           </div>
 
           <div className="flex flex-col mb-5 w-full">
-            <label
-              htmlFor="lastWorkplace"
-              className="text-sm font-medium mb-2 max-sm:text-base"
-            >
-              Last Workplace
-            </label>
-            <input
-              className="border border-secondary rounded-md px-3 h-[40px] outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20"
-              id="lastWorkplace"
-              type="text"
-              placeholder="Company title"
-              {...register("lastWorkplace")}
-            />
+            <LastWorkPlace />
           </div>
 
           <div className="mb-6 w-full">
             <div className="flex flex-col relative">
-              <label
-                htmlFor=""
-                className="text-sm font-medium mb-2 max-sm:text-base"
-              >
-                Previous position
-              </label>
-              <input
-                className="border relative border-secondary rounded-md px-3 h-[40px] outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20"
-                type="text"
-                placeholder="Potition title"
+              <FormField
+                label="Previous position"
                 {...register("previousPosition", {
                   onChange: (e) => {
                     setShowSuggestions(e.target.value.length > 2);
                   },
                 })}
+                id="lastWorkplace"
+                type="text"
+                placeholder="Company title"
               />
               {showSuggestions && previousPosition.length >= 2 && (
                 <div className="absolute top-full left-0 mt-1 w-full bg-white z-20 border border-secondary shadow-xl rounded-md overflow-hidden">
@@ -147,12 +139,23 @@ export function Step4Experience() {
             </select>
           </div>
           <div className="flex flex-col gap-4 w-full">
-            <button
-              type="submit"
-              className="flex-1 cursor-pointer bg-blue-600 hover:bg-blue-700  text-white rounded-lg py-2 transition-all font-medium"
-            >
-              Continue
-            </button>
+            <div className="w-full flex flex-row gap-2">
+              <button
+                type="button"
+                className="w-1/2 cursor-pointer bg-white border border-gray-300 hover:border-blue-600 hover:text-blue-600 rounded-lg py-2 transition-all font-medium
+            
+            "
+                onClick={() => prevStep()}
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                className="flex-1 cursor-pointer bg-blue-600 hover:bg-blue-700  text-white rounded-lg py-2 transition-all font-medium"
+              >
+                Continue
+              </button>
+            </div>
             <button
               type="button"
               className="flex-1 cursor-pointer font-semibold text-blue-600 rounded-lg py-2 transition-all"

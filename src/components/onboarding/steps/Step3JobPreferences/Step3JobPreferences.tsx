@@ -10,6 +10,7 @@ import { StickySearchBar } from "./parts/StickySearchBar";
 import { useJobSelection } from "./hooks/useJobSelection";
 import { SelectedJobList } from "./parts/SelectedJobList";
 import { useStickyObserver } from "./hooks/useStickyObserver";
+import { ArrowLeft } from "lucide-react";
 
 export function Step3JobPreferences() {
   const { formData, nextStep, updatedFields, prevStep } = useOnboardingStore();
@@ -18,12 +19,12 @@ export function Step3JobPreferences() {
     mode: "onChange",
     resolver: zodResolver(step3Schema),
     defaultValues: {
-      desiredJob: formData.desiredJob ?? [],
+      desiredJob: formData.onBoarding.desiredJob ?? [],
     },
   });
 
   const onSubmit = (data: Step3Values) => {
-    updatedFields(data);
+    updatedFields("onBoarding", data);
     nextStep();
   };
 
@@ -43,11 +44,15 @@ function Step3Content({
   onSubmit: any;
   prevStep: any;
 }) {
-  const { joobs, query, selectProfession, setQuery } = useJobSelection();
   const {
     handleSubmit,
     formState: { isValid },
+    watch,
   } = useFormContext();
+
+  const initialData = watch("desiredJob") || [];
+  const { joobs, query, selectProfession, setQuery } =
+    useJobSelection(initialData);
 
   const { isSticky, sentinelRef, setIsSticky } = useStickyObserver({ joobs });
 
@@ -57,8 +62,9 @@ function Step3Content({
         setIsSticky(!entry.isIntersecting);
       },
       {
-        threshold: [1.0],
-      }
+        threshold: [0],
+        rootMargin: "0px 0px 0px 0px",
+      },
     );
     if (sentinelRef.current) {
       observer.observe(sentinelRef.current);
@@ -69,14 +75,32 @@ function Step3Content({
 
   return (
     <form
-      className="flex flex-col bg-[#ffff] shadow-sm relative 
+      className="flex flex-col relative bg-[#ffff] shadow-sm 
       lg:rounded-lg lg:max-w-[456px]
       md:max-w-[600px]
       max-sm:rounded-none 
       "
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex flex-col pt-8 px-6 shrink-0 gap-3 mb-2">
+      <button
+        type="button"
+        className="
+            absolute cursor-pointer text-blue-600 top-4 left-2
+            max-sm:top-6 sm:top-6
+            md:hidden
+            "
+        onClick={() => prevStep()}
+      >
+        <span className="flex flex-row">
+          <ArrowLeft />
+          Back
+        </span>
+      </button>
+      <div
+        className="flex flex-col pt-8 px-6 shrink-0 gap-3 mb-2
+      max-sm:mt-6 sm:mt-5
+      "
+      >
         <label className="text-2xl font-bold cursor-text md:text-3xl">
           What job are you looking for?
         </label>

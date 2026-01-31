@@ -8,14 +8,14 @@ export default function Registration() {
   const { isFullRegistration } = useUserState();
   const { data: session, status } = useSession();
 
-  if (status === "loading") return <div>Loading...</div>;
+  // if (status === "loading") return <div>Loading...</div>;
 
   if (!session) {
     return <ApplicantRegistration />;
   }
 
   return (
-    <div className="min-h-screen w-full bg-[#eff2f6] flex flex-col">
+    <div className="h-full w-full bg-[#eff2f6] flex flex-col">
       {isFullRegistration ? <OnBoarding /> : <ApplicantRegistration />}
     </div>
   );

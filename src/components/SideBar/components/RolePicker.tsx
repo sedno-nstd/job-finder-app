@@ -10,7 +10,9 @@ export function RolePicker() {
   const handleRoleSelect = (role: "applicant" | "employer") => {
     startRegistration(role, false);
 
-    updatedFields({ role: role });
+    updatedFields("onBoarding", {
+      role: role,
+    });
 
     router.push(`/register?role=${role}`);
   };

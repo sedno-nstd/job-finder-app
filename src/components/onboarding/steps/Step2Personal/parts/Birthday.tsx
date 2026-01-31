@@ -1,8 +1,9 @@
+"use client";
 import { useFormContext } from "react-hook-form";
-import { CustomSelect } from "../../../components/CustomSelect";
 import { useState } from "react";
 import { Step2Values } from "../../../schemas/schemas";
 import { DayInMonth, MONTHS, USER_AGES } from "../../../constants/dateOptions";
+import { Formatter } from "../../../../../utils/Formatters";
 
 export function Birthday() {
   const {
@@ -14,16 +15,44 @@ export function Birthday() {
     "day" | "month" | "year" | null
   >(null);
 
-  const dateOfBirth = watch("dateOfBirth");
+  const dropdowns = [
+    {
+      id: "y",
+      label: "Year",
+      value: "year",
+      option: USER_AGES,
+      border: "border-r",
+    },
+    { id: "m", label: "Month", value: "month", option: MONTHS, border: "" },
+    {
+      id: "d",
+      label: "Day",
+      value: "day",
+      option: DayInMonth,
+      border: "border-l",
+    },
+  ];
+
+  const dateOfBirth = watch("dateOfBirth") || "---";
 
   const [y, m, d] = (dateOfBirth || "2000-01-01").split("-");
 
   const handleDateUpdate = (type: "y" | "m" | "d", value: string) => {
-    const newDate = `${type === "y" ? value : y}-${type === "m" ? value : m}-${
-      type === "d" ? value : d
-    }`;
+    const [currentY, currentM, currentD] = watch("dateOfBirth").split("-");
+
+    let newDate = "";
+    if (type === "y") newDate = `${value}-${currentM}-${currentD}`;
+    if (type === "m") newDate = `${currentY}-${value}-${currentD}`;
+    if (type === "d") newDate = `${currentY}-${currentM}-${value}`;
+
     setValue("dateOfBirth", newDate, { shouldValidate: true });
-    setOpenDropdown(null);
+  };
+
+  const getPartValue = (id: string) => {
+    if (id === "y") return y;
+    if (id === "m") return m;
+    if (id === "d") return d;
+    return;
   };
 
   return (
@@ -37,43 +66,30 @@ export function Birthday() {
         </label>
       </div>
 
-      <div className="grid grid-cols-3 border border-[#a1afc1] rounded-lg mb-5">
-        <div className="border-r border-[#a1afc1] rounded-l-xl">
-          <CustomSelect
-            label="Day"
-            value={d}
-            options={DayInMonth}
-            isOpen={openDropdown === "day"}
-            onToggle={() =>
-              setOpenDropdown(openDropdown === "day" ? null : "day")
-            }
-            onSelect={(val) => handleDateUpdate("d", val)}
-          />
-        </div>
-        <div className="border-y-[#a1afc1] ">
-          <CustomSelect
-            label="Month"
-            value={MONTHS.find((month) => month.value === m)?.label || m}
-            options={MONTHS}
-            isOpen={openDropdown === "month"}
-            onToggle={() =>
-              setOpenDropdown(openDropdown === "month" ? null : "month")
-            }
-            onSelect={(val) => handleDateUpdate("m", val)}
-          />
-        </div>
-        <div className="border-l border-[#a1afc1]">
-          <CustomSelect
-            label="Year"
-            value={y}
-            options={USER_AGES}
-            isOpen={openDropdown === "year"}
-            onToggle={() =>
-              setOpenDropdown(openDropdown === "year" ? null : "year")
-            }
-            onSelect={(val) => handleDateUpdate("y", val)}
-          />
-        </div>
+      <div className="grid  grid-cols-3 border border-[#a1afc1] rounded-lg mb-5">
+        {dropdowns.map((item) => (
+          <div key={item.id} className={item.border + "border-[#a1afc1]"}>
+            <Formatter
+              value={getPartValue(item.id)}
+              onSelect={(selectedId) =>
+                handleDateUpdate(item.id as "y" | "m" | "d", selectedId)
+              }
+              label={item.label}
+              onToggle={() =>
+                setOpenDropdown(
+                  openDropdown === item.value ? null : (item.value as any),
+                )
+              }
+              options={item.option.map((opt) => {
+                if (typeof opt === "string") {
+                  return { id: opt, label: opt };
+                }
+                return { id: opt.id, label: opt.label };
+              })}
+              isOpen={openDropdown === item.value}
+            />
+          </div>
+        ))}
       </div>
       {errors.dateOfBirth && (
         <span className="text-red-500 text-sm mt-1 animate-in fade-in duration-300">

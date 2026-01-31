@@ -17,7 +17,9 @@ export function AuthBlock({ setShowRolePicker, showRolePicker }: AuthProps) {
 
   const handleCreateProfile = () => {
     startRegistration("applicant", true);
-    updatedFields({ role: "applicant" });
+    updatedFields("onBoarding", {
+      role: "applicant",
+    });
   };
   return (
     <div className="p-4 bg-white flex flex-col mb-4 border border-gray-100 rounded-xl">
@@ -42,7 +44,7 @@ export function AuthBlock({ setShowRolePicker, showRolePicker }: AuthProps) {
               "flex items-center justify-center gap-2 w-full py-2 border rounded-lg transition-all",
               showRolePicker
                 ? "border-blue-600 text-blue-600 shadow-sm"
-                : "border-blue-600/30 text-blue-600 hover:bg-blue-50"
+                : "border-blue-600/30 text-blue-600 hover:bg-blue-50",
             )}
           >
             <span className="font-medium">Enter</span>

@@ -1,34 +1,55 @@
 import { create } from "zustand";
-import { OnboardingData } from "../actions/onboarding";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { MainUserData } from "../types/user";
 
-const initialFormData: OnboardingData = {
-  role: "",
-  firstName: "",
-  lastName: "",
+type FormCategory = keyof MainUserData;
 
-  gender: "",
-  dateOfBirth: "",
-  location: "",
-  readyToRelocate: false,
-  relocationLocations: [],
-  readyForWorkAbroad: false,
+const initialFormData: MainUserData = {
+  onBoarding: {
+    role: "",
+    firstName: "",
+    lastName: "",
 
-  desiredJob: [],
-  employmentType: [],
-  lastWorkplace: "",
-  previousPosition: "",
-  experienceDuration: "",
-  searchMode: "",
-  resumeUrl: null,
-  continueWithoutResume: false,
+    gender: "",
+    dateOfBirth: "",
+    location: "",
+    readyToRelocate: false,
+    relocationLocations: [],
+    readyForWorkAbroad: false,
+
+    desiredJob: [],
+    employmentType: [],
+    lastWorkplace: "",
+    previousPosition: "",
+    experienceDuration: "",
+    searchMode: "",
+    resume: {
+      name: "",
+      size: "",
+      url: "",
+    },
+    continueWithoutResume: false,
+  },
+  userProfile: {
+    customImage: null,
+
+    salaryAmount: "",
+    salaryCurrency: "USD",
+    salaryPeriod: "month",
+
+    aboutMe: "",
+    phone: null,
+  },
 };
 interface OnboardingState {
   step: number;
-  formData: OnboardingData;
+  formData: MainUserData;
   nextStep: () => void;
   prevStep: () => void;
-  updatedFields: (fields: Partial<OnboardingData>) => void;
+  updatedFields: <T extends FormCategory>(
+    category: T,
+    fields: Partial<MainUserData[T]>,
+  ) => void;
   reset: () => void;
 }
 
@@ -37,9 +58,15 @@ export const useOnboardingStore = create<OnboardingState>()(
     (set) => ({
       step: 1,
       formData: initialFormData,
-      updatedFields: (fields) =>
+      updatedFields: (category, fields) =>
         set((state) => ({
-          formData: { ...state.formData, ...fields },
+          formData: {
+            ...state.formData,
+            [category]: {
+              ...state.formData?.[category],
+              ...fields,
+            },
+          },
         })),
 
       nextStep: () =>
@@ -49,13 +76,13 @@ export const useOnboardingStore = create<OnboardingState>()(
 
       prevStep: () =>
         set((state) => ({
-          step: state.step - 1,
+          step: state.step > 0 ? state.step - 1 : 0,
         })),
       reset: () => set({ step: 1, formData: initialFormData }),
     }),
     {
       name: "onboarding-storage",
       storage: createJSONStorage(() => localStorage),
-    }
-  )
+    },
+  ),
 );

@@ -1,3 +1,4 @@
+"use client";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { SelectUserLocation } from "../../../components/SelectUserLocation";
 import { Plus } from "lucide-react";
@@ -23,7 +24,7 @@ export function RelocationSection() {
 
   return (
     <>
-      <div className="mb-2 flex flex-row gap-2 items-center ">
+      <div className="mb-2 flex flex-row gap-4 items-center text-main">
         <input
           type="checkbox"
           id="workAbroad"
@@ -32,13 +33,13 @@ export function RelocationSection() {
         />
         <label
           htmlFor="noResume"
-          className="text-sm cursor-pointer select-none max-sm:text-base"
+          className="text-sm cursor-pointer select-none max-sm:text-base font-medium"
         >
           Ready to work abroad
         </label>
       </div>
       <div className="flex flex-col gap-2">
-        <div className="flex flex-row gap-2 items-center mb-3">
+        <div className="flex flex-row gap-4 items-center mb-3">
           <input
             type="checkbox"
             id="relocate"
@@ -47,7 +48,7 @@ export function RelocationSection() {
           />
           <label
             htmlFor="noResume"
-            className="text-sm cursor-pointer select-none max-sm:text-base"
+            className="text-sm cursor-pointer select-none text-main font-medium"
           >
             Ready to work in other cities
           </label>
@@ -57,6 +58,7 @@ export function RelocationSection() {
             {fields.map((field, index) => (
               <div className="mb-2" key={field.id}>
                 <SelectUserLocation
+                  registerName="relocationLocations"
                   key={index}
                   value={watch(`relocationLocations.${index}`)}
                   onChange={(val: string) => {
@@ -67,7 +69,7 @@ export function RelocationSection() {
                   forbiddenLocation={[
                     mainLocation,
                     ...relocationLocations.filter(
-                      (_: any, i: number) => i !== index
+                      (_: any, i: number) => i !== index,
                     ),
                   ]}
                   onDelete={() => {

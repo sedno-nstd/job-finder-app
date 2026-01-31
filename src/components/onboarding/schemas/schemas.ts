@@ -1,34 +1,63 @@
 import z from "zod";
 
+const MAX_RESUME_SIZE = 5 * 1024 * 1024;
+
 export const step1Schema = z
   .object({
-    name: z.string().min(3, "Name is too short"),
-    surname: z.string().min(3, "Surname is too short"),
+    firstName: z.string().min(3, "Name is too short"),
+    lastName: z.string().min(3, "Surname is too short"),
     noResume: z.boolean(),
-    resumeUrl: z.any().optional(),
+    resume: z.any().optional(),
   })
-  .refine(
-    (data) => {
-      if (!data.noResume) {
-        return data.resumeUrl && data.resumeUrl.length > 0;
-      }
-      return true;
-    },
-    {
-      message: "Please upload a resume or check the box",
-      path: ["resumeFile"],
+  .superRefine((data, ctx) => {
+    if (data.noResume) return;
+
+    const file = data.resume instanceof FileList ? data.resume[0] : data.resume;
+
+    if (
+      !file ||
+      (data.resume instanceof FileList && data.resume.length === 0)
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Try select again",
+        path: ["resume"],
+      });
+      return;
     }
-  );
+
+    if (file.size > MAX_RESUME_SIZE) {
+      ctx.addIssue({
+        code: "custom",
+        message: "File is too big (max 5MB)",
+        path: ["resume"],
+      });
+      return;
+    }
+
+    if (file instanceof File && file.type !== "application/pdf") {
+      ctx.addIssue({
+        code: "custom",
+        message: "Invalid file formats",
+        path: ["resume"],
+      });
+      return;
+    }
+  });
 export type Step1Values = z.infer<typeof step1Schema>;
 
-export const step2Schema = z.object({
-  gender: z.string().min(1),
-  location: z.string().min(1),
-  dateOfBirth: z.string(),
+const GENDERS = ["male", "female"] as const;
 
-  readyToRelocate: z.boolean(),
-  relocationLocations: z.array(z.string()),
-  readyForWorkAbroad: z.boolean(),
+export const step2Schema = z.object({
+  gender: z.enum(GENDERS, {
+    message: "Please Select your gender",
+  }),
+  location: z.string().min(1, "Enter your location"),
+  dateOfBirth: z.string().min(1, "Select your birth date"),
+
+  readyToRelocate: z.boolean().default(false),
+  relocationLocations: z.array(z.string()).default([]),
+  readyForWorkAbroad: z.boolean().default(false),
 });
 
 export type Step2Values = z.infer<typeof step2Schema>;
@@ -51,4 +80,8 @@ export const step5Values = z
   .array(z.string())
   .min(1, "Select at least one option");
 
-export const step6Schema = z.string().min(1, "Select someone mode");
+export const step6Schema = z.object({
+  searchMode: z.string().min(1, "Select someone mode"),
+});
+
+export type step6Values = z.infer<typeof step6Schema>;

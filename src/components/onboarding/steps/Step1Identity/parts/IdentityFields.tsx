@@ -1,3 +1,5 @@
+"use client";
+import { FormField } from "@/src/components/ui/formInput";
 import { useFormContext } from "react-hook-form";
 
 export function IdentityFields() {
@@ -8,42 +10,18 @@ export function IdentityFields() {
   return (
     <div className="flex flex-col">
       <div className="flex flex-col mb-3">
-        <label
-          htmlFor="firstNameInput"
-          className="font-medium cursor-pointer select-none mb-1"
-        >
-          Name
-        </label>
-        <input
-          id="firstNameInput"
-          className="outline-none border border-[#a1afc1] hover:border-blue-600 p-2 rounded"
-          type="text"
-          {...register("name")}
+        <FormField
+          {...register("firstName")}
+          label="firstName"
+          error={errors.firstName?.message as string}
         />
-        {errors.name && (
-          <span className="text-red-500 text-xs">
-            {String(errors.name.message)}
-          </span>
-        )}
       </div>
       <div className="flex flex-col mb-3">
-        <label
-          htmlFor="lastNameInput"
-          className="font-medium cursor-pointer select-none mb-1"
-        >
-          Surname
-        </label>
-        <input
-          id="lastNameInput"
-          className="outline-none border border-[#a1afc1] hover:border-blue-600 p-2 rounded"
-          type="text"
-          {...register("surname")}
+        <FormField
+          {...register("lastName")}
+          label="lastName"
+          error={errors.lastName?.message as string}
         />
-        {errors.surname && (
-          <span className="text-red-500 text-xs">
-            {String(errors.surname.message)}
-          </span>
-        )}
       </div>
     </div>
   );

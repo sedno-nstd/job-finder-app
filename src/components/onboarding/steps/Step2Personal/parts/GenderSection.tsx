@@ -1,3 +1,4 @@
+"use client";
 import clsx from "clsx";
 import { useFormContext } from "react-hook-form";
 import { getButtonGroupClass } from "../../../helpers/helper";
@@ -12,36 +13,37 @@ export function GenderSection() {
 
   const gender = watch("gender");
 
+  const options = [
+    { label: "Male", value: "male" as const, isFirst: true },
+    { label: "Female", value: "female" as const, isFirst: false },
+  ];
+
   return (
     <div className="flex flex-col w-full mb-5">
       <label htmlFor="" className="mb-2 font-semibold text-md cursor-text">
         Gender
       </label>
-      <div className="flex flex-row w-full ">
-        <button
-          type="button"
-          className={clsx(
-            "select-none",
-            getButtonGroupClass(gender, "Male", true)
-          )}
-          onClick={() => setValue("gender", "Male", { shouldValidate: true })}
-        >
-          Male
-        </button>
-        <button
-          type="button"
-          className={clsx(
-            "select-none",
-            getButtonGroupClass(gender, "Female", false)
-          )}
-          onClick={() => setValue("gender", "Female", { shouldValidate: true })}
-        >
-          Female
-        </button>
+      <div className="w-full flex flex-row">
+        {options.map((item, index) => (
+          <div className="w-full" key={index}>
+            <button
+              type="button"
+              className={clsx(
+                "select-none cursor-pointer w-full",
+                getButtonGroupClass(gender, item.value, item.isFirst),
+              )}
+              onClick={() =>
+                setValue("gender", item.value, { shouldValidate: true })
+              }
+            >
+              {item.value}
+            </button>
+          </div>
+        ))}
       </div>
       {errors.gender && (
-        <span className="text-red-500 text-sm mt-1 animate-in fade-in duration-300">
-          Please select your gender to continue
+        <span className="text-md text-red-50 flex items-center">
+          {errors.gender?.message}
         </span>
       )}
     </div>

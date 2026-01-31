@@ -1,10 +1,10 @@
+"use client";
 import { useFormContext } from "react-hook-form";
-import { SelectUserLocation } from "../../../components/SelectUserLocation";
+import { SelectUserLocation } from "../../../shared/SelectUserLocation/index";
 import { Step2Values } from "../../../schemas/schemas";
 
 export function LocationSection() {
   const {
-    register,
     setValue,
     watch,
     formState: { errors },
@@ -22,13 +22,13 @@ export function LocationSection() {
       </div>
       <div className=" h-full flex outline-none flex-col">
         <div>
-          {" "}
           <SelectUserLocation
-            value={location}
-            onChange={(val: string) =>
+            registerName="location"
+            forbiddenLocation={targetLocations}
+            onChange={(val) =>
               setValue("location", val, { shouldValidate: true })
             }
-            forbiddenLocation={targetLocations?.[0] || ""}
+            value={location}
           />
         </div>
         {errors.location && (
