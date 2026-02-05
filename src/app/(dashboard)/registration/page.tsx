@@ -8,7 +8,7 @@ export default function Registration() {
   const { isFullRegistration } = useUserState();
   const { data: session, status } = useSession();
 
-  // if (status === "loading") return <div>Loading...</div>;
+  // if (status === "loading") return <div>Loading...</div>;y
 
   if (!session) {
     return <ApplicantRegistration />;

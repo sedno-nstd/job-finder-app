@@ -3,9 +3,8 @@ import {
   FILTER_JOB_LOCATIONS,
   FILTER_POSTING_DATES,
 } from "@/src/config/searchOptions";
-import { SearchFilters } from "@/src/config/types";
-import { FiltersSidebar } from "@/src/components/search/FiltersSidebar";
-import { SalarySlider } from "./SalarySlider";
+import { FiltersSidebar } from "@/src/components/search/FiltersSidebar/FiltersSidebar";
+import { SalarySlider } from "../SalarySlider";
 import { useSearchStore } from "@/src/store/useSearchStore";
 
 interface ModalParams {

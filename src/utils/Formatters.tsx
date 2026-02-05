@@ -33,7 +33,7 @@ export function Formatter({
       onClick={() => onToggle()}
     >
       <div>
-        <span className="text-md font-medium tracking-wider">
+        <span className="text-md sm:text-base tracking-wider">
           {value ? value : label}
         </span>
       </div>

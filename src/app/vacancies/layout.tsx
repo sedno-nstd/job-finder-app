@@ -1,5 +1,5 @@
 "use client";
-import { Sidebar } from "@/src/components/SideBar/SideBar";
+import { Sidebar } from "@/src/components/search/SideBar/SideBar";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
@@ -14,7 +14,7 @@ function VacanciesContent({ children }: { children: React.ReactNode }) {
           "grid w-full max-w-[1280px] gap-6 px-4 py-6",
           isDetailPage
             ? "grid-cols-[244px_1fr_300px]"
-            : "grid-cols-[244px_964px]"
+            : "grid-cols-[244px_964px]",
         )}
       >
         <aside className="shrink-0">

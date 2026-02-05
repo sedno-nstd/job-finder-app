@@ -1,13 +1,13 @@
 interface Props {
-  joobs: string[];
+  data: string[];
   prevStep: () => void;
   isValid: boolean;
 }
 
-export function FormNavigation({ isValid, joobs, prevStep }: Props) {
+export function FormNavigation({ isValid, data, prevStep }: Props) {
   return (
-    <div className="mt-auto sticky bottom-0 z-10 px-4 py-4 bg-white border-t border-gray-100 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
-      {joobs.length <= 0 ? (
+    <div className="mt-auto sticky bottom-0 z-10 px-4 py-4 ">
+      {data.length <= 0 ? (
         <div
           className="flex flex-row justify-between gap-3 w-full
         
@@ -35,7 +35,7 @@ export function FormNavigation({ isValid, joobs, prevStep }: Props) {
         <div className="flex flex-row justify-between gap-3">
           <button
             type="button"
-            className="w-1/2 cursor-pointer bg-white border border-gray-300 hover:border-blue-600 hover:text-blue-600 rounded-lg py-2 transition-all font-medium"
+            className="w-1/2 cursor-pointer bg-white border border-gray-300 hover:border-blue-600 hover:text-blue-600 rounded-lg py-2 transition-all duration-200 font-medium"
             onClick={() => prevStep()}
           >
             Back

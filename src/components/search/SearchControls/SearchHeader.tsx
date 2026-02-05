@@ -1,6 +1,5 @@
 import { FilterButtons } from "../FilterButtons";
-import { FilterModal } from "../FiltersModal";
-import { SalarySlider } from "../SalarySlider";
+import { FilterModal } from "../FiltersSidebar/FiltersModal";
 import { SearchControll } from "../SearchControls";
 
 interface HeaderProps {

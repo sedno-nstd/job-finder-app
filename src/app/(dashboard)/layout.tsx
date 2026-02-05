@@ -1,4 +1,4 @@
-import { HeaderNavigation } from "@/src/components/layout/NavigationSearchHeader";
+import { UserHeader } from "@/src/components/layout/UserHeader";
 
 export default function DashboardLayout({
   children,
@@ -8,7 +8,7 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-[#eff2f6] flex flex-col">
       <header className="sticky top-0 z-50 bg-white">
-        <HeaderNavigation />
+        <UserHeader />
       </header>
 
       <main className="w-full flex-1 h-full flex flex-col items-center">

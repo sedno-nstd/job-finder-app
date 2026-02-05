@@ -121,7 +121,7 @@ function Step3Content({
         selectProfession={selectProfession}
       />
 
-      <FormNavigation isValid={isValid} joobs={joobs} prevStep={prevStep} />
+      <FormNavigation isValid={isValid} data={joobs} prevStep={prevStep} />
     </form>
   );
 }
