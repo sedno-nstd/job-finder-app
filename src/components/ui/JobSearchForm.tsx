@@ -7,14 +7,26 @@ function cn(...inputs: ClassValue[]) {
 }
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  variant?: "main" | "vacancy" | "auth";
+  variant?: "main" | "vacancy" | "auth" | "default";
   icon?: React.ElementType;
+  icon2?: React.ElementType;
+  icon2ClassName?: string;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, variant = "main", icon: Icon, ...props }, ref) => {
+  (
+    {
+      className,
+      variant = "main",
+      icon: Icon,
+      icon2: Icon2,
+      icon2ClassName,
+      ...props
+    },
+    ref,
+  ) => {
     return (
-      <div className="relative">
+      <div className="relative h-full rounded-lg">
         {Icon && (
           <Icon
             size={24}
@@ -29,20 +41,37 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             "w-full outline-none transition-all duration-200",
             Icon ? "pl-[43px]" : "pl-4",
 
+            variant === "default" && [
+              "h-full border-secondary rounded-md px-3 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20",
+            ],
+
             variant === "main" && [
               "h-[64px] py-[21px] px-[56px] text-gray-300 flex items-center bg-white",
               "md:h-[48px] sm:py-[13px] sm:px-[44px]",
               "border-secondary border-y",
             ],
             variant === "vacancy" && [
-              "h-[56px] hover:ring-blue-600 focus-within:ring-2 pl-[43px] pr-[15px] text-[#2d3540]",
-              "md:pl-4 md:pr-2",
+              "h-full hover:ring-blue-600 focus:ring-blue-600  rounded-lg hover:ring focus:ring-2 px-[43px] text-[#2d3540]",
             ],
             variant === "auth" && ["h-[48px]"],
 
             className,
           )}
         />
+        {Icon2 && (
+          <div
+            className={cn(
+              "cursor-pointer absolute p-2 rounded-lg right-2 top-1/2 -translate-y-1/2 flex items-center justify-center duration-200 transition-colors",
+              icon2ClassName,
+            )}
+          >
+            <Icon2
+              size={24}
+              className="transition-colors duration-200"
+              onClick={props.onReset}
+            />
+          </div>
+        )}
       </div>
     );
   },

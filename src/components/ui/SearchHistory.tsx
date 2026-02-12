@@ -25,11 +25,11 @@ export function SearchHistory({
 }: Props) {
   const { t, ready } = useTranslation("profile/search");
   return (
-    <div className="pt-1">
+    <div>
       {isOpen && isShowOptions && (
         <div
           className={clsx(
-            "absolute top-full flex-col border-[0.5px] border-gray-200 w-full flex items-center bg-white shadow-2xl",
+            "absolute mt-1 top-full flex-col border-[0.5px] border-gray-200 w-full flex items-center bg-white shadow-2xl",
             className,
           )}
         >

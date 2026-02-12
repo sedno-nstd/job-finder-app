@@ -29,7 +29,7 @@ export function SearchSuggestions({
       {isOpen && isShowOptions && (
         <div
           className={clsx(
-            "absolute top-full mt-1 border-[0.5] border-gray-300 flex-col w-full flex items-center bg-white shadow-2xl",
+            "absolute top-full mt-1 z-10 border-[0.5] border-gray-300 flex-col w-full flex items-center bg-white",
             className,
           )}
         >
