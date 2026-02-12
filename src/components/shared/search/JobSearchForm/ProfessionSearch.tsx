@@ -2,7 +2,8 @@ import { Search } from "lucide-react";
 import { Input } from "../../../ui/JobSearchForm";
 import { SearchHistory } from "../../../ui/SearchHistory";
 import { SearchSuggestions } from "../../../ui/SearchSuggestions";
-import { useJobSearch } from "./useJobSearch";
+import { useJobSearch } from "../../../../hooks/useJobSearch";
+import clsx from "clsx";
 
 type JobSearchReturn = ReturnType<typeof useJobSearch>;
 
@@ -13,6 +14,7 @@ interface LocatioNSearchProps {
   isMounted: boolean;
   clear: () => void;
   onSelect: (item: { profession?: string; region?: string }) => void;
+  className?: string;
 }
 
 export function ProfessionSearch({
@@ -22,9 +24,10 @@ export function ProfessionSearch({
   clear,
   history,
   onSelect,
+  className,
 }: LocatioNSearchProps) {
   return (
-    <div className="flex flex-col relative max-w-[820px] h-[48px] lg:w-[816px]">
+    <div className={clsx("flex flex-col relative w-full h-[48px]", className)}>
       <Input
         value={prof.query}
         onChange={(e) => prof.setQuery(e.target.value)}

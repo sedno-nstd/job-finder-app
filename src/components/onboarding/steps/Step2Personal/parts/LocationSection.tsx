@@ -1,7 +1,7 @@
 "use client";
 import { useFormContext } from "react-hook-form";
-import { SelectUserLocation } from "../../../shared/SelectUserLocation/index";
 import { Step2Values } from "../../../schemas/schemas";
+import { SelectUserLocation } from "../../../components/SelectUserLocation";
 
 export function LocationSection() {
   const {

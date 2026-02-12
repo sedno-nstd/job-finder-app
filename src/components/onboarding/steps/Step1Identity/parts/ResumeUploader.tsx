@@ -13,7 +13,10 @@ export function ResumeUploader() {
   const noResumeChecked = watch("noResume");
   const resumeValue = watch("resume");
 
-  const file = resumeValue instanceof FileList ? resumeValue[0] : resumeValue;
+  const file =
+    resumeValue?.[0] || (resumeValue instanceof File ? resumeValue : null);
+
+  const hasFile = !!(file && file.name);
 
   const handleClearFile = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -44,7 +47,7 @@ export function ResumeUploader() {
         htmlFor="resume-input"
         className=" flex items-center justify-between border border-[#6380a64d] p-4 rounded-xl cursor-pointer transition-all bg-white"
       >
-        {file ? (
+        {hasFile ? (
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-3">
               <div className="bg-[#e9f3fe] text-blue-600 p-3 rounded-lg">

@@ -16,12 +16,7 @@ interface Props {
 
 export function EmailData({ fields = [] }: Props) {
   return (
-    <FormWrapper
-      hasButton={false}
-      buttonText="Save"
-      className="max-w-[448px] bg-white mt-10"
-      label="Contacts"
-    >
+    <FormWrapper className="max-w-[448px] bg-white mt-10" label="Contacts">
       {fields.map((item, index) => (
         <div
           key={index}

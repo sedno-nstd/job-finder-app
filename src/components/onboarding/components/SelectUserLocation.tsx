@@ -5,6 +5,7 @@ import { Trash } from "lucide-react";
 import { FormField } from "../../ui/formInput";
 import { useFormContext } from "react-hook-form";
 import { useOutsideClick } from "@/src/hooks/useOutsideClick";
+import { SearchSuggestions } from "../../ui/SearchSuggestions";
 
 interface Props {
   value: string;
@@ -17,7 +18,6 @@ interface Props {
 export function SelectUserLocation({
   onChange,
   value,
-  forbiddenLocation,
   onDelete,
   registerName,
 }: Props) {
@@ -41,41 +41,24 @@ export function SelectUserLocation({
     });
   }, []);
 
-  const filteredLocations = useMemo(() => {
-    return locationData
-      .filter((loc) => {
-        const matchesQuery =
-          typeof query === "string" &&
-          loc.fullLabel.toLowerCase().includes(query?.toLowerCase());
-        const isNotForbidden = Array.isArray(forbiddenLocation)
-          ? !forbiddenLocation.includes(loc.fullLabel)
-          : loc.fullLabel !== forbiddenLocation;
-
-        return matchesQuery && isNotForbidden;
-      })
-      .sort((a, b) => {
-        const q = query.toLowerCase();
-
-        const aLabel = a.fullLabel.toLowerCase();
-        const bLabel = b.fullLabel.toLowerCase();
-
-        const aStart = aLabel.startsWith(q);
-        const bStart = bLabel.startsWith(q);
-
-        if (aStart && !bStart) return -1;
-        if (bStart && !aStart) return 1;
-        return aLabel.localeCompare(bLabel);
-      })
-      .slice(0, 5);
-  }, [locationData, query, forbiddenLocation]);
-
   const isFullMatch = locationData.some((loc) => loc.fullLabel === query);
 
-  const handleUploadInput = (fullLabel: string) => {
-    setValue(`${registerName}`, fullLabel);
-    onChange(fullLabel);
-    setIsOpen(false);
-  };
+  const suggestions = useMemo(() => {
+    if (!query || query.length < 2) return [];
+
+    return locationData
+      .filter((loc) =>
+        loc.fullLabel.toLowerCase().includes(query.toLowerCase()),
+      )
+      .sort((a, b) => {
+        return a.fullLabel.localeCompare(b.fullLabel);
+      })
+      .slice(0, 5)
+      .map((loc) => ({
+        label: loc.fullLabel,
+        value: loc.fullLabel,
+      }));
+  }, [locationData, query]);
 
   return (
     <div className="relative w-full h-[40px]" ref={containerRef}>
@@ -100,21 +83,14 @@ export function SelectUserLocation({
         <Trash size={20} />
       </button>
       {isOpen && query.length > 1 && !isFullMatch && (
-        <div className="absolute top-full mt-1.5 left-0 bg-white shadow-md border w-full z-10">
-          {filteredLocations.length > 0 ? (
-            filteredLocations.map((loc, index) => (
-              <div
-                key={index}
-                onClick={() => handleUploadInput(loc.fullLabel)}
-                className="p-2 cursor-pointer hover:bg-gray-100 duration-200 border-b last:border-none"
-              >
-                {loc.fullLabel}
-              </div>
-            ))
-          ) : (
-            <div className="p-2 text-gray-400 text-sm">Ничего не найдено</div>
-          )}
-        </div>
+        <SearchSuggestions
+          setQuery={(val: string) => setValue(registerName, val)}
+          data={suggestions}
+          isOpen={isOpen}
+          isShowOptions={query.length > 2}
+          query={query}
+          sliceOptions={5}
+        />
       )}
     </div>
   );

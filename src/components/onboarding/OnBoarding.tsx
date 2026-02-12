@@ -1,3 +1,4 @@
+"use client";
 import { saveOnboardingData } from "@/src/actions/onboarding";
 import { Step2Personal } from "./steps/Step2Personal/Step2Personal";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
@@ -33,21 +34,22 @@ export function OnBoarding() {
   };
 
   return (
-    <div className="flex flex-col flex-1 w-full min-h-full overflow-x-hidden">
+    <div className="flex flex-col w-full min-h-full overflow-x-hidden">
       <OnboardingProgress step={step} />
-      {step === 1 && <Step1Identity />}
-      {step === 2 && <Step2Personal />}
-      {step === 3 && <Step3JobPreferences />}
-      {step === 4 && <Step4Experience />}
-      {step === 5 && <Step5SelectMode />}
-      {step === 6 && <Step6SearchMode />}
-
+      <div className="flex-1">
+        {step === 1 && <Step1Identity />}
+        {step === 2 && <Step2Personal />}
+        {step === 3 && <Step3JobPreferences />}
+        {step === 4 && <Step4Experience />}
+        {step === 5 && <Step5SelectMode />}
+        {step === 6 && <Step6SearchMode />}
+      </div>
       {step === 6 && (
         <div className="w-full">
           <button
             onClick={() => handleFinish()}
             type="submit"
-            className="flex-1 w-full cursor-pointer bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 text-white rounded-lg py-2 transition-all font-semibold"
+            className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 text-white rounded-lg py-2 transition-all font-semibold"
           >
             Finish
           </button>

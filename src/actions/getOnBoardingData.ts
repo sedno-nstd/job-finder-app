@@ -28,6 +28,23 @@ export async function getOnboardingData() {
       relocationLocations: data.relocationLocations.map((l) => l.name),
       employmentType: data.employmentType.map((e) => e.name),
       continueWithoutResume: !!data.resumeUrl,
+      location: data.location,
+      searchMode: data.searchMode,
+      readyForWorkAbroad: !!data.readyForWorkAbroad,
+      readyToRelocate: !!data.readyToRelocate,
+      dateOfBirth: data.dateOfBirth,
+      experienceDuration: data.experienceDuration,
+      firstName: data.firstName,
+      gender: data.gender,
+      lastName: data.lastName,
+      lastWorkplace: data.lastWorkplace,
+      previousPosition: data.previousPosition,
+      resume: {
+        name: "",
+        size: "",
+        url: data.resumeUrl,
+      },
+      role: data.role,
     };
 
     return { success: true, data: mappedData };

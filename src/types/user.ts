@@ -30,7 +30,7 @@ export interface UserProfile {
 
   salaryAmount?: string;
   salaryCurrency?: "USD" | "EUR" | "UAH";
-  salaryPeriod?: "hour" | "month" | "year";
+  salaryPeriod?: "Year" | "Month" | "Hour";
 
   aboutMe?: string;
 

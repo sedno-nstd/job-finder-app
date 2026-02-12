@@ -4,42 +4,41 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { saveOnboardingData } from "@/src/actions/onboarding";
-import { EMPLOYMENT_TYPES } from "../../onboarding/constants/jobOptions";
-import { useEffect, useState } from "react";
-import { CURRENCY_OPTIONS, PERIOD_OPTIONS } from "../constants/jobExpectations";
-import { CustomSelect } from "../../onboarding/components/CustomSelect";
+import { EMPLOYMENT_TYPES } from "../../../onboarding/constants/jobOptions";
+import {
+  CURRENCY_OPTIONS,
+  PERIOD_OPTIONS,
+} from "../../constants/jobExpectations";
+import { FormField } from "../../../ui/formInput";
+import { CustomSelect } from "../../../ui/CustomSelect";
+import { useState } from "react";
 
 const SalarySchema = z
   .object({
-    currency: z.enum(["USD", "EUR", "UAH"]).default("USD"),
-    period: z.enum(["per hour", "per month", "per year"]).default("per month"),
-    amount: z.string().min(1).regex(/^\d+$/, "Only int"),
+    amount: z.string(),
+    currency: z.enum(["USD", "UAH", "EUR"]),
+    period: z.enum(["Year", "Month", "Hour"]),
     employmentTypes: z.array(z.string()).min(1, "Select at least one type"),
   })
-  .refine(
-    (data) => {
-      const limit = data.currency === "UAH" ? 6 : 5;
-      return data.amount.length <= limit;
-    },
-    {
-      message: "Too many digits for this currency",
-      path: ["amount"],
-    },
-  );
+  .superRefine((val, ctx) => {
+    if (
+      val.currency !== "UAH" &&
+      val.period !== "Year" &&
+      val.currency.length > 6
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        message: "To much salary",
+      });
+    }
+  });
 
 type SalaryValues = z.infer<typeof SalarySchema>;
 
 export function JobExpectations() {
   const { formData, updatedFields } = useOnboardingStore();
   const [typesArray, setTypesArray] = useState<string[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<"currency" | "period" | null>(null);
-
-  const toggleOpenSelect = (menu: "currency" | "period") => {
-    setOpenMenu(openMenu === menu ? null : menu);
-  };
-
-  const closeMenus = () => setOpenMenu(null);
 
   const handleSelectType = (id: string) => {
     const nextArray = typesArray.includes(id)
@@ -56,7 +55,7 @@ export function JobExpectations() {
     defaultValues: {
       currency: formData.userProfile.salaryCurrency || "USD",
       amount: formData.userProfile.salaryAmount || "",
-      period: formData.userProfile.salaryPeriod || "per month",
+      period: formData.userProfile.salaryPeriod || "Month",
       employmentTypes: formData.onBoarding.employmentType || typesArray,
     },
   });
@@ -99,49 +98,45 @@ export function JobExpectations() {
           <div className="flex flex-col">
             <div className="flex flex-col mb-3">
               <span className="font-semibold mb-2">Desired salary</span>
-              <input
+              <FormField
                 type="text"
                 placeholder="For example, 12000"
-                className="border relative border-secondary rounded-md px-3 h-[40px] outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20"
                 {...register("amount")}
+                className="h-[40px] border"
               />
             </div>
             <div className="flex flex-row justify-between mb-5">
               <CustomSelect
-                maxWidth="180px"
-                label="Currency"
-                isOpen={openMenu === "currency"}
-                onSelect={(val) => {
-                  setValue("currency", val as "USD" | "EUR" | "UAH", {
+                value={selectedCurrency}
+                setSelect={(val) => {
+                  setValue("currency", (val as "USD") || "UAH" || "EUR", {
                     shouldValidate: true,
                   });
                   setOpenMenu(null);
                 }}
-                options={CURRENCY_OPTIONS.map((item) => item.label)}
-                value={selectedCurrency}
-                onToggle={() =>
+                setIsOpen={() =>
                   setOpenMenu(openMenu === "currency" ? null : "currency")
                 }
-              />{" "}
+                isOpen={openMenu === "currency"}
+                data={CURRENCY_OPTIONS}
+                defaultLabel="USD"
+                className="pt-2 text-main"
+              />
               <CustomSelect
-                maxWidth="180px"
-                label="Period"
-                isOpen={openMenu === "period"}
-                onSelect={(val) => {
-                  setValue(
-                    "period",
-                    val as "per hour" | "per month" | "per year",
-                    {
-                      shouldValidate: true,
-                    },
-                  );
+                value={selectedPeriod}
+                setSelect={(val) => {
+                  setValue("period", val as "Year" | "Month" | "Hour", {
+                    shouldValidate: true,
+                  });
                   setOpenMenu(null);
                 }}
-                options={PERIOD_OPTIONS.map((item) => item.label)}
-                value={selectedPeriod}
-                onToggle={() =>
+                setIsOpen={() =>
                   setOpenMenu(openMenu === "period" ? null : "period")
                 }
+                isOpen={openMenu === "period"}
+                data={PERIOD_OPTIONS}
+                defaultLabel="Per month"
+                className="bg-white shadow-2xl w-full"
               />
             </div>
           </div>

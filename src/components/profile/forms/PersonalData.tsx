@@ -36,7 +36,7 @@ export function PersonalData() {
       previousPosition: onBoarding?.previousPosition || "",
       experienceDuration: onBoarding?.experienceDuration || "",
       searchMode: onBoarding?.searchMode || "",
-      resumeUrl: onBoarding?.resumeUrl || null,
+      resumeUrl: onBoarding?.resume?.url || null,
       continueWithoutResume: onBoarding?.continueWithoutResume || false,
     },
   });

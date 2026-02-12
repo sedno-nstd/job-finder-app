@@ -1,6 +1,7 @@
 import { FilterButtons } from "../FilterButtons";
 import { FilterModal } from "../FiltersSidebar/FiltersModal";
-import { SearchControll } from "../SearchControls";
+import { VacancySearch } from "../SearchControls";
+import { VacancyCount } from "../VacancyCount";
 
 interface HeaderProps {
   getLocation: () => void;
@@ -9,12 +10,8 @@ interface HeaderProps {
 export function SearchHeader({ getLocation }: HeaderProps) {
   return (
     <div className="w-full">
-      <SearchControll
-        borderBariant="hero"
-        firstInputClasses="w-[436px]"
-        secondInputSlasses="w-[436px]"
-        buttonClasses="max-h-[40px]"
-      />
+      <VacancyCount className="flex flex-col mb-4" />
+      <VacancySearch />
       <FilterButtons />
       <FilterModal getLocation={getLocation} />
     </div>

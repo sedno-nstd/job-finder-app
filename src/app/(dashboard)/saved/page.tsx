@@ -10,7 +10,7 @@ export default function Page() {
   const router = useRouter();
 
   return (
-    <main className="w-full min-h-screen bg-[#eff2f6] flex flex-col items-center pt-20 px-4">
+    <main className="w-full h-full bg-[#eff2f6] flex flex-col items-center pt-20 pb-10 px-4">
       {isEmpty ? (
         <div className="max-w-md w-full bg-white rounded-3xl p-10 shadow-sm flex flex-col items-center text-center gap-6">
           <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-500">
@@ -46,6 +46,7 @@ export default function Page() {
 
           <div>
             <VacancyList
+              safetyData={favoriteVacancies}
               vacancies={favoriteVacancies}
               total={favoriteVacancies.length}
               visibleCount={favoriteVacancies.length}

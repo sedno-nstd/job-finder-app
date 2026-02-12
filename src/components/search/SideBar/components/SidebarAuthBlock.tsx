@@ -31,7 +31,7 @@ export function AuthBlock({ setShowRolePicker, showRolePicker }: AuthProps) {
           className="rounded-lg py-2 bg-blue-700 text-white font-medium hover:bg-blue-800 transition-all"
           onClick={() => {
             handleCreateProfile();
-            router.push("/registration");
+            router.push("/onBoarding");
           }}
         >
           Create profile

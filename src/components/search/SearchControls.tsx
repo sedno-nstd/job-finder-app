@@ -1,184 +1,100 @@
 "use client";
+import { MapPin, Mic, Search, X } from "lucide-react";
+import { Input } from "../ui/JobSearchForm";
+import { useTranslation } from "react-i18next";
+import { useJobSearch } from "@/src/hooks/useJobSearch";
 import { useSearchStore } from "@/src/store/useSearchStore";
-import { useMemo, useRef, useState } from "react";
-import { Search, MapPin, X } from "lucide-react";
-import { vacancies } from "@/src/domain/vacancy/types";
-import clsx from "clsx";
-import {
-  getVariantClasses,
-  InputVariant,
-  variants,
-} from "./SearchControls/search-variants";
+import { SearchSuggestions } from "../ui/SearchSuggestions";
+import { useEffect, useState } from "react";
+import { useUserHistory } from "@/src/hooks/useUserHistory";
+import { SearchHistory } from "../ui/SearchHistory";
 
-interface SearchProps {
-  firstInputClasses: string;
-  secondInputSlasses: string;
-  buttonClasses: string;
+export function VacancySearch() {
+  const { prof, loc, locRef, profRef, history, selectOption } = useJobSearch();
+  const { locationQuery, triggerSearch } = useSearchStore();
+  const { options, clear } = useUserHistory();
+  const { t } = useTranslation("common");
+  const [isMounted, setIsMounted] = useState(false);
 
-  borderBariant: InputVariant;
-}
-
-export function SearchControll({
-  firstInputClasses,
-  secondInputSlasses,
-  buttonClasses,
-  borderBariant,
-}: SearchProps) {
-  const {
-    setSearchQuery,
-    triggerSearch,
-    setLocationQuery,
-    focusedField,
-    setFocusedField,
-  } = useSearchStore();
-  const [search, setSearch] = useState("");
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [location, setLocation] = useState("");
-  const locationInputRef = useRef<HTMLInputElement>(null);
-
-  const suggestions = useMemo(() => {
-    if (search.length < 1) return [];
-
-    return vacancies
-      .map((v) => v.title)
-      .filter(
-        (title, index, self) =>
-          title.toLowerCase().includes(search.toLowerCase()) &&
-          self.indexOf(title) === index
-      )
-      .slice(0, 5);
-  }, [search]);
-
-  const selectSuggestion = (value: string) => {
-    setSearch(value);
-    setSearchQuery(value);
-
-    locationInputRef.current?.focus();
-    setShowSuggestions(false);
-  };
+  useEffect(() => {
+    setIsMounted(true);
+  }, [isMounted]);
 
   return (
-    <div className="flex flex-row rounded-xl justify-between bg-white w-full mb-3 ">
-      <div className="flex flex-row">
-        <div
-          className={clsx(
-            "flex flex-row items-center relative h-[56px] rounded-xl duration-200",
-            getVariantClasses(borderBariant),
-            firstInputClasses
-          )}
-        >
-          <Search
-            size={22}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 pointer-events-none"
-          />
-          <input
-            type="text"
-            value={search}
-            placeholder="I search vacancies..."
-            className=" pr-10 pl-12 rounded flex-1 h-full outline-0"
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setShowSuggestions(true);
-              setFocusedField("search");
-            }}
-            onFocus={() => {
-              setFocusedField("search");
-            }}
-            onBlur={() => {
-              setTimeout(() => {
-                const currentFocus = useSearchStore.getState().focusedField;
-                if (currentFocus === "search") {
-                  setFocusedField(null);
-                }
-              }, 200);
-            }}
-          />
-          {search && focusedField === "search" && (
-            <button
-              onClick={() => {
-                setSearch("");
-              }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-100 text-[#a1afc1] hover:text-black/80 transition-all rounded-md"
-            >
-              <X size={22} className="" />
-            </button>
-          )}{" "}
-          {showSuggestions && suggestions.length > 0 && (
-            <div className="absolute top-full pt-6 left-0 w-[450px]">
-              <div className="absolute left-0 w-full bg-white border border-gray-200 rounded-xl shadow-2xl z-50 overflow-hidden py-2">
-                <ul className="flex flex-col">
-                  {suggestions.map((title, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center gap-3 p-4 hover:bg-blue-50 cursor-pointer transition-colors border-b last:border-0 border-gray-50"
-                      onClick={() => selectSuggestion(title)}
-                    >
-                      <Search size={22} className="text-gray-400" />
-                      <span className="text-sm font-medium text-gray-700">
-                        {title}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="bg-[#a1afc1] w-[1px] h-full mx-1"></div>
-        <div
-          className={clsx(
-            "flex flex-row items-center pl-2 rounded-xl relative duration-200",
-            getVariantClasses(borderBariant),
-            secondInputSlasses
-          )}
-        >
-          <MapPin size={22} className="text-gray-400" />
-          <input
-            type="text"
-            value={location}
-            placeholder="In the region..."
-            className="py-1 pl-3 rounded flex-1 h-full outline-none bg-transparent"
-            onChange={(e) => setLocation(e.target.value)}
-            ref={locationInputRef}
-            onFocus={() => {
-              setShowSuggestions(false);
-              setFocusedField("location");
-            }}
-            onBlur={() => {
-              const currentFocus = useSearchStore.getState().focusedField;
-              if (currentFocus === "location") {
-                setFocusedField(null);
-              }
-            }}
-          />
-
-          {location && focusedField === "location" && (
-            <button
-              onMouseDown={() => {
-                setLocation("");
-              }}
-              className="absolute z-50 right-3 top-1/2 -translate-y-1/2 p-2 flex items-center justify-center hover:bg-gray-100 cursor-pointer text-[#a1afc1] hover:text-black/80 duration-200 transition-all rounded-md"
-            >
-              <X size={22} />
-            </button>
-          )}
-        </div>
-        <div className="flex items-center ml-1">
-          <button
-            className={clsx(
-              "cursor-pointer bg-[#0B64D9] hover:bg-[#0A58BF] duration-200 transition-all text-white px-3 rounded-lg h-full font-semibold mr-2",
-              buttonClasses
-            )}
-            onClick={() => {
-              setSearchQuery(search);
-              setLocationQuery(location);
-              triggerSearch();
-            }}
-          >
-            Search
-          </button>
-        </div>
+    <div className="flex flex-row w-full bg-white h-[56px] items-center text-white rounded-lg">
+      <div className="relative h-full" ref={profRef}>
+        <Input
+          value={prof.query}
+          onChange={(e) => prof.setQuery(e.target.value)}
+          onFocus={() => prof.setIsFocused(true)}
+          placeholder={isMounted ? t("placeholder") : ""}
+          variant="vacancy"
+          icon={Search}
+          icon2={prof.query.length <= 0 ? Mic : X}
+          icon2ClassName={
+            prof.query.length <= 0
+              ? "text-blue-600 hover:bg-blue-100/50"
+              : "text-gray-400 hover:text-black hover:bg-[#6380a61a] "
+          }
+          className="w-[436px]  h-full"
+        />
+        {prof.showSuggestions && prof.isFocused ? (
+          <div>
+            <SearchSuggestions
+              sliceOptions={10}
+              query={prof.query}
+              isShowOptions={prof.showSuggestions}
+              isOpen={prof.showSuggestions}
+              setQuery={prof.setQuery}
+              className="max-w-[816px] text-main"
+              data={prof.suggestions}
+            />
+          </div>
+        ) : (
+          history.options.length > 0 && (
+            <SearchHistory
+              data={history.options}
+              isOpen={prof.isFocused && prof.query.length === 0}
+              setQuery={selectOption}
+              isShowOptions={prof.isFocused && prof.query.length === 0}
+              clear={history.clear}
+            />
+          )
+        )}
       </div>
+      <div className="mx-1.5 min-w-[1px] z-10 py-0.5 bg-gray-400/70 h-full max-h-[37px] w-[1px]"></div>
+      <div className="relative h-full" ref={locRef}>
+        <Input
+          onFocus={() => loc.setIsFocused(true)}
+          onChange={(e) => loc.setQuery(e.target.value)}
+          value={loc.query}
+          placeholder={isMounted ? t("location") : ""}
+          variant="vacancy"
+          icon={MapPin}
+          icon2={locationQuery.length <= 0 ? undefined : X}
+          icon2ClassName={
+            locationQuery.length > 0
+              ? "text-gray-400 hover:text-black hover:bg-[#6380a61a]"
+              : ""
+          }
+          className="w-[436px] h-full"
+        />
+        <SearchSuggestions
+          sliceOptions={5}
+          isShowOptions={loc.showSuggestions}
+          data={loc.suggestions}
+          isOpen={loc.isFocused}
+          query={loc.query}
+          setQuery={loc.setQuery}
+          className="text-main"
+        />
+      </div>
+      <button
+        onClick={() => triggerSearch()}
+        className="p-2 m-2 bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-700 ml-2"
+      >
+        <span className="font-medium">{isMounted ? t("search") : ""}</span>
+      </button>
     </div>
   );
 }

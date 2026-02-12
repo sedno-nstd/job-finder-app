@@ -35,29 +35,31 @@ export function SelectUserLocation({
   });
   const { register, setValue } = useFormContext();
   return (
-    <div className="relative w-full h-[40px]" ref={containerRef}>
+    <div className="relative w-full h-[40px] z-50" ref={containerRef}>
       <FormField
         {...register(`${registerName}`)}
         onClick={() => setIsOpen(!isOpen)}
         autoComplete="off"
       />
-      <button
-        type="button"
-        onClick={() => {
-          setValue(`${registerName}`, "");
-          if (value.trim() === "" && onDelete) {
-            onDelete();
-          } else {
+      {value.length >= 1 && (
+        <button
+          type="button"
+          onClick={() => {
             setValue(`${registerName}`, "");
-            onChange("");
-          }
-        }}
-        className="p-2 absolute top-1/2 -translate-y-1/2  right-3 text-red-500 hover:text-blue-500 cursor-pointer rounded-lg transition-colors duration-200"
-      >
-        <Trash size={20} />
-      </button>
+            if (value.trim() === "" && onDelete) {
+              onDelete();
+            } else {
+              setValue(`${registerName}`, "");
+              onChange("");
+            }
+          }}
+          className=" absolute bottom-1/2 top-1/2  right-3 text-red-500 hover:text-blue-500 cursor-pointer transition-colors duration-200"
+        >
+          <Trash size={20} />
+        </button>
+      )}
       {isOpen && query.length > 1 && !isFullMatch && (
-        <div className="absolute top-full mt-1.5 left-0 bg-white shadow-md border w-full z-10">
+        <div className="absolute mt-2 top-full left-0 bg-white shadow-md border w-full z-10">
           {filteredLocations.length > 0 ? (
             filteredLocations.map((loc, index) => (
               <div
@@ -69,7 +71,7 @@ export function SelectUserLocation({
               </div>
             ))
           ) : (
-            <div className="p-2 text-gray-400 text-sm">Ничего не найдено</div>
+            <div className="p-2 text-gray-400 text-sm">Nothing to find</div>
           )}
         </div>
       )}

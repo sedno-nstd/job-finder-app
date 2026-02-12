@@ -6,7 +6,7 @@ interface Props {
 
 export function FormNavigation({ isValid, data, prevStep }: Props) {
   return (
-    <div className="mt-auto sticky bottom-0 z-10 px-4 py-4 ">
+    <div className="mt-auto sticky bottom-0 px-4 py-4 ">
       {data.length <= 0 ? (
         <div
           className="flex flex-row justify-between gap-3 w-full

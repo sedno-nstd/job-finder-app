@@ -38,7 +38,7 @@ export function Step2Personal() {
   };
   return (
     <div
-      className="w-full h-full flex justify-center items-start text-[#2d3540] bg-[#eff2f6]
+      className="w-full pb-10 min-h-full flex justify-center items-start text-[#2d3540] bg-[#eff2f6]
     max-sm:jutisy-center max-sm:items-center
     "
     >

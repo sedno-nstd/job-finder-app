@@ -1,7 +1,7 @@
 import { MapPin } from "lucide-react";
 import { Input } from "../../../ui/JobSearchForm";
 import { SearchSuggestions } from "../../../ui/SearchSuggestions";
-import { useJobSearch } from "./useJobSearch";
+import { useJobSearch } from "../../../../hooks/useJobSearch";
 
 type JobSearchReturn = ReturnType<typeof useJobSearch>;
 

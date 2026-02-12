@@ -5,7 +5,7 @@ import { SalaryPeriod } from "./useFilterStore";
 interface SearchProps {
   searchQuery: string;
   locationQuery: string;
-  finalSearch: string;
+  finalSearch: { prof: string; loc: string };
 
   minSalary: number;
   selectedPeriod: SalaryPeriod;
@@ -27,13 +27,15 @@ interface SearchProps {
 
   setFilter: (
     key: "locationType" | "postingDate" | "level" | "geo",
-    value: string
+    value: string,
   ) => void;
   setMinSalary: (val: number) => void;
   setPeriod: (p: SalaryPeriod) => void;
 
   resetSearchQuery: () => void;
   resetSearchLocation: () => void;
+
+  resetFilters: () => void;
 }
 
 export const useSearchStore = create<SearchProps>()(
@@ -42,7 +44,7 @@ export const useSearchStore = create<SearchProps>()(
       searchQuery: "",
       locationQuery: "",
       applySearch: false,
-      finalSearch: "",
+      finalSearch: { prof: "", loc: "" },
       focusedField: null,
       minSalary: 0,
       selectedPeriod: "month",
@@ -64,7 +66,13 @@ export const useSearchStore = create<SearchProps>()(
       setShowSideBar: (value) => set({ showSideBar: value }),
 
       triggerSearch: () =>
-        set((state) => ({ applySearch: true, finalSearch: state.searchQuery })),
+        set((state) => ({
+          applySearch: true,
+          finalSearch: {
+            prof: state.searchQuery,
+            loc: state.locationQuery,
+          },
+        })),
       resetSearchQuery: () =>
         set({
           searchQuery: "",
@@ -73,8 +81,21 @@ export const useSearchStore = create<SearchProps>()(
         set({
           locationQuery: "",
         }),
+      resetFilters: () =>
+        set(() => ({
+          searchQuery: "",
+          locationQuery: "",
+          applySearch: false,
+          minSalary: 0,
+          selectedPeriod: "month",
+          locationType: "any",
+          level: "any",
+          postingDate: "any",
+          geo: "all",
+          finalSearch: { prof: "", loc: "" },
+        })),
       setFocusedField: (field) => set({ focusedField: field }),
     }),
-    { name: "search-storage" }
-  )
+    { name: "search-storage" },
+  ),
 );

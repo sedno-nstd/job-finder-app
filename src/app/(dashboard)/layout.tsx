@@ -11,8 +11,8 @@ export default function DashboardLayout({
         <UserHeader />
       </header>
 
-      <main className="w-full flex-1 h-full flex flex-col items-center">
-        <div className="w-full flex-1 flex">{children}</div>
+      <main className="flex-1 overflow-y-auto w-full">
+        <div className="min-h-full w-full flex justify-center">{children}</div>
       </main>
     </div>
   );

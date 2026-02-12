@@ -6,7 +6,6 @@ import {
   FILTER_SALARY_PERIODS,
   FILTER_JOB_EXPERIENCE,
 } from "./searchOptions";
-import { CITIES } from "../domain/geo/cities";
 
 export type JobLevel = (typeof JOB_LEVELS)[number];
 export type JobLocationType = (typeof JOB_LOCATIONS)[number];
@@ -30,10 +29,11 @@ export interface Vacancy {
   level: JobLevel[];
   jobLocation: JobLocationType;
   stack: string[];
-  city?: keyof typeof CITIES;
+  city?: string;
+  country: string;
   postedAt: string;
 }
-type SalaryPeriod = "hour" | "month";
+
 export interface SearchFilters {
   search: string;
   location: FilterLocation;

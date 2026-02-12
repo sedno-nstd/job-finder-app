@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { UserMenu } from "./components/UserMenu";
+import { UserSidebar } from "../../shared/UserSidebar";
 import { NAV_ITEMS } from "./components/config/type";
 import { useSession } from "next-auth/react";
 import { AuthBlock } from "./components/SidebarAuthBlock";
@@ -31,7 +31,7 @@ export function Sidebar() {
             showUserMenu={showUserMenu}
           />
 
-          {showUserMenu && <UserMenu />}
+          {showUserMenu && <UserSidebar className="absolute" />}
         </div>
       ) : (
         <AuthBlock
@@ -54,7 +54,7 @@ export function Sidebar() {
                 "py-3 px-4 flex items-center gap-3 rounded-lg transition-colors",
                 isActive
                   ? "bg-[#6380A61A] text-blue-700"
-                  : "hover:bg-[#6380A61A] text-[#2d3540]"
+                  : "hover:bg-[#6380A61A] text-[#2d3540]",
               )}
             >
               <Icon

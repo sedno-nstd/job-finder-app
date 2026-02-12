@@ -9,6 +9,9 @@ interface VacanciesProps {
   total: number;
   visibleCount: number;
   setVisibleCount: (count: number) => void;
+  emptyState?: React.ReactNode;
+  safetyData?: any[];
+  onReset?: () => void;
 }
 
 export function VacancyList({
@@ -16,14 +19,12 @@ export function VacancyList({
   total,
   visibleCount,
   setVisibleCount,
+  emptyState,
+  onReset,
+  safetyData,
 }: VacanciesProps) {
   const { tooggleFavorites, isFavorite } = useAuthVacancy();
   const [mounted, setMounted] = useState(false);
-
-  const resetFilters = () => {
-    localStorage.clear();
-    window.location.reload();
-  };
 
   useEffect(() => {
     setMounted(true);
@@ -42,19 +43,27 @@ export function VacancyList({
     );
   }
 
+  if (safetyData?.length === 0) {
+    return <>{emptyState}</>;
+  }
+
   if (vacancies.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
         <h3 className="text-xl font-bold text-gray-800">No vacancies yet</h3>
+
         <p className="text-gray-500 mb-6">
           Try adjusting your filters or search query
         </p>
-        <button
-          onClick={resetFilters}
-          className="text-blue-600 font-semibold hover:underline"
-        >
-          Clear all filters
-        </button>
+
+        {onReset && (
+          <button
+            onClick={onReset}
+            className="text-blue-600 cursor-pointer duration-200 font-semibold hover:underline"
+          >
+            Clear all filters
+          </button>
+        )}
       </div>
     );
   }

@@ -58,7 +58,7 @@ export function RelocationSection() {
             {fields.map((field, index) => (
               <div className="mb-2" key={field.id}>
                 <SelectUserLocation
-                  registerName="relocationLocations"
+                  registerName={`relocationLocations.${index}`}
                   key={index}
                   value={watch(`relocationLocations.${index}`)}
                   onChange={(val: string) => {

@@ -13,7 +13,7 @@ i18n
     debug: false,
 
     ns: ["search", "common", "profile", "profile/search"],
-    defaultNS: "search",
+    defaultNS: "",
 
     backend: {
       loadPath: "/locales/{{lng}}/{{ns}}.json",

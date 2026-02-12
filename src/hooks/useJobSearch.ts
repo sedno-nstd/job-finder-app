@@ -5,6 +5,7 @@ import { useOutsideClick } from "@/src/hooks/useOutsideClick";
 import { useUserHistory } from "@/src/hooks/useUserHistory";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSearchStore } from "../store/useSearchStore";
 
 export const useJobSearch = () => {
   const { t } = useTranslation("profile/search");
@@ -33,17 +34,37 @@ export const useJobSearch = () => {
     return COUNTRY_USER.flatMap((country) =>
       country.cities.map((city) => ({
         value: city.toLowerCase(),
-        label: city,
+        label: `${city}, ${country.country}`,
         country: country.country,
+        searchStr: `${city} ${country.country}`.toLowerCase(),
       })),
     );
   }, []);
 
   const locAutocomplete = useAutocomplete({ data: regionData });
 
-  const showLocSuggestions = locAutocomplete.query.length > 0 && isLocFocused;
+  const isLocAlreadySelected = regionData.some(
+    (item) => item.label === locAutocomplete.query,
+  );
+
+  const showLocSuggestions =
+    locAutocomplete.query.length > 0 && !isLocAlreadySelected && isLocFocused;
 
   const { clear, options, setOptions } = useUserHistory();
+  const searchStore = useSearchStore();
+
+  useEffect(() => {
+    if (searchStore.searchQuery && !profAutocomplete.query) {
+      profAutocomplete.setQuery(searchStore.searchQuery);
+    }
+    if (searchStore.locationQuery && !locAutocomplete.query) {
+      locAutocomplete.setQuery(searchStore.locationQuery);
+    }
+  }, [
+    locAutocomplete.query,
+    searchStore.searchQuery,
+    searchStore.locationQuery,
+  ]);
 
   const closeAllSearch = () => {
     setIsProfFocused(false);
@@ -57,14 +78,33 @@ export const useJobSearch = () => {
   const locRef = useOutsideClick<HTMLDivElement>(() => {
     setIsLocFocused(false);
   });
+
   const selectOption = (item: { profession?: string; region?: string }) => {
+    const newProf = item.profession ?? profAutocomplete.query;
+    const newLoc = item.region ?? locAutocomplete.query;
+
+    if (!newProf.trim() && !newLoc.trim()) return;
+
     if (item.profession) profAutocomplete.setQuery(item.profession);
     if (item.region) locAutocomplete.setQuery(item.region);
 
     setOptions({
-      profession: item.profession || profAutocomplete.query,
-      region: item.region || locAutocomplete.query,
+      profession: newProf,
+      region: newLoc,
     });
+
+    searchStore.setSearchQuery(newProf);
+    searchStore.setLocationQuery(newLoc);
+    searchStore.triggerSearch();
+
+    closeAllSearch();
+  };
+
+  const clearInputsValue = () => {
+    locAutocomplete.query === "";
+    profAutocomplete.query === "";
+
+    searchStore.resetFilters();
 
     closeAllSearch();
   };
@@ -74,10 +114,16 @@ export const useJobSearch = () => {
     profRef,
     locRef,
     selectOption,
+    regionData,
+    professionsData,
     handleSearch: () => selectOption({}),
+    clearInputsValue,
     prof: {
       query: profAutocomplete.query,
-      setQuery: profAutocomplete.setQuery,
+      setQuery: (val: string) => {
+        profAutocomplete.setQuery(val);
+        searchStore.setSearchQuery(val);
+      },
       suggestions: profAutocomplete.suggestions,
       isFocused: isProfFocused,
       setIsFocused: setIsProfFocused,
@@ -86,7 +132,10 @@ export const useJobSearch = () => {
     },
     loc: {
       query: locAutocomplete.query,
-      setQuery: locAutocomplete.setQuery,
+      setQuery: (val: string) => {
+        locAutocomplete.setQuery(val);
+        searchStore.setLocationQuery(val);
+      },
       suggestions: locAutocomplete.suggestions,
       isFocused: isLocFocused,
       setIsFocused: setIsLocFocused,

@@ -10,10 +10,8 @@ export const ourFileRouter = {
   })
     .middleware(async ({ req }) => {
       const session = await getServerSession(authConfig);
-      if (!session || !session.user) {
-        throw new Error("Unauthorized");
-      }
-      return { userId: session.user.id };
+
+      return { userId: session?.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       return { url: file.url };
