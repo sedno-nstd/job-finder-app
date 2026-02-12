@@ -1,7 +1,7 @@
 import { SALARY_RULES } from "../../config/salaryRules";
 import { POPULAR_PROFESSIONS } from "../../config/searchOptions";
 import { Vacancy } from "../../config/types";
-import { cityKeys, jobLocations } from "./mock";
+import { jobLocations, locationPool } from "./mock";
 
 export type JobLocation = (typeof jobLocations)[number];
 
@@ -31,6 +31,8 @@ export const vacancies: Vacancy[] = Array.from({ length: 200 }, (_, i) => {
   const sFrom = Math.floor(rule.min + Math.random() * rule.range);
   const sTo = sFrom ? Math.floor(sFrom * (1.2 + Math.random() * 0.4)) : null;
 
+  const randomLoc =
+    locationPool[Math.floor(Math.random() * locationPool.length)];
   return {
     id: (i + 1).toString(),
     title:
@@ -47,10 +49,11 @@ export const vacancies: Vacancy[] = Array.from({ length: 200 }, (_, i) => {
     level: [levels[Math.floor(Math.random() * levels.length)]],
     jobLocation: jobLocations[Math.floor(Math.random() * jobLocations.length)],
     stack: stacks[Math.floor(Math.random() * stacks.length)],
-    city: cityKeys[Math.floor(Math.random() * cityKeys.length)],
+    city: randomLoc.city,
+    country: randomLoc.country,
 
     postedAt: new Date(
-      Date.now() - Math.floor(Math.random() * 10000000000)
+      Date.now() - Math.floor(Math.random() * 10000000000),
     ).toISOString(),
   };
 });

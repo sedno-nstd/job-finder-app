@@ -1,15 +1,16 @@
 import { useMemo } from "react";
-import { vacancies } from "../types";
-import { CITIES } from "../../geo/cities";
-import { getDistanceKm } from "../../geo/getDistanceKm";
-import { Vacancy } from "../../../config/types";
-import { getSalaryInUah } from "../../../config/salaryRules";
+import { vacancies } from "../domain/vacancy/types";
+import { CITIES } from "../domain/geo/cities";
+import { getDistanceKm } from "../domain/geo/getDistanceKm";
+import { Vacancy } from "../config/types";
+import { getSalaryInUah } from "../config/salaryRules";
 import { useSearchStore } from "@/src/store/useSearchStore";
+import { COUNTRY_USER } from "../components/constans/search-data";
 
 export function useVacancies(
   visibleCount: number,
   userLocation: { lat: number; lon: number } | null,
-  maxDistanceKm: number
+  maxDistanceKm: number,
 ) {
   const {
     finalSearch,
@@ -40,7 +41,7 @@ export function useVacancies(
             userLocation.lat,
             city.lat!,
             userLocation.lon,
-            city.lon!
+            city.lon!,
           ) <= maxDistanceKm
         );
       });
@@ -67,7 +68,7 @@ export function useVacancies(
       }
       result = result.sort(
         (a, b) =>
-          new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
+          new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime(),
       );
     }
 
@@ -94,9 +95,26 @@ export function useVacancies(
     }
 
     if (applySearch && finalSearch) {
-      result = result.filter((v) =>
-        v.title.toLowerCase().includes(finalSearch.toLowerCase())
-      );
+      const searchLoc = finalSearch.loc.trim().toLowerCase();
+      const searchProf = finalSearch.prof.trim().toLowerCase();
+
+      result = result.filter((v) => {
+        const titleMatch =
+          !searchProf || v.title.toLowerCase().includes(searchProf);
+
+        const regionMatch =
+          !searchLoc ||
+          (() => {
+            const fullLocation = `${v.city}, ${v.country}`.toLowerCase();
+            return (
+              fullLocation.includes(searchLoc) ||
+              v.country.toLowerCase().includes(searchLoc) ||
+              v.city?.toLowerCase().includes(searchLoc)
+            );
+          })();
+
+        return titleMatch && regionMatch;
+      });
     }
 
     return {
