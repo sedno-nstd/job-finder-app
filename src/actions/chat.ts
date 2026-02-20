@@ -44,7 +44,7 @@ export async function GetChatMessages(chatId: string) {
 export async function createMessage(
   chatId: string,
   authorId: string,
-  text: string
+  text: string,
 ) {
   if (!text.trim()) return;
   try {
@@ -59,4 +59,44 @@ export async function createMessage(
   } catch {
     return [];
   }
+}
+
+export async function RespondCreate(
+  myId: string,
+  vacancyId: string,
+  // messageText: string,
+) {
+  return await prisma.$transaction(async (tx) => {
+    const vacancy = await tx.vacancy.findUnique({
+      where: { id: vacancyId },
+    });
+
+    if (!vacancy?.id) throw new Error("Vacancy not found");
+    const chat = await tx.conversation.create({
+      data: {
+        vacancyId: vacancy.id,
+        users: {
+          connect: [{ id: myId }, { id: vacancy.authorId }],
+        },
+      },
+    });
+
+    // await tx.message.create({
+    //   data: {
+    //     text: messageText,
+    //     authorId: myId,
+    //     chatId: chat.id,
+    //   },
+    // });
+
+    const application = await tx.application.create({
+      data: {
+        vacancyId: vacancy.id,
+        applicantId: myId,
+        // message: messageText,
+        status: "pending",
+      },
+    });
+    return { success: true, chatId: chat.id, applicationId: application.id };
+  });
 }

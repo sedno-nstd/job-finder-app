@@ -27,31 +27,41 @@ export async function saveOnboardingData(fullData: MainUserData) {
     relocationLocations,
     desiredJob,
     employmentType,
+    resume,
     ...cleanOnBoarding
   } = onBoarding;
 
+  const { phone, ...cleanUserProfile } = userProfile;
+
   const finalFields = {
     ...cleanOnBoarding,
-    ...userProfile,
+    ...cleanUserProfile,
+    resumeUrl: typeof resume === "string" ? resume : resume?.url || null,
   };
 
   try {
-    await prisma.detailInfo.upsert({
-      where: { userId },
-      update: {
-        ...finalFields,
-        isCompleted: true,
-        relocationLocations: mapUpdate(relocationLocations),
-        desiredJob: mapUpdate(desiredJob),
-        employmentType: mapUpdate(employmentType),
-      },
-      create: {
-        userId,
-        ...finalFields,
-        isCompleted: true,
-        relocationLocations: mapCreate(relocationLocations),
-        desiredJob: mapCreate(desiredJob),
-        employmentType: mapCreate(employmentType),
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        phone: phone,
+        detailInfo: {
+          upsert: {
+            update: {
+              ...finalFields,
+              isCompleted: true,
+              relocationLocations: mapUpdate(relocationLocations),
+              desiredJob: mapUpdate(desiredJob),
+              employmentType: mapUpdate(employmentType),
+            },
+            create: {
+              ...finalFields,
+              isCompleted: true,
+              relocationLocations: mapCreate(relocationLocations),
+              desiredJob: mapCreate(desiredJob),
+              employmentType: mapCreate(employmentType),
+            },
+          },
+        },
       },
     });
   } catch (error: any) {
