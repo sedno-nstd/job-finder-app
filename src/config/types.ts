@@ -1,3 +1,4 @@
+import { EmploymentTypeId } from "../domain/vacancy/mock";
 import {
   JOB_LEVELS,
   JOB_LOCATIONS,
@@ -27,7 +28,7 @@ export interface Vacancy {
   salaryPeriod: "hour" | "month";
   negotiable: boolean;
   level: JobLevel[];
-  jobLocation: JobLocationType;
+  employmentType: EmploymentTypeId;
   stack: string[];
   city?: string;
   country: string;

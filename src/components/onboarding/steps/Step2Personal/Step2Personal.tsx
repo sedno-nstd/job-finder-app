@@ -19,12 +19,12 @@ export function Step2Personal() {
     mode: "onChange",
     resolver: zodResolver(step2Schema),
     defaultValues: {
-      gender: formData.onBoarding.gender || "",
+      gender: formData.onBoarding.gender as Step2Values["gender"],
       dateOfBirth: formData.onBoarding.dateOfBirth || "2000-01-01",
       location: formData.onBoarding.location || "",
-      readyToRelocate: formData.onBoarding.readyToRelocate || false,
-      relocationLocations: [] as string[],
-      readyForWorkAbroad: formData.onBoarding.readyForWorkAbroad || false,
+      readyToRelocate: formData.onBoarding.readyToRelocate ?? false,
+      relocationLocations: formData.onBoarding.relocationLocations ?? [],
+      readyForWorkAbroad: formData.onBoarding.readyForWorkAbroad ?? false,
     },
   });
   const {

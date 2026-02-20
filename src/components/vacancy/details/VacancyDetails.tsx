@@ -4,13 +4,14 @@ import { getJobLocationStyles } from "@/src/domain/vacancy/utils/jobLocationThem
 import clsx from "clsx";
 import { MapPin, Phone } from "lucide-react";
 import { Vacancy } from "@/src/config/types";
+import { GetVacancies } from "@/src/actions/getVacancies";
 
 interface VacancyProps {
   vacancy: Vacancy;
 }
 
 export default async function VacancyDetails({ vacancy }: VacancyProps) {
-  const jobStyles = getJobLocationStyles(vacancy.jobLocation);
+  const jobStyles = getJobLocationStyles(vacancy.employmentType);
 
   return (
     <div className="flex flex-col bg-white rounded-lg w-full">
@@ -44,7 +45,10 @@ export default async function VacancyDetails({ vacancy }: VacancyProps) {
         <div className="flex flex-col gap-3">
           <div className="flex flex-row gap-2 text-[#2d3540]">
             <MapPin size={22} className="text-gray-400" />
-            <span className="font-medium ">{vacancy.city}</span>
+            <span className="font-medium ">
+              {" "}
+              {vacancy.city}, {vacancy.country}
+            </span>
           </div>
           <div className="flex items-center gap-3 mb-3">
             <Phone size={22} className="text-gray-400" />
@@ -56,15 +60,15 @@ export default async function VacancyDetails({ vacancy }: VacancyProps) {
             <div
               className={clsx(
                 "px-4 py-1 rounded-full text-xs font-bold flex items-center gap-2 border",
-                jobStyles.container
+                jobStyles.container,
               )}
             >
               <span className="uppercase tracking-wider">
-                {vacancy.jobLocation}
+                {vacancy.employmentType}
               </span>
             </div>
           </div>
-          <Respond />
+          <Respond vacancyId={vacancy.id} />
         </div>
         <div className="mt-8 pt-8 border-t border-gray-100">
           <h3 className="text-lg font-bold text-gray-900 mb-4">Description</h3>

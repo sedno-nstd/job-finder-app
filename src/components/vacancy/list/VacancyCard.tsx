@@ -24,7 +24,7 @@ function VacancyCardComponent({
       <div
         className={clsx(
           "p-4 w-full rounded-2xl flex flex-col bg-white shadow",
-          VacancyClasses
+          VacancyClasses,
         )}
       >
         <div className="flex flex-row justify-between">
@@ -69,7 +69,7 @@ function VacancyCardComponent({
           )}
         </span>
 
-        <span className="mt-2 text-base">{vacancy.jobLocation}</span>
+        <span className="mt-2 text-base">{vacancy.employmentType}</span>
         <p className={clsx("", DescriptionClasses)}>{vacancy.description}</p>
         <span className="mt-2 font-medium">
           <span className="text-[13px]">Company:</span> {vacancy.company}
@@ -77,9 +77,12 @@ function VacancyCardComponent({
         <span className="mt-2 text-gray-500 text-[17px] flex flex-row items-center gap-2">
           <Clock size={16} /> {new Date(vacancy.postedAt).toLocaleDateString()}
         </span>
-        {vacancy.city && (
+        {vacancy.city && vacancy.country && (
           <span className="text-gray-500 text-[17px] flex flex-row items-center gap-2">
-            <MapPin size={16} /> {vacancy.city}
+            <MapPin size={16} />{" "}
+            <span>
+              {vacancy.city}, {vacancy.country}
+            </span>
           </span>
         )}
       </div>

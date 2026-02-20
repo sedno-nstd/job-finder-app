@@ -27,6 +27,21 @@ model User {
  messages      Message[]
  detailInfo    DetailInfo?
  verificationTokens VerificationToken[]
+ applications Application[]
+}
+
+model Employer {
+  id String @id @default(cuid())
+  name String 
+  email String @unique
+  password String
+  phone String 
+  companyName String @unique
+
+  vacancies Vacancy[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 
@@ -152,4 +167,43 @@ model Conversation {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  vacancy   Vacancy? @relation(fields: [vacancyId], references: [id])
+  vacancyId String?
+}
+
+model Application {
+  id  String @id @default(cuid())
+  createdAt   DateTime @default(now())
+  applicantId String
+  applicant   User     @relation(fields: [applicantId], references: [id])
+  vacancyId   String
+  vacancy     Vacancy  @relation(fields: [vacancyId], references: [id])
+  message     String?
+  status      String   @default("pending")
+  
+}
+
+
+model Vacancy {
+  id          String   @id @default(cuid())
+  title       String
+  company     String
+  description String
+  salaryFrom  Int?
+  salaryTo    Int?
+  currency    String   @default("UAH")
+  salaryPeriod String  @default("month")
+  negotiable  Boolean  @default(false)
+  city        String?
+  country     String?
+  level       String @default("junior")
+  stack       String @default("")
+  jobLocation String  
+  postedAt    DateTime @default(now())
+
+  employerId    String
+  employer      Employer          @relation(fields: [employerId], references: [id])
+  application Application[]
+  conversation Conversation[]
 }

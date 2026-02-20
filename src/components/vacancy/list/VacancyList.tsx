@@ -8,7 +8,7 @@ interface VacanciesProps {
   vacancies: Vacancy[];
   total: number;
   visibleCount: number;
-  setVisibleCount: (count: number) => void;
+  setVisibleCount?: (count: number) => void;
   emptyState?: React.ReactNode;
   safetyData?: any[];
   onReset?: () => void;
@@ -81,7 +81,7 @@ export function VacancyList({
         />
       ))}
 
-      {visibleCount < total && (
+      {setVisibleCount && visibleCount < total && (
         <button
           className="mt-6 self-center rounded-full bg-gray-200 hover:bg-gray-300 transition-all px-8 py-2 text-sm font-semibold"
           onClick={() => setVisibleCount(visibleCount + 5)}

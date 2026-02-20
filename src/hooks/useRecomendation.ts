@@ -1,45 +1,54 @@
 import { Vacancy } from "../config/types";
-import { vacancies } from "../domain/vacancy/types";
 import { OnboardingData } from "../types/user";
 
 interface Props {
-  user: OnboardingData | null;
+  user: OnboardingData;
   vacancy: Vacancy[];
 }
 
-export function useRecommendation({ user }: Props) {
-  if (!user) return [];
+export function useRecommendation({ user, vacancy }: Props) {
+  if (!user || !vacancy) return [];
 
-  let result = vacancies;
+  const jobPattern =
+    user.desiredJob.length > 0 ? new RegExp(user.desiredJob.join("|")) : ".*";
 
-  const userLocation = user.location;
-  const relocationCities = user.relocationLocations || [];
-  const desiredUserJob = user.desiredJob || [];
-  const userJobTypes = user.employmentType || [];
+  const jobRegex = new RegExp(jobPattern, "i");
 
-  if (
-    userLocation ||
-    desiredUserJob.length > 0 ||
-    relocationCities.length > 0
-  ) {
-    result = result.filter((item) => {
-      const matchJob =
-        desiredUserJob.length === 0 ||
-        desiredUserJob.some((j) => j === item.title);
+  const recommendations = vacancy
+    .map((v) => {
+      let score = 0;
 
-      const itemCity = item.city?.toLowerCase() || "";
-      const itemCountry = item.country?.toLowerCase() || "";
+      const titleMatch = jobRegex.test(v.title);
 
-      const matchLoc =
-        itemCity.includes(user.location) || itemCountry.includes(user.location);
+      if (titleMatch) score += 10;
 
-      const mathJobType =
-        userJobTypes.length === 0 ||
-        userJobTypes.some((j) => j.includes(item.jobLocation));
+      const isTypeMatch = user.employmentType.some((item) =>
+        item.toLowerCase().includes(v.employmentType?.toLowerCase()),
+      );
 
-      return matchJob && (matchLoc || mathJobType);
-    });
-  }
+      if (isTypeMatch) score += 5;
 
-  return result.length > 0 ? result : vacancies.slice(-10);
+      const city = v.city?.toLowerCase() || "";
+      const country = v.country.toLowerCase() || "";
+      const userLoc = user.location?.toLowerCase().trim() || "";
+
+      const isHomeCity = city.includes(userLoc) || country.includes(userLoc);
+      const isRelocationCity =
+        user.readyToRelocate &&
+        user.relocationLocations?.some((loc) => loc.toLowerCase() === city);
+
+      if (isHomeCity) {
+        score += 7;
+      } else if (isRelocationCity || user.readyForWorkAbroad) {
+        score += 4;
+      }
+
+      return { ...v, score };
+    })
+
+    .filter((item) => item.score > 0)
+
+    .sort((a, b) => b.score - a.score);
+
+  return recommendations.length > 0 ? recommendations : vacancy.slice(-10);
 }

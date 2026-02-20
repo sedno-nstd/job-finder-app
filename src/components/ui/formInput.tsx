@@ -9,9 +9,6 @@ export const FormField = forwardRef<HTMLInputElement, Props>(
   ({ label, error, className, ...props }, ref) => {
     return (
       <div className="w-full flex relative flex-col">
-        <label htmlFor="" className="text-sm font-medium mb-2 max-sm:text-base">
-          {label}
-        </label>
         <input
           ref={ref}
           {...props}

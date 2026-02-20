@@ -105,7 +105,7 @@ export function JobExpectations() {
                 className="h-[40px] border"
               />
             </div>
-            <div className="flex flex-row justify-between mb-5">
+            <div className="flex flex-row justify-between gap-3 mb-5">
               <CustomSelect
                 value={selectedCurrency}
                 setSelect={(val) => {
@@ -120,7 +120,7 @@ export function JobExpectations() {
                 isOpen={openMenu === "currency"}
                 data={CURRENCY_OPTIONS}
                 defaultLabel="USD"
-                className="pt-2 text-main"
+                className="max-w-[194px]"
               />
               <CustomSelect
                 value={selectedPeriod}
@@ -136,7 +136,7 @@ export function JobExpectations() {
                 isOpen={openMenu === "period"}
                 data={PERIOD_OPTIONS}
                 defaultLabel="Per month"
-                className="bg-white shadow-2xl w-full"
+                className="max-w-[194px]"
               />
             </div>
           </div>

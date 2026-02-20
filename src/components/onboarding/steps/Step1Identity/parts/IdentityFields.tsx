@@ -10,16 +10,20 @@ export function IdentityFields() {
   return (
     <div className="flex flex-col">
       <div className="flex flex-col mb-3">
+        <label htmlFor="" className="mb-1">
+          FirstName
+        </label>
         <FormField
           {...register("firstName")}
-          label="firstName"
           error={errors.firstName?.message as string}
         />
       </div>
       <div className="flex flex-col mb-3">
+        <label htmlFor="" className="mb-1">
+          LastName
+        </label>
         <FormField
           {...register("lastName")}
-          label="lastName"
           error={errors.lastName?.message as string}
         />
       </div>

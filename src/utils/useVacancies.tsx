@@ -5,9 +5,9 @@ import { getDistanceKm } from "../domain/geo/getDistanceKm";
 import { Vacancy } from "../config/types";
 import { getSalaryInUah } from "../config/salaryRules";
 import { useSearchStore } from "@/src/store/useSearchStore";
-import { COUNTRY_USER } from "../components/constans/search-data";
 
 export function useVacancies(
+  vacanciesList: Vacancy[],
   visibleCount: number,
   userLocation: { lat: number; lon: number } | null,
   maxDistanceKm: number,
@@ -24,11 +24,11 @@ export function useVacancies(
   } = useSearchStore();
 
   return useMemo(() => {
-    let result: Vacancy[] = vacancies;
+    let result: Vacancy[] = vacanciesList;
 
     if (locationType !== "any") {
       if (["remote", "office", "hybrid"].includes(locationType)) {
-        result = result.filter((v) => v.jobLocation === locationType);
+        result = result.filter((v) => v.employmentType === locationType);
       }
     }
 
@@ -122,6 +122,7 @@ export function useVacancies(
       total: result.length,
     };
   }, [
+    vacanciesList,
     locationType,
     postingDate,
     level,

@@ -14,6 +14,8 @@ interface Props {
   setSelect: (val: string) => void;
   className?: string;
   defaultLabel: string;
+  position?: "top" | "bottom";
+  showArrow?: boolean;
 }
 
 export function CustomSelect({
@@ -24,25 +26,35 @@ export function CustomSelect({
   className,
   setSelect,
   defaultLabel,
+  position = "bottom",
+  showArrow = true,
 }: Props) {
   const selectedOption = data.find((item) => item.value === value);
 
   return (
     <div
       className={clsx(
-        "relative w-full px-4 h-[40px] cursor-pointer hover:border-blue-600 justify-between flex flex-row items-center max-w-[194px] border",
-        isOpen ? "border-blue-600" : "border-gray-400",
+        "relative w-full px-4 h-[40px] duration-200 transition-all cursor-pointer hover:border-blue-600 justify-between flex flex-row items-center border",
+        isOpen ? "border-blue-600" : "border-gray-300",
+        className,
       )}
       onClick={() => setIsOpen(!isOpen)}
     >
       <span>{selectedOption ? selectedOption.label : defaultLabel}</span>
-      <ArrowDown
+      {showArrow && (
+        <ArrowDown
+          className={clsx(
+            "hover:text-blue-600",
+            isOpen ? "text-blue-600" : "text-gray-400",
+          )}
+        />
+      )}
+      <div
         className={clsx(
-          "hover:text-blue-600",
-          isOpen ? "text-blue-600" : "text-gray-400",
+          "absolute mt-2 w-full left-0 bg-white",
+          position === "bottom" ? "top-full" : "bottom-full mb-1",
         )}
-      />
-      <div className="absolute top-full mt-2 w-full left-0 bg-white">
+      >
         {isOpen && (
           <div className="flex flex-col shadow-2xl border border-[#a1afc1]/50 custom-scrollbar overflow-y-auto w-full">
             {data.map((item) => {
@@ -50,7 +62,7 @@ export function CustomSelect({
                 <div
                   className={clsx(
                     "cursor-pointer px-4 border-b border-[#a1afc1]/50 p-1 hover:bg-gray-100 w-full",
-                    className,
+                    "last:border-b-0",
                   )}
                   key={item.value}
                   onClick={(e) => {

@@ -5,7 +5,13 @@ import { Plus } from "lucide-react";
 import { useEffect } from "react";
 
 export function RelocationSection() {
-  const { register, setValue, watch, control } = useFormContext();
+  const {
+    register,
+    setValue,
+    watch,
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -43,7 +49,13 @@ export function RelocationSection() {
           <input
             type="checkbox"
             id="relocate"
-            {...register("readyToRelocate")}
+            {...register("readyToRelocate", {
+              onChange: (e) => {
+                if (e.target.checked && fields.length === 0) {
+                  append("");
+                }
+              },
+            })}
             className="w-[18px] h-[18px]  cursor-pointer accent-blue-600"
           />
           <label
@@ -59,7 +71,6 @@ export function RelocationSection() {
               <div className="mb-2" key={field.id}>
                 <SelectUserLocation
                   registerName={`relocationLocations.${index}`}
-                  key={index}
                   value={watch(`relocationLocations.${index}`)}
                   onChange={(val: string) => {
                     setValue(`relocationLocations.${index}`, val, {
@@ -80,6 +91,9 @@ export function RelocationSection() {
                     }
                   }}
                 />
+                {errors.relocationLocations && (
+                  <span className="text-sm text-red-500">Enter location</span>
+                )}
               </div>
             ))}
             <button

@@ -3,9 +3,6 @@ import { SEARCH_VACANCY_TYPE } from "../constants/jobOptions";
 import { useState } from "react";
 import clsx from "clsx";
 import { ArrowLeft, Check } from "lucide-react";
-import { step6Schema, step6Values } from "../schemas/schemas";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 export function Step6SearchMode() {
   const { prevStep, formData, updatedFields } = useOnboardingStore();
@@ -14,13 +11,8 @@ export function Step6SearchMode() {
   );
   const [error, setError] = useState<boolean | null>(null);
 
-  const methods = useForm<step6Values>({
-    mode: "onChange",
-    resolver: zodResolver(step6Schema),
-  });
-
   return (
-    <div className="w-full min-h-screen flex justify-center items-center">
+    <div className="w-full h-full flex justify-center items-start">
       <div className="relative flex flex-col max-w-[448px] text-main py-8 px-6 rounded-lg bg-white">
         <button
           type="button"
@@ -48,15 +40,16 @@ export function Step6SearchMode() {
                     ? "ring-blue-600 ring-2"
                     : "ring ring-input-border",
                 )}
-                onClick={() => {
+                onClick={(e) => {
                   setSelected(newId);
+                  e.stopPropagation();
                   updatedFields("onBoarding", {
                     searchMode: newId,
                   });
                 }}
                 key={item.id}
               >
-                <button className="w-full h-full text-left flex flex-row justify-center items-center gap-5">
+                <button className="w-full cursor-pointer h-full text-left flex flex-row justify-center items-center gap-5">
                   <div>
                     <span className="text-lg font-semibold">{item.name}</span>
                     <p className="text-sm">{item.description}</p>

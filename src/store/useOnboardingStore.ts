@@ -44,6 +44,7 @@ const initialFormData: MainUserData = {
 interface OnboardingState {
   step: number;
   formData: MainUserData;
+  setFormData: (data: MainUserData) => void;
   nextStep: () => void;
   prevStep: () => void;
   updatedFields: <T extends FormCategory>(
@@ -58,6 +59,7 @@ export const useOnboardingStore = create<OnboardingState>()(
     (set) => ({
       step: 1,
       formData: initialFormData,
+      setFormData: (data) => set({ formData: data }),
       updatedFields: (category, fields) =>
         set((state) => ({
           formData: {

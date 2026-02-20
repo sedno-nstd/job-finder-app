@@ -1,13 +1,34 @@
 "use client";
+import { getFullUserData } from "@/src/actions/getFullUserData";
 import { BasicProfileCard } from "@/src/components/profile/BasicProfileCard";
 import { ProfileIdentityCard } from "@/src/components/profile/ProfileIdentityCard";
 import { ROUTES } from "@/src/config/router";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
+import { MainUserData, OnboardingData } from "@/src/types/user";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function Profile() {
   const { data: session } = useSession();
   const { formData, step } = useOnboardingStore();
+  const [data, setData] = useState<MainUserData | undefined>(undefined);
+  const profileData = data;
+
+  useEffect(() => {
+    const fetchGetData = async () => {
+      const res = await getFullUserData();
+
+      if (res.success && res.data) {
+        useOnboardingStore.getState().setFormData(res.data);
+      }
+
+      setData(res.data);
+    };
+    fetchGetData();
+  }, []);
+
+  if (!profileData) return <p>Loading...</p>;
+
   const user = session?.user;
   return (
     <div className="w-full h-full flex flex-col justify-center items-center bg-[#eff2f6]">
@@ -35,7 +56,7 @@ export default function Profile() {
         <BasicProfileCard
           title="Briefly about me and my skills"
           step={step}
-          information="."
+          information={data?.userProfile.aboutMe}
           href="/profile/SkillsOverview"
         />
         <BasicProfileCard

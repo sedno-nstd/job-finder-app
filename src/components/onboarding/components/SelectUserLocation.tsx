@@ -19,6 +19,7 @@ export function SelectUserLocation({
   onChange,
   value,
   onDelete,
+  forbiddenLocation,
   registerName,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +29,10 @@ export function SelectUserLocation({
   const containerRef = useOutsideClick<HTMLDivElement>(() => {
     setIsOpen(false);
   });
+
+  const handleFocus = () => {
+    setIsOpen(true);
+  };
 
   const locationData = useMemo(() => {
     return COUNTRY_USER.flatMap((item) => {
@@ -41,15 +46,19 @@ export function SelectUserLocation({
     });
   }, []);
 
-  const isFullMatch = locationData.some((loc) => loc.fullLabel === query);
-
   const suggestions = useMemo(() => {
     if (!query || query.length < 2) return [];
 
     return locationData
-      .filter((loc) =>
-        loc.fullLabel.toLowerCase().includes(query.toLowerCase()),
-      )
+      .filter((loc) => {
+        const matchesSearch = loc.fullLabel
+          .toLowerCase()
+          .includes(query.trim().toLowerCase());
+
+        const isForbidden = forbiddenLocation?.includes(loc.fullLabel);
+
+        return matchesSearch && !isForbidden;
+      })
       .sort((a, b) => {
         return a.fullLabel.localeCompare(b.fullLabel);
       })
@@ -64,7 +73,7 @@ export function SelectUserLocation({
     <div className="relative w-full h-[40px]" ref={containerRef}>
       <FormField
         {...register(`${registerName}`)}
-        onClick={() => setIsOpen(!isOpen)}
+        onFocus={handleFocus}
         autoComplete="off"
       />
       <button
@@ -82,12 +91,15 @@ export function SelectUserLocation({
       >
         <Trash size={20} />
       </button>
-      {isOpen && query.length > 1 && !isFullMatch && (
+      {isOpen && query.trim().length >= 2 && suggestions.length > 0 && (
         <SearchSuggestions
-          setQuery={(val: string) => setValue(registerName, val)}
+          setQuery={(val: string) => {
+            setValue(registerName, val, { shouldValidate: true });
+            setIsOpen(false);
+          }}
           data={suggestions}
           isOpen={isOpen}
-          isShowOptions={query.length > 2}
+          isShowOptions={true}
           query={query}
           sliceOptions={5}
         />

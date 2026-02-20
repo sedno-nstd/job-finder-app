@@ -9,7 +9,7 @@ import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { saveOnboardingData } from "@/src/actions/onboarding";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getOnboardingData } from "@/src/actions/getOnBoardingData";
+import { getFullUserData } from "@/src/actions/getFullUserData";
 import { UploadAvatar } from "../parts/UploadAvatar";
 
 export function PersonalData() {
@@ -43,7 +43,7 @@ export function PersonalData() {
 
   useEffect(() => {
     async function initData() {
-      const result = await getOnboardingData();
+      const result = await getFullUserData();
 
       if (result.success && result.data) {
         updatedFields("onBoarding", result.data);

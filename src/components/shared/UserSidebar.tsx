@@ -41,7 +41,10 @@ export function UserSidebar({ className }: Props) {
           <Flame size={22} className="text-[#a1afc1]" />
           <span className="text-[#2a3540] font-normal">Recomendations</span>
         </div>
-        <div className="hover:bg-[#6380a61a] flex flex-row gap-[6px] cursor-pointer p-3">
+        <div
+          onClick={() => router.push("/responde")}
+          className="hover:bg-[#6380a61a] flex flex-row gap-[6px] cursor-pointer p-3"
+        >
           <SendHorizontal size={22} className="text-[#a1afc1]" />
           <span className="text-[#2a3540] font-normal">Responses</span>
         </div>

@@ -48,17 +48,32 @@ export type Step1Values = z.infer<typeof step1Schema>;
 
 const GENDERS = ["male", "female"] as const;
 
-export const step2Schema = z.object({
-  gender: z.enum(GENDERS, {
-    message: "Please Select your gender",
-  }),
-  location: z.string().min(1, "Enter your location"),
-  dateOfBirth: z.string().min(1, "Select your birth date"),
+export const step2Schema = z
+  .object({
+    gender: z.enum(GENDERS, {
+      message: "Please Select your gender",
+    }),
+    location: z.string().min(1, "Enter your location"),
+    dateOfBirth: z.string().min(1, "Select your birth date"),
 
-  readyToRelocate: z.boolean().default(false),
-  relocationLocations: z.array(z.string()).default([]),
-  readyForWorkAbroad: z.boolean().default(false),
-});
+    readyToRelocate: z.boolean(),
+    relocationLocations: z.array(z.string()),
+    readyForWorkAbroad: z.boolean(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.readyToRelocate) {
+      const hasValidLocation = data.relocationLocations.some(
+        (loc) => loc.trim().length > 0,
+      );
+      if (!hasValidLocation) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "enter city",
+          path: ["relocationLocations"],
+        });
+      }
+    }
+  });
 
 export type Step2Values = z.infer<typeof step2Schema>;
 

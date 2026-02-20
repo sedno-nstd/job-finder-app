@@ -84,8 +84,10 @@ export function Step4Experience() {
 
           <div className="mb-6 w-full">
             <div className="flex flex-col relative">
+              <label htmlFor="" className="mb-1">
+                Previous position
+              </label>
               <FormField
-                label="Previous position"
                 {...register("previousPosition", {
                   onChange: (e) => {
                     setShowSuggestions(e.target.value.length > 2);

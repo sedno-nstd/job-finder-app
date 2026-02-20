@@ -5,13 +5,16 @@ import { VacancyList } from "../vacancy/list/VacancyList";
 import { useRecommendation } from "@/src/hooks/useRecomendation";
 import { useRecommendationStore } from "@/src/store/useRecomandeStorage";
 import { vacancies } from "@/src/domain/vacancy/types";
-import { getOnboardingData } from "@/src/actions/getOnBoardingData";
+import { getFullUserData } from "@/src/actions/getFullUserData";
 import { useRouter } from "next/navigation";
+import { GetAllVacancies } from "@/src/actions/GetAllVacancies";
+import { Vacancy } from "@/src/config/types";
 
 export function Recomande() {
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState<OnboardingData | null>(null);
-  const { vacancies: storeVacancies, setVacancies } = useRecommendationStore();
+  const [userData, setUserData] = useState<OnboardingData>(null);
+  const [vacancies, setVacancies] = useState<Vacancy[]>([]);
+  const { vacancies: storeVacancies } = useRecommendationStore();
   const [visibleCount, setVisibleCount] = useState(5);
   const router = useRouter();
 
@@ -23,11 +26,13 @@ export function Recomande() {
   useEffect(() => {
     setLoading(true);
     const fetchUser = async () => {
-      const res = await getOnboardingData();
+      const res = await getFullUserData();
+      const vacancyRes = await GetAllVacancies();
 
       try {
         if (res.success && res.data) {
-          setUserData(res.data);
+          setUserData(res.data.onBoarding);
+          setVacancies(vacancyRes);
           setLoading(false);
         } else {
           console.log(res.error);
@@ -73,7 +78,7 @@ export function Recomande() {
   }
 
   return (
-    <div className="flex flex-col w-full text-main">
+    <div className="flex flex-col w-full text-main mb-10">
       <h1 className="text-xl mb-2">Recomended vacancies</h1>
       <span className="text-[#5a6f87] mb-6">
         We are analize your profile and find vacancies, such can be interesting

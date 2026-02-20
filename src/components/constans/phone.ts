@@ -1,0 +1,17 @@
+export const countryCodes = [
+  { label: "🇺🇦 +380", value: "+380" },
+  { label: "🇵🇱 +48", value: "+48" },
+  { label: "🇺🇸 +1", value: "+1" },
+  { label: "🇩🇪 +49", value: "+49" },
+  { label: "🇬🇧 +44", value: "+44" },
+  { label: "🇫🇷 +33", value: "+33" },
+  { label: "🇪🇸 +34", value: "+34" },
+  { label: "🇮🇹 +39", value: "+39" },
+  { label: "🇨🇿 +420", value: "+420" },
+  { label: "🇷🇴 +40", value: "+40" },
+  { label: "🇳🇱 +31", value: "+31" },
+  { label: "🇧🇪 +32", value: "+32" },
+  { label: "🇸🇪 +46", value: "+46" },
+  { label: "🇦🇹 +43", value: "+43" },
+  { label: "🇨🇭 +41", value: "+41" },
+] as const;

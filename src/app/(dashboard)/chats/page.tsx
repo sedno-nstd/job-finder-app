@@ -32,7 +32,9 @@ export default async function ChatsPage({
             <ChatMessages messages={messages} myId={myId} />
 
             <div>
-              <ChatInput chatId={currencyChat?.id} myId={myId} />
+              {currencyChat && (
+                <ChatInput chatId={currencyChat?.id} myId={myId} />
+              )}
             </div>
           </>
         ) : (

@@ -7,12 +7,16 @@ export function LastWorkPlace() {
     formState: { errors },
   } = useFormContext();
   return (
-    <FormField
-      label="Last Workplace"
-      {...register("lastWorkplace")}
-      id="lastWorkplace"
-      type="text"
-      placeholder="Company title"
-    />
+    <>
+      <label htmlFor="" className="mb-1">
+        Last Workplace
+      </label>
+      <FormField
+        {...register("lastWorkplace")}
+        id="lastWorkplace"
+        type="text"
+        placeholder="Company title"
+      />
+    </>
   );
 }

@@ -52,7 +52,7 @@ export function SkillsOverview() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="px-6 pt-8 w-full rounded-lg max-w-[448px] text-main bg-white flex flex-col"
+      className="px-6 pt-8 pb-8 w-full rounded-lg max-w-[448px] text-main bg-white flex flex-col"
     >
       <label
         htmlFor=""

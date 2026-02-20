@@ -1,4 +1,4 @@
-import { Recomande } from "@/src/components/recommendations/Recomane";
+import { Recomande } from "@/src/components/recommendations/Recomande";
 
 export default function Page() {
   return (

@@ -17,19 +17,34 @@ export function OnBoarding() {
   const router = useRouter();
 
   const handleFinish = async () => {
-    const result = await saveOnboardingData({
-      ...formData,
-      onBoarding: {
-        ...formData.onBoarding,
-        role: "applicant",
-      },
-    });
+    try {
+      // Подготавливаем данные: кастуем в any, чтобы TS не ругался на resume
+      const dataToSend = {
+        ...formData,
+        onBoarding: {
+          ...formData.onBoarding,
+          resume: formData.onBoarding.resume?.url || null, // Передаем только строку
+          role: "applicant",
+        },
+      } as any;
 
-    if (result) {
-      await update();
-      router.push("/vacancies");
-    } else {
-      console.error(result);
+      const result = await saveOnboardingData(dataToSend);
+
+      console.log("Server response:", result);
+
+      if (result && result.success) {
+        console.log("Success! Updating session and redirecting...");
+        await update();
+        router.push("/vacancies");
+      } else {
+        console.error("Server returned error:", result?.error);
+        alert(
+          "Ошибка при сохранении: " + (result?.error || "Неизвестная ошибка"),
+        );
+      }
+    } catch (err) {
+      console.error("Client-side error:", err);
+      alert("Произошла ошибка при отправке данных.");
     }
   };
 
@@ -43,18 +58,18 @@ export function OnBoarding() {
         {step === 4 && <Step4Experience />}
         {step === 5 && <Step5SelectMode />}
         {step === 6 && <Step6SearchMode />}
+        {step === 6 && (
+          <div className="w-full justify-center flex pt-4">
+            <button
+              onClick={() => handleFinish()}
+              type="button"
+              className="w-[200px] cursor-pointer bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 text-white rounded-lg py-2 transition-all font-semibold"
+            >
+              Finish
+            </button>
+          </div>
+        )}
       </div>
-      {step === 6 && (
-        <div className="w-full">
-          <button
-            onClick={() => handleFinish()}
-            type="submit"
-            className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 text-white rounded-lg py-2 transition-all font-semibold"
-          >
-            Finish
-          </button>
-        </div>
-      )}
     </div>
   );
 }

@@ -24,6 +24,8 @@ export function SearchSuggestions({
   query,
   sliceOptions = 5,
 }: Props) {
+  if (!data || data.length === 0 || query.trim() === "") return null;
+
   return (
     <div>
       {isOpen && isShowOptions && (

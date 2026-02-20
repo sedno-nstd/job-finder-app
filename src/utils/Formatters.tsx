@@ -49,7 +49,7 @@ export function Formatter({
                 onToggle();
               }}
             >
-              <p className="text-main text-md">{item.label}</p>
+              <p className="text-main text-md select-none">{item.label}</p>
             </div>
           ))}
         </div>

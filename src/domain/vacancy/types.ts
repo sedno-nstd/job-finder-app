@@ -1,8 +1,10 @@
 import { SALARY_RULES } from "../../config/salaryRules";
 import { POPULAR_PROFESSIONS } from "../../config/searchOptions";
 import { Vacancy } from "../../config/types";
-import { jobLocations, locationPool } from "./mock";
+import { EMPLOYMENT_TYPES, jobLocations, locationPool } from "./mock";
+import { createId } from "@paralleldrive/cuid2";
 
+export type EmploymentTypeId = (typeof EMPLOYMENT_TYPES)[number]["id"];
 export type JobLocation = (typeof jobLocations)[number];
 
 const companies = ["Acme", "Globex", "Umbrella", "Initech"];
@@ -34,7 +36,7 @@ export const vacancies: Vacancy[] = Array.from({ length: 200 }, (_, i) => {
   const randomLoc =
     locationPool[Math.floor(Math.random() * locationPool.length)];
   return {
-    id: (i + 1).toString(),
+    id: createId(),
     title:
       POPULAR_PROFESSIONS[
         Math.floor(Math.random() * POPULAR_PROFESSIONS.length)
@@ -47,7 +49,8 @@ export const vacancies: Vacancy[] = Array.from({ length: 200 }, (_, i) => {
     salaryPeriod: salaryPeriod,
     negotiable: !hasSalary,
     level: [levels[Math.floor(Math.random() * levels.length)]],
-    jobLocation: jobLocations[Math.floor(Math.random() * jobLocations.length)],
+    jobLocation:
+      EMPLOYMENT_TYPES[Math.floor(Math.random() * EMPLOYMENT_TYPES.length)].id,
     stack: stacks[Math.floor(Math.random() * stacks.length)],
     city: randomLoc.city,
     country: randomLoc.country,
