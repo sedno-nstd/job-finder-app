@@ -196,11 +196,12 @@ model Vacancy {
   salaryPeriod String  @default("month")
   negotiable  Boolean  @default(false)
   city        String?
-  country     String?
+  country     String
   level       String @default("junior")
   stack       String @default("")
-  jobLocation String  
+  employmentType String  
   postedAt    DateTime @default(now())
+  expiresAt   DateTime
 
   employerId    String
   employer      Employer          @relation(fields: [employerId], references: [id])
