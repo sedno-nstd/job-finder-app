@@ -6,7 +6,7 @@ import { LocatioNSearch } from "../shared/search/JobSearchForm/LocationSearch";
 import { ProfessionSearch } from "../shared/search/JobSearchForm/ProfessionSearch";
 import { useJobSearch } from "../../hooks/useJobSearch";
 import { JoobleLogo } from "@/public/images/userHeader/logo";
-import { useOutsideClick } from "@/src/hooks/useOutsideClick";
+import { useOutsideClick } from "@/src/hooks/ui/useOutsideClick";
 import { HeaderNavigation } from "./configs/navigation";
 
 export function UserHeader() {

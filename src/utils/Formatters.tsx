@@ -1,4 +1,4 @@
-import { useOutsideClick } from "../hooks/useOutsideClick";
+import { useOutsideClick } from "../hooks/ui/useOutsideClick";
 
 interface IOption {
   id: string;

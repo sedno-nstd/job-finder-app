@@ -25,14 +25,16 @@ export interface Vacancy {
   salaryFrom: number | null;
   salaryTo: number | null;
   currency: "USD" | "UAH" | "EUR";
-  salaryPeriod: "hour" | "month";
+  salaryPeriod: "hour" | "month" | "year";
   negotiable: boolean;
   level: JobLevel[];
   employmentType: EmploymentTypeId;
   stack: string[];
-  city?: string;
+  city: string | null;
   country: string;
-  postedAt: string;
+  postedAt: Date;
+
+  employerId: string;
 }
 
 export interface SearchFilters {

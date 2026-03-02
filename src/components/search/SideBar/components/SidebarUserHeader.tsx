@@ -5,6 +5,7 @@ interface SideUserProps {
   setShowUserMenu: (s: boolean) => void;
   userName: string | null | undefined;
   userImage: string | null | undefined;
+  role: string | null | undefined;
 }
 
 export function SideUserheader({
@@ -12,6 +13,7 @@ export function SideUserheader({
   showUserMenu,
   userName,
   userImage,
+  role,
 }: SideUserProps) {
   return (
     <div
@@ -35,7 +37,9 @@ export function SideUserheader({
         <span className="text-[#2d3540] font-bold text-base truncate">
           {userName}
         </span>
-        <span className="text-[#5a6f87] text-sm select-none">My profile</span>
+        <span className="text-[#5a6f87] text-sm select-none">
+          {role === "employer" ? "Company profile" : "My profile"}
+        </span>
       </div>
       <Ellipsis size={22} className="ml-auto text-[#5a6f87]" />
     </div>

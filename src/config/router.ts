@@ -2,7 +2,8 @@ export const ROUTES = {
   HOME: "/",
   AUTH: {
     LOGIN: "/auth/login",
-    REGISTER: "/auth/register",
+    REGISTER: "/registration",
+    EMPLOYER_REG: "/employerRegistration",
   },
   SEARCH: "/search",
   PROFILE: {
@@ -16,4 +17,11 @@ export const ROUTES = {
     PERSONAL: "/profile/Personal",
     JOB: "/profile/JobExpectations",
   },
+  EMPLOYER: {
+    ROOT: "/employer",
+    PROFILE: "/employer/profile",
+    VACANCIES: "/employer/vacancies",
+    APPLICANTS: "/employer/applicants",
+  },
+  SETTINGS: "/settings",
 } as const;

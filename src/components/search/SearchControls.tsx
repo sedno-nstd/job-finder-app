@@ -6,7 +6,7 @@ import { useJobSearch } from "@/src/hooks/useJobSearch";
 import { useSearchStore } from "@/src/store/useSearchStore";
 import { SearchSuggestions } from "../ui/SearchSuggestions";
 import { useEffect, useState } from "react";
-import { useUserHistory } from "@/src/hooks/useUserHistory";
+import { useUserHistory } from "@/src/hooks/user/useUserHistory";
 import { SearchHistory } from "../ui/SearchHistory";
 
 export function VacancySearch() {

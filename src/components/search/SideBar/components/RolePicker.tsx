@@ -1,3 +1,4 @@
+import { ROUTES } from "@/src/config/router";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { useUserState } from "@/src/store/useUserState";
 import { useRouter } from "next/navigation";
@@ -14,7 +15,11 @@ export function RolePicker() {
       role: role,
     });
 
-    router.push(`/register?role=${role}`);
+    if (role === "employer") {
+      router.push(ROUTES.AUTH.EMPLOYER_REG);
+    } else {
+      router.push(ROUTES.AUTH.REGISTER);
+    }
   };
   return (
     <div className="absolute justify-center rounded-lg bg-white left-1/2 -translate-x-1/2 w-full">

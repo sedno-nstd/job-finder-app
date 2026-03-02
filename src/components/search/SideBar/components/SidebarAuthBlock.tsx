@@ -28,7 +28,7 @@ export function AuthBlock({ setShowRolePicker, showRolePicker }: AuthProps) {
       </span>
       <div className="flex flex-col gap-2 relative">
         <button
-          className="rounded-lg py-2 bg-blue-700 text-white font-medium hover:bg-blue-800 transition-all"
+          className="rounded-lg cursor-pointer py-2 bg-blue-700 text-white font-medium hover:bg-blue-800 transition-all"
           onClick={() => {
             handleCreateProfile();
             router.push("/registration");
@@ -41,7 +41,7 @@ export function AuthBlock({ setShowRolePicker, showRolePicker }: AuthProps) {
           <button
             onClick={() => setShowRolePicker(!showRolePicker)}
             className={clsx(
-              "flex items-center justify-center gap-2 w-full py-2 border rounded-lg transition-all",
+              "flex items-center cursor-pointer justify-center gap-2 w-full py-2 border rounded-lg transition-all",
               showRolePicker
                 ? "border-blue-600 text-blue-600 shadow-sm"
                 : "border-blue-600/30 text-blue-600 hover:bg-blue-50",

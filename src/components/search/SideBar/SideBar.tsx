@@ -8,23 +8,33 @@ import { NAV_ITEMS } from "./components/config/type";
 import { useSession } from "next-auth/react";
 import { AuthBlock } from "./components/SidebarAuthBlock";
 import { SideUserheader } from "./components/SidebarUserHeader";
+import { useOutsideClick } from "@/src/hooks/ui/useOutsideClick";
 
 export function Sidebar() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
 
   const user = session?.user;
+  const userRole = (user as any)?.role;
 
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showRolePicker, setShowRolePicker] = useState(false);
+  const menuRef = useOutsideClick<HTMLDivElement>(() => setShowUserMenu(false));
 
   if (status === "loading") return <div className="p-6">Loading...</div>;
+
+  const filteredNavItems = NAV_ITEMS.filter((item) => {
+    const allowedRoles: string[] = ["everyone", userRole];
+
+    return allowedRoles.includes(item.role);
+  });
 
   return (
     <div className="flex flex-col p-6 h-full">
       {user ? (
-        <div className="relative">
+        <div className="relative" ref={menuRef}>
           <SideUserheader
+            role={userRole}
             setShowUserMenu={setShowUserMenu}
             userName={user.name}
             userImage={user.image}
@@ -43,7 +53,7 @@ export function Sidebar() {
       <div className="h-[1px] my-4 bg-black/5" />
 
       <nav className="flex flex-col gap-1">
-        {NAV_ITEMS.map((item) => {
+        {filteredNavItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
           return (

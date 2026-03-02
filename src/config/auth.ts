@@ -15,14 +15,28 @@ export const authConfig: AuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = (user as any).role;
+        token.companyName = (user as any).companyName;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user && token) {
         (session.user as any).id = token.id as string;
+        (session.user as any).role = token.role;
+        (session.user as any).companyName = token.companyName;
 
-        if (token.role === "employer") return session;
+        if (token.role === "employer") {
+          const employer = await prisma.employer.findUnique({
+            where: { id: token.id as string },
+            select: { name: true, companyName: true },
+          });
+
+          if (employer) {
+            session.user.name = employer.name;
+            (session.user as any).companyName = employer.companyName;
+          }
+          return session;
+        }
 
         const profile = await prisma.detailInfo.findUnique({
           where: { userId: token.id as string },
@@ -45,8 +59,8 @@ export const authConfig: AuthOptions = {
     CredentialsProvider({
       name: "Employer login",
       credentials: {
-        email: { value: "Email", type: "text" },
-        password: { value: "Password", type: "password" },
+        email: { label: "email", type: "text" },
+        password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) return null;
@@ -67,6 +81,7 @@ export const authConfig: AuthOptions = {
         return {
           id: employer.id,
           email: employer.email,
+          companyName: employer.companyName,
           name: employer.name,
           role: "employer",
         };

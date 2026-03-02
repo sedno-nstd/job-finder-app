@@ -1,6 +1,6 @@
 import { vacancies } from "@/src/domain/vacancy/types";
 import { useSearchStore } from "@/src/store/useSearchStore";
-import { UseVacanciesCount } from "@/src/store/useVacanciesCount";
+import { getFilteredVacancies } from "@/src/utils/vacancy-filters";
 import clsx from "clsx";
 import { useEffect, useMemo, useState } from "react";
 
@@ -15,28 +15,18 @@ export function VacancyCount({ className }: Props) {
     setReady(true);
   }, []);
 
-  const Data = vacancies.map((item) => {
-    return {
-      id: item.id,
-      title: item.title,
-      city: item.city,
-      country: item.country,
-    };
-  });
-
   const { finalSearch } = useSearchStore();
 
-  const count = useMemo(() => {
-    const { count: result } = UseVacanciesCount({
-      vacancy: Data,
-      query: finalSearch.prof,
-      region: finalSearch.loc,
-    });
-    return result;
-  }, [finalSearch, Data]);
+  const filteredCount = useMemo(() => {
+    const filtered = getFilteredVacancies(
+      vacancies,
+      finalSearch.prof,
+      finalSearch.loc,
+    );
+    return filtered.length;
+  }, [finalSearch.prof, finalSearch.loc]);
 
   if (!ready) return null;
-
   const isNothingEntered =
     finalSearch.prof.trim() === "" && finalSearch.loc.trim() === "";
 
@@ -60,7 +50,7 @@ export function VacancyCount({ className }: Props) {
       <span className="text-3xl font-semibold">
         Work {ready && capitalizedQuery}
       </span>
-      <span>{count} vacancies</span>
+      <span>{filteredCount} vacancies</span>
     </div>
   );
 }

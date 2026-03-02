@@ -1,7 +1,6 @@
 import * as Slider from "@radix-ui/react-slider";
-
 import { ChangeEvent, useEffect, useState } from "react";
-import { useDebounce } from "@/src/hooks/useDebounce";
+import { useDebounce } from "@/src/hooks/ui/useDebounce";
 import { useSearchStore } from "@/src/store/useSearchStore";
 
 export function SalarySlider() {

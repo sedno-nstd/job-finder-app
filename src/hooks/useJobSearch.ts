@@ -1,8 +1,8 @@
 import { COUNTRY_USER } from "@/src/components/constans/search-data";
 import { POPULAR_PROFESSIONS } from "@/src/config/searchOptions";
-import { useAutocomplete } from "@/src/hooks/useAutocomplete";
-import { useOutsideClick } from "@/src/hooks/useOutsideClick";
-import { useUserHistory } from "@/src/hooks/useUserHistory";
+import { useAutocomplete } from "@/src/hooks/vacancy/useAutocomplete";
+import { useOutsideClick } from "@/src/hooks/ui/useOutsideClick";
+import { useUserHistory } from "@/src/hooks/user/useUserHistory";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchStore } from "../store/useSearchStore";
