@@ -10,8 +10,9 @@ export function useStickyObserver({ joobs }: { joobs: string[] }) {
         setIsSticky(!entry.isIntersecting);
       },
       {
-        threshold: [1.0],
-      }
+        threshold: [0],
+        rootMargin: "0px 0px 0px 0px",
+      },
     );
     if (sentinelRef.current) {
       observer.observe(sentinelRef.current);

@@ -91,10 +91,11 @@ export const step4Schema = z.object({
 
 export type Step4Values = z.infer<typeof step4Schema>;
 
-export const step5Values = z
-  .array(z.string())
-  .min(1, "Select at least one option");
+export const step5Schema = z.object({
+  employmentType: z.array(z.string()).min(1, "Select at least one option"),
+});
 
+export type Step5Values = z.infer<typeof step5Schema>;
 export const step6Schema = z.object({
   searchMode: z.string().min(1, "Select someone mode"),
 });

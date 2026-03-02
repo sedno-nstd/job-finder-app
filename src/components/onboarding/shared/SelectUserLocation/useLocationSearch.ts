@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { COUNTRY_USER } from "../../constants/locationData";
 import { IUserLocation } from "./type";
 import { useMemo, useState } from "react";
-import { useOutsideClick } from "@/src/hooks/useOutsideClick";
+import { useOutsideClick } from "@/src/hooks/ui/useOutsideClick";
 
 export function userLocationSearch({
   forbiddenLocation,

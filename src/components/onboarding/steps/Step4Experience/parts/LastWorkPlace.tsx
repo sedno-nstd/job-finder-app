@@ -1,4 +1,4 @@
-import { FormField } from "@/src/components/ui/formInput";
+import { FormField } from "@/src/components/ui/FormField";
 import { useFormContext } from "react-hook-form";
 
 export function LastWorkPlace() {
@@ -6,6 +6,9 @@ export function LastWorkPlace() {
     register,
     formState: { errors },
   } = useFormContext();
+
+  const error = errors.lastWorkplace;
+
   return (
     <>
       <label htmlFor="" className="mb-1">
@@ -17,6 +20,11 @@ export function LastWorkPlace() {
         type="text"
         placeholder="Company title"
       />
+      {error && (
+        <span className="text-red-500 text-xs mt-1">
+          {error.message as string}
+        </span>
+      )}
     </>
   );
 }

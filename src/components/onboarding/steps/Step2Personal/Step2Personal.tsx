@@ -8,7 +8,6 @@ import { Birthday } from "./parts/Birthday";
 import { LocationSection } from "./parts/LocationSection";
 import { RelocationSection } from "./parts/RelocationSection";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft } from "lucide-react";
 import { FormWrapper } from "@/src/components/shared/FormWrapper";
 import { Step2Nvaigation } from "./parts/Navigation";
 
@@ -44,28 +43,11 @@ export function Step2Personal() {
     >
       <FormProvider {...methods}>
         <FormWrapper
+          className="py-6"
           label={`Exectly ${formData.onBoarding.firstName}! Tell us a little about
             yourself.`}
-          className="flex flex-col w-full bg-white relative py-8 px-6
-        max-sm:justify-start
-        sm:w-full sm:rounded-lg sm:shadow-sm 
-        md:max-w-[600px]
-        lg:max-w-[600px]
-        xl:max-w-[448px]"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <button
-            type="button"
-            className="
-            absolute cursor-pointer text-blue-600 top-4 left-2
-            max-sm:top-10 
-            md:hidden
-            "
-            onClick={() => prevStep()}
-          >
-            <ArrowLeft>Back</ArrowLeft>
-          </button>
-
           <GenderSection />
 
           <Birthday />

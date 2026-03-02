@@ -18,19 +18,16 @@ export function OnBoarding() {
 
   const handleFinish = async () => {
     try {
-      // Подготавливаем данные: кастуем в any, чтобы TS не ругался на resume
       const dataToSend = {
         ...formData,
         onBoarding: {
           ...formData.onBoarding,
-          resume: formData.onBoarding.resume?.url || null, // Передаем только строку
+          resume: formData.onBoarding.resume?.url || null,
           role: "applicant",
         },
       } as any;
 
       const result = await saveOnboardingData(dataToSend);
-
-      console.log("Server response:", result);
 
       if (result && result.success) {
         console.log("Success! Updating session and redirecting...");
@@ -38,25 +35,21 @@ export function OnBoarding() {
         router.push("/vacancies");
       } else {
         console.error("Server returned error:", result?.error);
-        alert(
-          "Ошибка при сохранении: " + (result?.error || "Неизвестная ошибка"),
-        );
       }
     } catch (err) {
       console.error("Client-side error:", err);
-      alert("Произошла ошибка при отправке данных.");
     }
   };
 
   return (
     <div className="flex flex-col w-full min-h-full overflow-x-hidden">
-      <OnboardingProgress step={step} />
+      <OnboardingProgress totalSteps={6} currentStep={step} />
       <div className="flex-1">
         {step === 1 && <Step1Identity />}
         {step === 2 && <Step2Personal />}
         {step === 3 && <Step3JobPreferences />}
         {step === 4 && <Step4Experience />}
-        {step === 5 && <Step5SelectMode />}
+        {step === 5 && <Step5SelectMode name="employmentType" />}
         {step === 6 && <Step6SearchMode />}
         {step === 6 && (
           <div className="w-full justify-center flex pt-4">

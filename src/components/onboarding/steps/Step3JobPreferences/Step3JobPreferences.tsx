@@ -3,14 +3,14 @@ import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { step3Schema, Step3Values } from "../../schemas/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
-import { FormNavigation } from "./parts/FormNavigation";
 import { JobSelectionList } from "./parts/JobSelectionList";
 import { StickySearchBar } from "./parts/StickySearchBar";
 import { useJobSelection } from "./hooks/useJobSelection";
 import { SelectedJobList } from "./parts/SelectedJobList";
 import { useStickyObserver } from "./hooks/useStickyObserver";
-import { ArrowLeft } from "lucide-react";
+import { FormWrapper } from "@/src/components/shared/FormWrapper";
+import { FormNavigation } from "@/src/components/shared/FormNavigation";
+import { HeaderSection } from "./parts/HeaderSection";
 
 export function Step3JobPreferences() {
   const { formData, nextStep, updatedFields, prevStep } = useOnboardingStore();
@@ -41,71 +41,25 @@ function Step3Content({
   onSubmit,
   prevStep,
 }: {
-  onSubmit: any;
-  prevStep: any;
+  onSubmit: (data: Step3Values) => void;
+  prevStep: () => void;
 }) {
   const {
     handleSubmit,
-    formState: { isValid },
+    formState: { isValid, errors, isSubmitting },
     watch,
-  } = useFormContext();
+  } = useFormContext<Step3Values>();
 
   const initialData = watch("desiredJob") || [];
   const { joobs, query, selectProfession, setQuery } =
     useJobSelection(initialData);
+  const hasError = !!errors.desiredJob || !isValid;
 
-  const { isSticky, sentinelRef, setIsSticky } = useStickyObserver({ joobs });
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsSticky(!entry.isIntersecting);
-      },
-      {
-        threshold: [0],
-        rootMargin: "0px 0px 0px 0px",
-      },
-    );
-    if (sentinelRef.current) {
-      observer.observe(sentinelRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [joobs]);
+  const { isSticky, sentinelRef } = useStickyObserver({ joobs });
 
   return (
-    <form
-      className="flex flex-col relative bg-[#ffff] shadow-sm 
-      lg:rounded-lg lg:max-w-[456px]
-      md:max-w-[600px]
-      max-sm:rounded-none 
-      "
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <button
-        type="button"
-        className="
-            absolute cursor-pointer text-blue-600 top-4 left-2
-            max-sm:top-6 sm:top-6
-            md:hidden
-            "
-        onClick={() => prevStep()}
-      >
-        <span className="flex flex-row">
-          <ArrowLeft />
-          Back
-        </span>
-      </button>
-      <div
-        className="flex flex-col pt-8 px-6 shrink-0 gap-3 mb-2
-      max-sm:mt-6 sm:mt-5
-      "
-      >
-        <label className="text-2xl font-bold cursor-text md:text-3xl">
-          What job are you looking for?
-        </label>
-        <span className="text-[17px]">Up to 20 keywords</span>
-      </div>
+    <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+      <HeaderSection />
 
       <SelectedJobList
         joobs={joobs}
@@ -115,13 +69,14 @@ function Step3Content({
       {joobs.length === 0 && <div ref={sentinelRef} className="h-px w-full" />}
 
       <StickySearchBar isSticky={isSticky} query={query} setQuery={setQuery} />
-      <JobSelectionList
-        joobs={joobs}
-        query={query}
-        selectProfession={selectProfession}
-      />
+      <JobSelectionList name="desiredJob" />
 
-      <FormNavigation isValid={isValid} data={joobs} prevStep={prevStep} />
-    </form>
+      <FormNavigation
+        isError={hasError}
+        variant="registration"
+        isSubmitting={isSubmitting}
+        onBack={prevStep}
+      />
+    </FormWrapper>
   );
 }

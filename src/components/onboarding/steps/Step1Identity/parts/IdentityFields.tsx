@@ -1,5 +1,5 @@
 "use client";
-import { FormField } from "@/src/components/ui/formInput";
+import { FormField } from "@/src/components/ui/FormField";
 import { useFormContext } from "react-hook-form";
 
 export function IdentityFields() {

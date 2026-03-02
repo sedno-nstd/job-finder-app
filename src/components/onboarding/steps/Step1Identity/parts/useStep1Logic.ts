@@ -8,6 +8,7 @@ import { useUploadThing } from "@/src/utils/uploadthing";
 export function useStep1Logic() {
   const { updatedFields, nextStep, formData } = useOnboardingStore();
   const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState(false);
 
   const methods = useForm<Step1Values>({
     mode: "onChange",
@@ -52,6 +53,7 @@ export function useStep1Logic() {
           resume: null,
           continueWithoutResume: true,
         });
+        setError(false);
         setIsUploading(false);
         nextStep();
         return;
@@ -78,7 +80,8 @@ export function useStep1Logic() {
       await startUpload([file]);
     } catch (err: any) {
       console.log(err);
+      setError(true);
     }
   };
-  return { methods, isUploading, onSubmit: handleSubmit(onSubmit) };
+  return { methods, isUploading, onSubmit: handleSubmit(onSubmit), error };
 }
