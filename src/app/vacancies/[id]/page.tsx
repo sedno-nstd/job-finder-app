@@ -1,5 +1,5 @@
 import VacancyDetails from "@/src/components/vacancy/details/VacancyDetails";
-import { GetVacancies } from "@/src/actions/getVacancies";
+import { GetVacancies } from "@/src/actions/vacancies/getVacancies";
 
 export default async function Page({
   params,

@@ -1,14 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import { VacancyList } from "@/src/components/vacancy/list/VacancyList";
-import { useVacancies } from "@/src/utils/useVacancies";
+import { useVacancies } from "@/src/hooks/vacancy/useVacancies";
 import { useSearchStore } from "@/src/store/useSearchStore";
-import { useUserLocation } from "@/src/hooks/useUserLocation";
+import { useUserLocation } from "@/src/hooks/user/useUserLocation";
 import { SearchHeader } from "@/src/components/search/SearchControls/SearchHeader";
 import { GetAllVacancies } from "@/src/actions/GetAllVacancies";
+import { Vacancy } from "@/src/config/types";
 
 export default function VacanciesPage() {
-  const [vacancies, setVacansies] = useState([]);
+  const [vacancies, setVacansies] = useState<Vacancy[]>([]);
   const [loading, setLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(5);
   const { location: userCoords, getLocation } = useUserLocation();
@@ -25,7 +26,7 @@ export default function VacanciesPage() {
     const fetchData = async () => {
       try {
         const data = await GetAllVacancies();
-        setVacansies(data as any);
+        setVacansies(data);
         setLoading(false);
         if (!data) throw new Error();
       } catch (err) {

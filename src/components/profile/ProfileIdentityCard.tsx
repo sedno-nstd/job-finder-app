@@ -1,4 +1,4 @@
-import { useAvatarUpload } from "@/src/hooks/useAvatarUpload";
+import { useAvatarUpload } from "@/src/hooks/user/useAvatarUpload";
 import { useUserState } from "@/src/store/useUserState";
 import { useUploadThing } from "@/src/utils/uploadthing";
 import { PencilIcon } from "lucide-react";

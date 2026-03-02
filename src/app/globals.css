@@ -27,6 +27,16 @@ body {
 body {
   height: 100%;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 @theme {
   --color-main: var(--color-text-main);
   --color-secondary: var(--color-text-secondary);

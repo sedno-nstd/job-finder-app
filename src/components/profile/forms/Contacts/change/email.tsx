@@ -47,6 +47,7 @@ export function EmailSection() {
   return (
     <div className="max-w-[448px] w-full bg-white rounded-lg mt-10">
       <FormWrapper
+        className="py-6"
         onSubmit={handleSubmit(onSubmit)}
         label="Specify new Email"
         buttonText="Save"

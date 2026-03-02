@@ -1,5 +1,5 @@
 "use client";
-import { useAvatarUpload } from "@/src/hooks/useAvatarUpload";
+import { useAvatarUpload } from "@/src/hooks/user/useAvatarUpload";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { Camera, PlusIcon, Trash2 } from "lucide-react";
 import { useRef } from "react";

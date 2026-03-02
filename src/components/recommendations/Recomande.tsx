@@ -2,7 +2,7 @@
 import { OnboardingData } from "@/src/types/user";
 import { useEffect, useState } from "react";
 import { VacancyList } from "../vacancy/list/VacancyList";
-import { useRecommendation } from "@/src/hooks/useRecomendation";
+import { useRecommendation } from "@/src/hooks/vacancy/useRecomendation";
 import { useRecommendationStore } from "@/src/store/useRecomandeStorage";
 import { vacancies } from "@/src/domain/vacancy/types";
 import { getFullUserData } from "@/src/actions/getFullUserData";
