@@ -17,6 +17,6 @@ export const employerRegistrationData = [
   {
     value: "companyName",
     label: "Company legal name",
-    placeholder: "IE John Doe",
+    placeholder: "Example: Global Tech Solutions",
   },
 ];

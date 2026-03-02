@@ -7,14 +7,15 @@ import {
   EmployerRegistrationValue,
 } from "./schema/type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createEmployer } from "@/src/actions/createEmployer";
+import { createEmployer } from "@/src/actions/employer/createEmployer";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import { signIn } from "next-auth/react";
 
-export function Registration() {
+export function EmployerRegistration() {
   const methods = useForm<EmployerRegistrationValue>({
     resolver: zodResolver(EmployerRegistrationSchema),
     mode: "onChange",
@@ -33,7 +34,20 @@ export function Registration() {
   const onSubmit = async (data: EmployerRegistrationValue) => {
     try {
       await createEmployer(data as any);
+
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        console.error("Login failed after registration", result.error);
+        return;
+      }
+
       setIsSuccess(true);
+
       setTimeout(() => {
         router.push("/vacancies");
       }, 1500);
