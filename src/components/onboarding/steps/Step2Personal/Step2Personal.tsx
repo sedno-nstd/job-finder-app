@@ -53,7 +53,7 @@ export function Step2Personal() {
           <Birthday />
           <LocationSection />
           <RelocationSection />
-          <Step2Nvaigation prevStep={prevStep} isValid={isValid} />
+          <Step2Nvaigation prevStep={prevStep} />
         </FormWrapper>
       </FormProvider>
     </div>

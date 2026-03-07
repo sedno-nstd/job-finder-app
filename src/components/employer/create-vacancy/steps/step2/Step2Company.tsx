@@ -5,8 +5,9 @@ import { useEmployerVacancyStore } from "@/src/store/employer/useEmployerVacancy
 import { FormNavigation } from "@/src/components/shared/FormNavigation";
 import { FormField } from "@/src/components/ui/FormField";
 import { SearchSuggestions } from "@/src/components/ui/SearchSuggestions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fieldsConfig } from "./constans/type";
+import { useSession } from "next-auth/react";
 
 interface Props {
   className?: string;
@@ -14,6 +15,7 @@ interface Props {
 
 export function Step2Company({ className }: Props) {
   const { formData, prevStep, nextStep } = useEmployerVacancyStore();
+  const session = useSession();
 
   const {
     register,
@@ -23,22 +25,31 @@ export function Step2Company({ className }: Props) {
     formState: { errors, isValid },
   } = useFormContext();
 
-  const [isOpen, setIsOpen] = useState<"company" | "city" | "country" | "">("");
-  const handleOpen = (value: "company" | "city" | "country" | "") => {
+  const [isOpen, setIsOpen] = useState<"city" | "country" | "">("");
+  const handleOpen = (value: "city" | "country" | "") => {
     setIsOpen(value);
   };
 
   const isRemote = formData.employmentType === "remote";
 
   const handleNext = async () => {
-    const isValid = await trigger(["company", "city", "company"]);
+    const isValid = await trigger(["city", "country"]);
     if (isValid) {
       nextStep();
     }
   };
 
+  useEffect(() => {
+    if (session?.data?.user.companyName) {
+      setValue("company", session.data.user.companyName, {
+        shouldValidate: true,
+      });
+    }
+  }, [session, setValue]);
+
   return (
     <FormWrapper
+      onBack={prevStep}
       as="div"
       label={"Company & Workplace"}
       className={clsx(
@@ -46,6 +57,14 @@ export function Step2Company({ className }: Props) {
         className,
       )}
     >
+      <div className="flex flex-col mb-6">
+        <FormField
+          value={session?.data?.user.companyName || "Loading..."}
+          readOnly
+          disabled
+          className="bg-slate-50 border-slate-200 text-slate-500 cursor-not-allowed font-semibold"
+        />
+      </div>
       <div className="flex flex-col gap-6 w-full">
         {fieldsConfig.map((item) => {
           const queryValue = watch(item.name);

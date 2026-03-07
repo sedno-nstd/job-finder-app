@@ -2,7 +2,7 @@ export const ROUTES = {
   HOME: "/",
   AUTH: {
     LOGIN: "/auth/login",
-    REGISTER: "/registration",
+    REGISTER: "/applicantRegistration",
     EMPLOYER_REG: "/employerRegistration",
   },
   SEARCH: "/search",
@@ -18,10 +18,14 @@ export const ROUTES = {
     JOB: "/profile/JobExpectations",
   },
   EMPLOYER: {
-    ROOT: "/employer",
-    PROFILE: "/employer/profile",
+    ROOT: "/employerProfile",
+    // PROFILE: "/employer/profile",
     VACANCIES: "/employer/vacancies",
     APPLICANTS: "/employer/applicants",
+    REGISTRATION: "/employerRegistration/registration",
+    LOGIN: "/employerRegistration/login",
+    FORGOTPASSWORD: "/employerRegistration/forgot-password",
+    RESETPASSWORD: "/employerRegistration/reset-password",
   },
   SETTINGS: "/settings",
 } as const;

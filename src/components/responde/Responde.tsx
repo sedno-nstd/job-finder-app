@@ -1,5 +1,5 @@
 "use client";
-import { getRespondVacancies } from "@/src/actions/getRespondVacancies";
+import { getRespondVacancies } from "@/src/actions/applicant/getRespondVacancies";
 import { Vacancy } from "@/src/config/types";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";

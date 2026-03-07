@@ -39,7 +39,7 @@ export function Step1General({ className }: IProps) {
       as="div"
       label={"Role & Requirements"}
       className={clsx(
-        "w-full flex justify-center pb-6 rounded-lg bg-white",
+        "w-full flex justify-center rounded-lg bg-white",
         className,
       )}
     >

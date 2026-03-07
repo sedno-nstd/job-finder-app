@@ -3,6 +3,7 @@ import { Vacancy } from "@/src/config/types";
 import { Clock, MapPin } from "lucide-react";
 import clsx from "clsx";
 import Link from "next/link";
+import { cn } from "@/src/lib/utils";
 
 interface Data {
   applications: string;
@@ -25,15 +26,13 @@ function EmployerVacancyCardComponents({
   views,
 }: VacancyProps) {
   return (
-    <Link href={`/vacancies/${vacancy.id}`} className="block mt-4 w-fit">
-      <div
-        className={clsx(
-          "p-4 w-full rounded-2xl flex flex-col bg-white shadow",
-          VacancyClasses,
-        )}
-      >
+    <Link
+      href={`/vacancies/${vacancy.id}`}
+      className={cn("mt-4 block w-full", VacancyClasses)}
+    >
+      <div className="p-4 rounded-2xl flex flex-col w-full bg-white shadow">
         <div className="flex flex-row justify-between">
-          <span className="text-[#0b64d9] text-2xl font-semibold">
+          <span className="text-[#0b64d9] text-2xl font-semibold w-full max-w-[406px] text-wrap">
             {vacancy.title} ({vacancy.level})
           </span>
         </div>
@@ -76,10 +75,37 @@ function EmployerVacancyCardComponents({
           </span>
         )}
 
-        <div className="w-full border-t border-gray-300 flex flex-row">
-          <div className="flex flex-col">{`Views: ${views}`}</div>{" "}
-          <div className="flex flex-col">{`Applications: ${applications}`}</div>{" "}
-          <div className="flex flex-col">{`The days left: ${expiresAt.toLocaleDateString()}`}</div>{" "}
+        <div className="w-full border-t border-gray-100 pt-4 mt-4 flex flex-row justify-between items-center text-sm">
+          <div className="flex gap-6">
+            <div className="flex flex-col">
+              <span className="text-gray-400 text-[10px] uppercase tracking-wider font-bold">
+                Views
+              </span>
+              <span className="text-slate-700 font-semibold text-lg">
+                {views}
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-gray-400 text-[10px] uppercase tracking-wider font-bold">
+                Applications
+              </span>
+              <span className="text-blue-600 font-semibold text-lg">
+                {applications}
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-col items-end">
+            <span className="text-gray-400 text-[10px] uppercase tracking-wider font-bold">
+              Expires
+            </span>
+            <span className="text-slate-600 font-medium">
+              {new Date(expiresAt).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "short",
+              })}
+            </span>
+          </div>
         </div>
       </div>
     </Link>

@@ -9,10 +9,20 @@ export type JobLocation = (typeof jobLocations)[number];
 
 const companies = ["Acme", "Globex", "Umbrella", "Initech"];
 const levels = ["intern", "junior", "middle", "senior"] as const;
-const stacks = [
-  ["React", "TypeScript"],
-  ["Node", "Express"],
-  ["Vue", "JavaScript"],
+
+export const stacks = [
+  ["React", "TypeScript", "Next.js", "Vue", "Angular", "Svelte", "JavaScript"],
+  [
+    "Node.js",
+    "Express",
+    "NestJS",
+    "PostgreSQL",
+    "MongoDB",
+    "Prisma",
+    "Drizzle",
+  ],
+  ["Docker", "Git", "Nginx", "Firebase", "AWS", "Vercel", "GraphQL"],
+  ["React Native", "Flutter", "Electron"],
 ];
 
 const RANDOM_DESCRIPTIONS = [

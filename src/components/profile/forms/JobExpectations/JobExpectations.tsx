@@ -2,7 +2,7 @@
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { saveOnboardingData } from "@/src/actions/onboarding";
+import { saveOnboardingData } from "@/src/actions/applicant/onboarding";
 import {
   CURRENCY_OPTIONS,
   PERIOD_OPTIONS,

@@ -1,5 +1,5 @@
 "use server";
-
+import { JobLevel } from "../config/types";
 import { EmploymentTypeId } from "../domain/vacancy/mock";
 
 export async function GetAllVacancies() {
@@ -13,10 +13,10 @@ export async function GetAllVacancies() {
 
   return vacancies.map((v) => ({
     ...v,
-    level: v.level ? v.level.split(",") : [],
+    level: (v.level ? v.level.split(",") : []) as JobLevel[],
     stack: v.stack ? v.stack.split(",") : [],
     currency: v.currency as "USD" | "UAH" | "EUR",
     salaryPeriod: v.salaryPeriod as "hour" | "month",
-    jobLocation: v.jobLocation as EmploymentTypeId,
+    employmentType: v.employmentType as EmploymentTypeId,
   }));
 }

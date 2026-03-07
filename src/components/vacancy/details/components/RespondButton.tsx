@@ -1,9 +1,9 @@
 "use client";
-import { RespondCreate } from "@/src/actions/chat";
+import { RespondCreate } from "@/src/actions/common/chat";
 import {
   DeleteResponde,
   hasUserApplied,
-} from "@/src/actions/getRespondVacancies";
+} from "@/src/actions/applicant/getRespondVacancies";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 

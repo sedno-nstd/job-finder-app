@@ -11,11 +11,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createVacancyAction,
   CreateVacancyInput,
-} from "@/src/actions/employer/createVacancy";
+} from "@/src/actions/employer/vacancies/createVacancy";
 import { FormNavigation } from "../../shared/FormNavigation";
 import { useRouter } from "next/navigation";
+import { updateVacancy } from "@/src/actions/employer/vacancies/updateVacancy";
+import { ROUTES } from "@/src/config/router";
 
-export function EmployerVacancyForm() {
+interface Props {
+  initialData?: any;
+}
+
+export function EmployerVacancyForm({ initialData }: Props) {
   const { step, reset, prevStep } = useEmployerVacancyStore();
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState<boolean>(false);
@@ -25,7 +31,7 @@ export function EmployerVacancyForm() {
   const methods = useForm<VacancyFormValues>({
     mode: "onChange",
     resolver: zodResolver(vacancySchema),
-    defaultValues: {
+    defaultValues: initialData || {
       negotiable: false,
       currency: "USD",
       salaryPeriod: "month",
@@ -53,15 +59,22 @@ export function EmployerVacancyForm() {
           data.negotiable || !data.salaryTo ? null : Number(data.salaryTo),
         city: data.city || null,
 
-        level: data.level.join(","),
-        stack: data.stack.join(","),
-        employmentType: data.employmentType.map((t: any) => t.id).join(","),
+        level: data.level.join(", "),
+        stack: data.stack.join(", "),
+        employmentType: data.employmentType.map((t: any) => t.id).join(", "),
       };
 
-      const result = await createVacancyAction(formattedData);
-      router.push("/employer");
-      if (!result) throw new Error("Failed");
+      if (initialData?.id) {
+        await updateVacancy({
+          id: initialData.id,
+          ...(formattedData as any),
+        });
+      } else {
+        await createVacancyAction(formattedData as CreateVacancyInput);
+      }
+
       reset();
+      router.push(ROUTES.EMPLOYER.ROOT);
     } catch (err) {
       console.error(err);
       setError(true);
@@ -88,28 +101,17 @@ export function EmployerVacancyForm() {
         <OnboardingProgress currentStep={step} totalSteps={3} />
         {step === 1 && (
           <div className="max-w-[448px] w-full flex justify-center items-center">
-            <Step1General className="px-8" />
+            <Step1General className="px-8 py-6" />
           </div>
         )}
         {step === 2 && (
           <div className="max-w-[448px] w-full flex justify-center items-center">
-            <Step2Company className="px-8" />
+            <Step2Company className="px-8 py-6" />
           </div>
         )}
         {step === 3 && (
-          <div className="w-full flex flex-col max-w-[448px]">
-            <div className="bg-white pb-5 rounded-lg">
-              <div className="w-full h-full flex justify-center items-center">
-                <Step3Conditions className="px-8" />
-              </div>
-              <FormNavigation
-                firstButtonClasses="-mt-6 px-10"
-                variant="registration"
-                onBack={prevStep}
-                isSubmitting={isSubmitting}
-                isError={error}
-              />
-            </div>
+          <div className="flex justify-center">
+            <Step3Conditions isSubmitting={isSubmitting} error={error} />
           </div>
         )}
       </form>

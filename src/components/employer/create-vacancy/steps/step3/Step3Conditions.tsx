@@ -7,12 +7,15 @@ import { SalarySection } from "./steps/SalarySection";
 import { CurrencyPeriod } from "./steps/CurrencyPeriod";
 import { Description } from "./steps/Description";
 import { Negoitable } from "./steps/Negoitable";
+import { FormNavigation } from "@/src/components/shared/FormNavigation";
 
 interface Props {
   className?: string;
+  isSubmitting?: boolean;
+  error?: boolean;
 }
 
-export function Step3Conditions({ className }: Props) {
+export function Step3Conditions({ className, isSubmitting, error }: Props) {
   const { prevStep } = useEmployerVacancyStore();
 
   const { watch, setValue } = useFormContext();
@@ -28,7 +31,7 @@ export function Step3Conditions({ className }: Props) {
   return (
     <FormWrapper
       as="div"
-      className={clsx("", className)}
+      className={clsx("py-8 max-md:py-8", className)}
       onBack={prevStep}
       label="Compensation & Role"
       id="vacancy-step-3"
@@ -37,6 +40,13 @@ export function Step3Conditions({ className }: Props) {
       <CurrencyPeriod />
       <Negoitable isNegotiable={isNegotiable} />
       <Description name="description" />
+      <FormNavigation
+        firstButtonClasses=" px-2"
+        variant="registration"
+        onBack={prevStep}
+        isSubmitting={isSubmitting}
+        isError={error}
+      />
     </FormWrapper>
   );
 }

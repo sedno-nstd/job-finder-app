@@ -1,6 +1,6 @@
 import { JOB_LEVELS } from "@/src/config/searchOptions";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 type jobLevel = (typeof JOB_LEVELS)[keyof typeof JOB_LEVELS];
@@ -13,8 +13,17 @@ export function LevelField({ name }: Props) {
   const [level, setLevel] = useState<jobLevel[]>([]);
   const {
     setValue,
+    watch,
     formState: { errors },
   } = useFormContext();
+
+  const formValue = watch(name);
+
+  useEffect(() => {
+    if (formValue && level.length === 0) {
+      setLevel(formValue);
+    }
+  }, [formValue]);
 
   const handleSelect = (value: jobLevel) => {
     const isSelected = level.some((item) => item === value);

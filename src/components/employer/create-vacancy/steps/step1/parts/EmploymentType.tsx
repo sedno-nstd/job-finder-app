@@ -1,7 +1,7 @@
 import { EMPLOYMENT_TYPES } from "@/src/domain/vacancy/mock";
 import clsx from "clsx";
 import { Check } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 type EmploymentType = (typeof EMPLOYMENT_TYPES)[number];
@@ -11,9 +11,17 @@ interface Props {
 }
 
 export function EmploymentType({ name }: Props) {
-  const { setValue } = useFormContext();
+  const { setValue, watch } = useFormContext();
+
+  const formValue = watch(name);
 
   const [isSelected, setIsSelected] = useState<EmploymentType[]>([]);
+
+  useEffect(() => {
+    if (formValue && isSelected.length === 0) {
+      setIsSelected(formValue);
+    }
+  }, [formValue]);
 
   const handleSelect = (value: EmploymentType) => {
     const alreadySelected = isSelected.some((item) => item.id === value.id);

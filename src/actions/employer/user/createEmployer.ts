@@ -1,6 +1,6 @@
 "use server";
 import bcrypt from "bcrypt";
-import { EmployerRegistration } from "../../types/employer";
+import { EmployerRegistration } from "../../../types/employer";
 
 export async function createEmployer(
   data: Omit<

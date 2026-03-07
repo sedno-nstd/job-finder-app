@@ -50,33 +50,29 @@ export function EmailSection() {
         className="py-6"
         onSubmit={handleSubmit(onSubmit)}
         label="Specify new Email"
-        buttonText="Save"
-        hasButton={true}
-        butttonClasses="h-[40px] px-6 max-w-[400px] w-full"
-        children={
-          <div className="w-full flex justify-center flex-col px-6">
-            <div className="w-full mb-8 px-4 py-4 bg-[#6380a61a] rounded-lg flex justify-start items-center">
-              <div className="flex items-center gap-3 text-main text-sm md:text-base">
-                <InfoIcon size={24} className="text-[#5a6f87] shrink-0" />
-                <p className="font-normal text-base leading-6 font-sans">
-                  Notifications will be sent to your new email
-                </p>
-              </div>
+      >
+        <div className="w-full flex justify-center flex-col px-6">
+          <div className="w-full mb-8 px-4 py-4 bg-[#6380a61a] rounded-lg flex justify-start items-center">
+            <div className="flex items-center gap-3 text-main text-sm md:text-base">
+              <InfoIcon size={24} className="text-[#5a6f87] shrink-0" />
+              <p className="font-normal text-base leading-6 font-sans">
+                Notifications will be sent to your new email
+              </p>
             </div>
-            <input
-              {...register("email")}
-              className="border border-input-border px-3 text-main outline-none rounded-md h-[40px] max-w-[400px] focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20"
-            />
-            {errors.email && (
-              <div>
-                <span className="text-red-500 text-xs mt-1 px-1">
-                  {errors.email.message}
-                </span>
-              </div>
-            )}
           </div>
-        }
-      />
+          <input
+            {...register("email")}
+            className="border border-input-border px-3 text-main outline-none rounded-md h-[40px] max-w-[400px] focus:border-blue-600 focus:ring-4 focus:ring-blue-600/20"
+          />
+          {errors.email && (
+            <div>
+              <span className="text-red-500 text-xs mt-1 px-1">
+                {errors.email.message}
+              </span>
+            </div>
+          )}
+        </div>
+      </FormWrapper>
     </div>
   );
 }

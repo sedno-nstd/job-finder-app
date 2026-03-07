@@ -1,10 +1,9 @@
-import { FormNavigation } from "../../Step3JobPreferences/parts/FormNavigation";
+import { FormNavigation } from "@/src/components/shared/FormNavigation";
 
 interface Props {
   prevStep: () => void;
-  isValid: boolean;
 }
 
-export function Step2Nvaigation({ isValid, prevStep }: Props) {
-  return <FormNavigation isValid={isValid} data={[""]} prevStep={prevStep} />;
+export function Step2Nvaigation({ prevStep }: Props) {
+  return <FormNavigation onBack={prevStep} variant="registration" />;
 }

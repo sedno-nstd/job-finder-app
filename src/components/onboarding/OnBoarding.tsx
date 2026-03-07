@@ -1,5 +1,5 @@
 "use client";
-import { saveOnboardingData } from "@/src/actions/onboarding";
+import { saveOnboardingData } from "@/src/actions/applicant/onboarding";
 import { Step2Personal } from "./steps/Step2Personal/Step2Personal";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { Step3JobPreferences } from "./steps/Step3JobPreferences/Step3JobPreferences";

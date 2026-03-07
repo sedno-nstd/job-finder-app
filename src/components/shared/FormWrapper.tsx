@@ -33,15 +33,15 @@ export function FormWrapper({
       id={id}
       className={clsx(
         "flex flex-col w-full bg-white relative px-6",
-        "sm:max-w-[448px] sm:rounded-lg  sm:my-8",
-        "max-sm:h-full max-sm:shadow-none max-sm:rounded-none max-sm:justify-center",
+        "sm:rounded-lg  sm:h-full",
+        "max-sm:shadow-none max-sm:rounded-none max-sm:my-8",
         className,
       )}
     >
       {onBack && (
         <button
           type="button"
-          className="absolute cursor-pointer text-blue-600 top-4 left-4 max-sm:top-6 sm:top-6 md:hidden"
+          className="absolute cursor-pointer text-blue-600 top-2 left-4 md:hidden  sm:hidden"
           onClick={onBack}
         >
           <span className="flex flex-row items-center gap-1">

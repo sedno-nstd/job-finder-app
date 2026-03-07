@@ -1,7 +1,7 @@
 import { COUNTRY_USER } from "@/src/components/constans/search-data";
 
 export interface IFieldConfig {
-  name: "company" | "city" | "country";
+  name: "city" | "country";
   placeholder: string;
   hasSuggestion: boolean;
   data?: { label: string; value: string }[];
@@ -17,7 +17,6 @@ export const countryData = COUNTRY_USER.map((item) => ({
 }));
 
 export const fieldsConfig: IFieldConfig[] = [
-  { name: "company", placeholder: "Company name", hasSuggestion: false },
   { name: "city", placeholder: "City", hasSuggestion: true, data: cityData },
   {
     name: "country",

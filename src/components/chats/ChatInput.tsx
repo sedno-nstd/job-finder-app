@@ -1,5 +1,5 @@
 "use client";
-import { createMessage } from "@/src/actions/chat";
+import { createMessage } from "@/src/actions/common/chat";
 import { useState } from "react";
 
 export function ChatInput({ chatId, myId }: { chatId: string; myId: string }) {

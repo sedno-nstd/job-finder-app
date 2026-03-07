@@ -11,7 +11,8 @@ export const EMPLOYMENT_TYPES = [
   { id: "remote", label: "Remote" },
   { id: "contract", label: "Contract / Freelance" },
   { id: "internship", label: "Internship" },
-] as const;
+];
+
 export type EmploymentTypeId = (typeof EMPLOYMENT_TYPES)[number]["id"];
 
 export const locationPool = COUNTRY_USER.flatMap((c) =>

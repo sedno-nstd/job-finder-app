@@ -11,6 +11,13 @@ export const EmployerRegistrationSchema = z.object({
   companyName: z.string().min(2, "Title is required"),
 });
 
+export const EmployerLoginSchema = EmployerRegistrationSchema.pick({
+  email: true,
+  password: true,
+});
+
+export type EmployerLoginValue = z.infer<typeof EmployerLoginSchema>;
+
 export type EmployerRegistrationValue = z.infer<
   typeof EmployerRegistrationSchema
 >;

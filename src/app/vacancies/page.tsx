@@ -5,7 +5,7 @@ import { useVacancies } from "@/src/hooks/vacancy/useVacancies";
 import { useSearchStore } from "@/src/store/useSearchStore";
 import { useUserLocation } from "@/src/hooks/user/useUserLocation";
 import { SearchHeader } from "@/src/components/search/SearchControls/SearchHeader";
-import { GetAllVacancies } from "@/src/actions/GetAllVacancies";
+import { GetAllVacancies } from "@/src/actions/vacancies/GetAllVacancies";
 import { Vacancy } from "@/src/config/types";
 
 export default function VacanciesPage() {

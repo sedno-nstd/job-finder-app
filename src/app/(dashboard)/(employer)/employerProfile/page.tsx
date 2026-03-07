@@ -1,4 +1,4 @@
-import EmployerPage from "@/src/components/employer/EmployerPage";
+import EmployerPage from "@/src/components/employer/profile/EmployerPage";
 
 export default function Page() {
   return (

@@ -1,7 +1,7 @@
 "use server";
 import { prisma } from "@/lib/prisma";
 import { authConfig } from "@/src/config/auth";
-import { JobLevel, Vacancy } from "@/src/config/types";
+import { JobLevel } from "@/src/config/types";
 import { EmploymentTypeId } from "@/src/domain/vacancy/types";
 import { getServerSession } from "next-auth";
 
@@ -23,6 +23,7 @@ export async function GetVacancies() {
     include: {
       application: {
         select: {
+          createdAt: true,
           id: true,
           status: true,
           applicant: {

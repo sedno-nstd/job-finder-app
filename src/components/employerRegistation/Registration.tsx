@@ -1,5 +1,5 @@
 "use client";
-import { BriefcaseBusiness, ShoppingBag } from "lucide-react";
+import { BriefcaseBusiness } from "lucide-react";
 import { employerRegistrationData } from "./constans/type";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -7,13 +7,14 @@ import {
   EmployerRegistrationValue,
 } from "./schema/type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createEmployer } from "@/src/actions/employer/createEmployer";
+import { createEmployer } from "@/src/actions/employer/user/createEmployer";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { signIn } from "next-auth/react";
+import { FormWrapper } from "../shared/FormWrapper";
 
 export function EmployerRegistration() {
   const methods = useForm<EmployerRegistrationValue>({
@@ -52,16 +53,18 @@ export function EmployerRegistration() {
         router.push("/vacancies");
       }, 1500);
     } catch (error) {
+      setIsSuccess(false);
       console.error("Registration failed", error);
     }
   };
+
   return (
-    <form
+    <FormWrapper
       onSubmit={handleSubmit(onSubmit)}
       className="w-full rounded-lg p-8 flex flex-col justify-center items-center bg-white"
     >
-      <div className="p-4 flex flex-row items-center mb-6 bg-[#e9f3fe] rounded-xl border border-blue-100">
-        <div className="flex-shrink-0">
+      <div className="p-4 flex flex-col sm:flex-row items-center sm:items-start mb-6 bg-[#e9f3fe] rounded-xl border border-blue-100">
+        <div className="flex-shrink-0 mb-3 sm:mb-0 sm:mr-4">
           <BriefcaseBusiness
             size={24}
             strokeWidth={2}
@@ -69,11 +72,11 @@ export function EmployerRegistration() {
           />
         </div>
 
-        <span className="ml-4 text-[15px] sm:text-base font-medium text-gray-800 leading-tight">
+        <span className="text-sm sm:text-base font-medium text-gray-800 leading-snug text-center sm:text-left">
           This page is for employers. If you are looking for a job —{" "}
           <a
             href="/registration"
-            className="text-blue-600 hover:underline font-semibold transition-all"
+            className="text-blue-600 hover:underline font-semibold transition-all block sm:inline-block mt-2 sm:mt-0"
           >
             go to applicant page
           </a>
@@ -149,6 +152,6 @@ export function EmployerRegistration() {
       >
         {isSuccess ? "Success" : "Complete"}
       </button>
-    </form>
+    </FormWrapper>
   );
 }

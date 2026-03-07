@@ -37,9 +37,9 @@ export function UserSidebar({ className }: Props) {
       className={clsx("justify-start items-center top-full w-full", className)}
     >
       <div className="bg-white flex flex-col py-1 rounded-lg select-none">
-        {links.map((link) => (
+        {links.map((link, index) => (
           <div
-            key={link.href}
+            key={`${link.href}-${index}`}
             className="hover:bg-[#6380a61a] flex flex-row gap-[6px] cursor-pointer p-3"
             onClick={() => router.push(link.href)}
           >

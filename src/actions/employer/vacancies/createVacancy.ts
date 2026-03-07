@@ -1,6 +1,6 @@
 "use server";
 import { prisma } from "@/lib/prisma";
-import { authConfig } from "../../config/auth";
+import { authConfig } from "../../../config/auth";
 import { getServerSession } from "next-auth";
 import { Vacancy } from "@/src/config/types";
 
@@ -19,20 +19,30 @@ export async function createVacancyAction(data: CreateVacancyInput) {
 
   const { ...vacancyData } = data;
 
+  const companyName = session.user.companyName || "";
+
   const expirationDate = new Date();
   expirationDate.setDate(expirationDate.getDate() + 30);
 
   const vacancy = await prisma.vacancy.create({
     data: {
       ...vacancyData,
+      company: companyName,
       level: vacancyData.level,
       stack: vacancyData.stack,
       employmentType: Array.isArray(data.employmentType)
-        ? data.employmentType.map((t) => t.id).join(",")
+        ? data.employmentType.map((t) => t.id).join(", ")
         : data.employmentType,
       employerId: currentUserId,
       expiresAt: expirationDate,
     },
   });
   return vacancy;
+}
+
+export async function incrementViews(vacancyId: string) {
+  return await prisma.vacancy.update({
+    where: { id: vacancyId },
+    data: { views: { increment: 1 } },
+  });
 }

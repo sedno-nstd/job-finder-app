@@ -1,9 +1,9 @@
 "use server";
 import { prisma } from "@/lib/prisma";
-import { JobLevel, Vacancy } from "../config/types";
-import { EmploymentTypeId } from "../domain/vacancy/mock";
+import { JobLevel, Vacancy } from "../../config/types";
+import { EmploymentTypeId } from "../../domain/vacancy/mock";
 import { getServerSession } from "next-auth";
-import { authConfig } from "../config/auth";
+import { authConfig } from "../../config/auth";
 
 export async function getRespondVacancies(userId: string) {
   const applications = await prisma?.application.findMany({
@@ -38,7 +38,7 @@ export async function getRespondVacancies(userId: string) {
       country: vacancy.country || "Unknown",
       level: [vacancy.level as unknown as JobLevel],
       stack: vacancy.stack ? vacancy.stack.split(",") : [],
-      jobLocation: vacancy.jobLocation as EmploymentTypeId,
+      jobLocation: vacancy.employmentType as EmploymentTypeId,
       postedAt: vacancy.postedAt.toISOString(),
     };
   });

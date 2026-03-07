@@ -16,7 +16,7 @@ export function RolePicker() {
     });
 
     if (role === "employer") {
-      router.push(ROUTES.AUTH.EMPLOYER_REG);
+      router.push(ROUTES.EMPLOYER.REGISTRATION);
     } else {
       router.push(ROUTES.AUTH.REGISTER);
     }

@@ -15,30 +15,32 @@ export const JoobleLogo: React.FC<LogoProps> = ({
   const joobleGreen = "#67bb5f";
 
   return (
-    <svg
-      width={width}
-      height={height}
-      viewBox="0 0 108 36"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
-      <text
-        x="0"
-        y="28"
-        style={{
-          fontFamily: '"InterDisplay", "Helvetica", "Arial", sans-serif',
-          fontWeight: 800,
-          fontSize: "30px",
-          letterSpacing: "0px",
-        }}
+    <a href="/vacancies">
+      <svg
+        width={width}
+        height={height}
+        viewBox="0 0 108 36"
+        xmlns="http://www.w3.org/2000/svg"
+        className={className}
       >
-        <tspan fill={joobleBlue}>j</tspan>
-        <tspan fill={joobleGreen}>o</tspan>
-        <tspan fill={joobleGreen}>o</tspan>
-        <tspan fill={joobleBlue}>b</tspan>
-        <tspan fill={joobleBlue}>l</tspan>
-        <tspan fill={joobleBlue}>e</tspan>
-      </text>
-    </svg>
+        <text
+          x="0"
+          y="28"
+          style={{
+            fontFamily: '"InterDisplay", "Helvetica", "Arial", sans-serif',
+            fontWeight: 800,
+            fontSize: "30px",
+            letterSpacing: "0px",
+          }}
+        >
+          <tspan fill={joobleBlue}>j</tspan>
+          <tspan fill={joobleGreen}>o</tspan>
+          <tspan fill={joobleGreen}>o</tspan>
+          <tspan fill={joobleBlue}>b</tspan>
+          <tspan fill={joobleBlue}>l</tspan>
+          <tspan fill={joobleBlue}>e</tspan>
+        </text>
+      </svg>
+    </a>
   );
 };

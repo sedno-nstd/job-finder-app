@@ -38,6 +38,9 @@ model Employer {
   phone String 
   companyName String @unique
 
+  resetToken        String?   @unique
+  resetTokenExpiry  DateTime?
+
   vacancies Vacancy[]
 
   createdAt DateTime @default(now())
@@ -202,9 +205,22 @@ model Vacancy {
   employmentType String  
   postedAt    DateTime @default(now())
   expiresAt   DateTime
+  views       Int @default(0)
+  employerId  String
 
-  employerId    String
+  viewLogs      ViewLog[]
   employer      Employer          @relation(fields: [employerId], references: [id])
-  application Application[]
-  conversation Conversation[]
+  application   Application[]
+  conversation  Conversation[]
+}
+
+model ViewLog {
+  id        String   @id @default(cuid())
+  userIp    String
+  createdAt DateTime @default(now())
+
+  vacancyId String
+  vacancy   Vacancy  @relation(fields: [vacancyId], references: [id], onDelete: Cascade) // Связь + удаление
+
+  @@unique([vacancyId, userIp]) 
 }

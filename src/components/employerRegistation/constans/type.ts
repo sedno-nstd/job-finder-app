@@ -20,3 +20,8 @@ export const employerRegistrationData = [
     placeholder: "Example: Global Tech Solutions",
   },
 ];
+
+export const EmployerLoginData = [
+  { name: "email", label: "Email", placeholder: "HR@company.com" },
+  { name: "password", label: "Password", placeholder: "*****" },
+];
