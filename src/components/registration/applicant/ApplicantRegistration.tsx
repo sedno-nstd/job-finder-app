@@ -1,8 +1,9 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { Suspense } from "react";
 
-export default function ApplicantRegistration() {
+function RegistrationForm() {
   const searchParams = useSearchParams();
   const role = searchParams.get("role") || "applicant";
 
@@ -55,5 +56,13 @@ export default function ApplicantRegistration() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ApplicantRegistration() {
+  return (
+    <Suspense fallback={<div className="text-center mt-20">Loading...</div>}>
+      <RegistrationForm />
+    </Suspense>
   );
 }
