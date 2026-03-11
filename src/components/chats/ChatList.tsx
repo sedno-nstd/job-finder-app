@@ -32,7 +32,7 @@ export function ChatList({ chats, userId }: ChatListProps) {
                 href={`/chats?id=${chat.id}`}
                 className={clsx(
                   "w-full flex h-[72px] items-center p-4 border-b border-[#6380a61a] transition-colors",
-                  isActive ? "bg-blue-50/60" : "hover:bg-gray-50"
+                  isActive ? "bg-blue-50/60" : "hover:bg-gray-50",
                 )}
               >
                 <div className="flex flex-row">

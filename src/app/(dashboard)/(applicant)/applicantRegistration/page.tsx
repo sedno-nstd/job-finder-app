@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 import { EmployerRegistration } from "@/src/components/employerRegistation/Registration";
 import { OnBoarding } from "@/src/components/onboarding/OnBoarding";
 import ApplicantRegistration from "@/src/components/registration/applicant/ApplicantRegistration";
@@ -6,7 +7,7 @@ import { useUserState } from "@/src/store/useUserState";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
-export default function Registration() {
+export default function Page() {
   const searchParams = useSearchParams();
   const role = searchParams.get("role");
 

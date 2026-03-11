@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { ChatList } from "@/src/components/chats/ChatList";
 import { GetChatMessages, UserChats } from "../../../actions/common/chat";
 import { ChatInput } from "@/src/components/chats/ChatInput";
