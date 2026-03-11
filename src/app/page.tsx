@@ -8,8 +8,12 @@ import { LocatioNSearch } from "../components/shared/search/JobSearchForm/Locati
 import { useJobSearch } from "../hooks/useJobSearch";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { ROUTES } from "../config/router";
 
 export default function Home() {
+  const { data } = useSession();
   const [showProfileModal, setShowProfileModal] = useState(false);
   const profileRef = useOutsideClick(() => setShowProfileModal(false));
   const router = useRouter();
@@ -24,11 +28,15 @@ export default function Home() {
     <div className="w-full min-h-screen bg-white">
       <header className="w-full flex flex-row justify-between items-center p-4 md:px-10">
         <JoobleLogo height={80} width={120} />
-        <HeaderNavigation
-          profileRef={profileRef}
-          showProfileModal={showProfileModal}
-          setShowProfileModal={setShowProfileModal}
-        />
+        {data?.user ? (
+          <HeaderNavigation
+            profileRef={profileRef}
+            showProfileModal={showProfileModal}
+            setShowProfileModal={setShowProfileModal}
+          />
+        ) : (
+          <Link href={ROUTES.AUTH.REGISTER}>Enter</Link>
+        )}
       </header>
 
       <main className="w-full flex flex-col items-center pt-[80px] md:pt-[160px] px-6 pb-[100px]">
