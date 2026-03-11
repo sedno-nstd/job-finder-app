@@ -6,8 +6,9 @@ import ApplicantRegistration from "@/src/components/registration/applicant/Appli
 import { useUserState } from "@/src/store/useUserState";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function Page() {
+function RegistrationContent() {
   const searchParams = useSearchParams();
   const role = searchParams.get("role");
 
@@ -23,4 +24,18 @@ export default function Page() {
   }
 
   return <ApplicantRegistration />;
+}
+
+export default function Page() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <RegistrationContent />
+    </Suspense>
+  );
 }

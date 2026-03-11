@@ -1,10 +1,8 @@
 "use client";
-export const dynamic = "force-dynamic";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { Suspense } from "react";
 
-function RegistrationForm() {
+export default function ApplicantRegistration() {
   const searchParams = useSearchParams();
   const role = searchParams.get("role") || "applicant";
 
@@ -57,13 +55,5 @@ function RegistrationForm() {
         </div>
       </div>
     </div>
-  );
-}
-
-export default function ApplicantRegistration() {
-  return (
-    <Suspense fallback={<div className="text-center mt-20">Loading...</div>}>
-      <RegistrationForm />
-    </Suspense>
   );
 }
