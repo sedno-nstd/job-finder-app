@@ -2,7 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/src/config/auth";
-import { MainUserData } from "../types/user";
+import { MainUserData } from "@/src/types/user";
 
 const mapCreate = (arr: string[]) => ({
   create: arr.map((name) => ({ name })) || [],
@@ -39,6 +39,8 @@ export async function saveOnboardingData(fullData: MainUserData) {
     resumeUrl: typeof resume === "string" ? resume : resume?.url || null,
   };
 
+  const { id: _i, userId: _u, ...cleanData } = finalFields as any;
+
   try {
     await prisma.user.update({
       where: { id: userId },
@@ -47,14 +49,14 @@ export async function saveOnboardingData(fullData: MainUserData) {
         detailInfo: {
           upsert: {
             update: {
-              ...finalFields,
+              ...cleanData,
               isCompleted: true,
               relocationLocations: mapUpdate(relocationLocations),
               desiredJob: mapUpdate(desiredJob),
               employmentType: mapUpdate(employmentType),
             },
             create: {
-              ...finalFields,
+              ...cleanData,
               isCompleted: true,
               relocationLocations: mapCreate(relocationLocations),
               desiredJob: mapCreate(desiredJob),
@@ -64,9 +66,9 @@ export async function saveOnboardingData(fullData: MainUserData) {
         },
       },
     });
-  } catch (error: any) {
-    console.error("CRITICAL_DB_ERROR:", error);
-    return { success: false, error: error.message };
+  } catch (err) {
+    console.error(err);
+    return { success: false, error: err };
   }
   return { success: true };
 }

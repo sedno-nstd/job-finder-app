@@ -38,7 +38,7 @@ export function SearchSuggestions({
       {isOpen && isShowOptions && (
         <div
           className={clsx(
-            "absolute top-full mt-1 z-10  flex-col w-full flex items-center bg-white",
+            "absolute top-full mt-1 z-50  flex-col w-full flex items-center bg-white",
             className && query.length > 0 && "border-gray-300 border-[0.5] ",
           )}
         >

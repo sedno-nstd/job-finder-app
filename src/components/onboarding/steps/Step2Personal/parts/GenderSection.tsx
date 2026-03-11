@@ -42,7 +42,7 @@ export function GenderSection() {
         ))}
       </div>
       {errors.gender && (
-        <span className="text-md text-red-50 flex items-center">
+        <span className="text-md text-red-500 flex items-center">
           {errors.gender?.message}
         </span>
       )}

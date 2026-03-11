@@ -18,8 +18,8 @@ export function SelectedJobList({
       {joobs.length > 0 && (
         <div
           className={clsx(
-            "w-full flex-wrap flex px-6 shrink-0",
-            joobs.length > 1 && "min-h-[40px]"
+            "w-full flex-wrap flex shrink-0",
+            joobs.length > 1 && "min-h-[40px]",
           )}
         >
           {joobs.map((job, index) => {
@@ -29,7 +29,7 @@ export function SelectedJobList({
                 <button
                   className={clsx(
                     "sm:text-sm max-sm:text-sm",
-                    selectButtons(isSelected)
+                    selectButtons(isSelected),
                   )}
                   type="button"
                   onClick={() => selectProfession(job)}

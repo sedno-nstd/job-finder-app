@@ -12,6 +12,7 @@ export function Step1Identity() {
     <div className="w-full min-h-screen flex justify-center items-start text-[#2d3540] duration-200 transition-all">
       <FormProvider {...methods}>
         <FormWrapper
+          as="form"
           onSubmit={onSubmit}
           label="Log in or create a profile in a way convenient for you"
           className="max-w-[448px] bg-white mt-10 px-6 py-6"

@@ -15,7 +15,7 @@ export const JoobleLogo: React.FC<LogoProps> = ({
   const joobleGreen = "#67bb5f";
 
   return (
-    <a href="/vacancies">
+    <a href="/">
       <svg
         width={width}
         height={height}

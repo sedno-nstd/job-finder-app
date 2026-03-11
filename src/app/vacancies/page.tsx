@@ -39,7 +39,7 @@ export default function VacanciesPage() {
 
   if (loading) return <div>Loading vacancy page</div>;
   return (
-    <>
+    <div className="w-full h-full">
       <SearchHeader getLocation={getLocation} />
       <div className="pt-3">
         <VacancyList
@@ -51,6 +51,6 @@ export default function VacanciesPage() {
           setVisibleCount={setVisibleCount}
         />
       </div>
-    </>
+    </div>
   );
 }

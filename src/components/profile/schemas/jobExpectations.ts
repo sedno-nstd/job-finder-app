@@ -16,6 +16,7 @@ export const SalarySchema = z
       ctx.addIssue({
         code: "custom",
         message: "To much salary",
+        path: ["amount"],
       });
     }
   });

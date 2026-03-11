@@ -1,6 +1,7 @@
 import { EMPLOYMENT_TYPES } from "@/src/domain/vacancy/mock";
 import clsx from "clsx";
 import { Check } from "lucide-react";
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 type DisplayVariant = "grid" | "list";
@@ -8,9 +9,14 @@ type DisplayVariant = "grid" | "list";
 interface Props {
   name: string;
   variant?: DisplayVariant;
+  className?: string;
 }
 
-export function EmploymentTypeGroup({ name, variant = "grid" }: Props) {
+export function EmploymentTypeGroup({
+  name,
+  variant = "grid",
+  className,
+}: Props) {
   const {
     setValue,
     watch,
@@ -21,17 +27,17 @@ export function EmploymentTypeGroup({ name, variant = "grid" }: Props) {
   const error = errors[name]?.message as string;
 
   const handleSelect = (item: any) => {
-    const isAlreadySelected = selectedValues.some((v: any) => v.id === item.id);
+    const isAlreadySelected = selectedValues.includes(item.id);
 
     const updated = isAlreadySelected
-      ? selectedValues.filter((v: any) => v.id !== item.id)
-      : [...selectedValues, item];
+      ? selectedValues.filter((id: string) => id !== item.id)
+      : [...selectedValues, item.id];
 
     setValue(name, updated, { shouldValidate: true });
   };
 
   return (
-    <div className="w-full">
+    <div className={clsx("w-full", className)}>
       <div
         className={clsx(
           "gap-4",
@@ -41,7 +47,7 @@ export function EmploymentTypeGroup({ name, variant = "grid" }: Props) {
         )}
       >
         {EMPLOYMENT_TYPES.map((item) => {
-          const isChecked = selectedValues.some((v: any) => v.id === item.id);
+          const isChecked = selectedValues.includes(item.id);
 
           return (
             <div

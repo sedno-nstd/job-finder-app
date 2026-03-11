@@ -16,6 +16,7 @@ export function Sidebar() {
 
   const user = session?.user;
   const userRole = (user as any)?.role;
+  console.log("DEBUG: Current User Role:", userRole);
 
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showRolePicker, setShowRolePicker] = useState(false);

@@ -1,16 +1,17 @@
 "use client";
 import { FormProvider, useForm } from "react-hook-form";
-import { IdentityFields } from "../../onboarding/steps/Step1Identity/parts/IdentityFields";
-import { Birthday } from "../../onboarding/steps/Step2Personal/parts/Birthday";
-import { GenderSection } from "../../onboarding/steps/Step2Personal/parts/GenderSection";
-import { LocationSection } from "../../onboarding/steps/Step2Personal/parts/LocationSection";
-import { RelocationSection } from "../../onboarding/steps/Step2Personal/parts/RelocationSection";
+import { IdentityFields } from "../../../onboarding/steps/Step1Identity/parts/IdentityFields";
+import { Birthday } from "../../../onboarding/steps/Step2Personal/parts/Birthday";
+import { GenderSection } from "../../../onboarding/steps/Step2Personal/parts/GenderSection";
+import { LocationSection } from "../../../onboarding/steps/Step2Personal/parts/LocationSection";
+import { RelocationSection } from "../../../onboarding/steps/Step2Personal/parts/RelocationSection";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
-import { saveOnboardingData } from "@/src/actions/onboarding";
+import { saveOnboardingData } from "@/src/actions/applicant/onboarding";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getFullUserData } from "@/src/actions/getFullUserData";
-import { UploadAvatar } from "../parts/UploadAvatar";
+import { getFullUserData } from "@/src/actions//applicant/getFullUserData";
+import { UploadAvatar } from "./parts/UploadAvatar";
+import { ROUTES } from "@/src/config/router";
 
 export function PersonalData() {
   const { formData, updatedFields } = useOnboardingStore();
@@ -46,9 +47,14 @@ export function PersonalData() {
       const result = await getFullUserData();
 
       if (result.success && result.data) {
-        updatedFields("onBoarding", result.data);
+        const serverOnboarding = result.data.onBoarding;
 
-        methods.reset(result.data);
+        updatedFields("onBoarding", serverOnboarding);
+
+        methods.reset({
+          ...serverOnboarding,
+          resumeUrl: serverOnboarding.resume?.url || null,
+        });
       }
       setIsLoading(false);
     }
@@ -62,9 +68,9 @@ export function PersonalData() {
     };
 
     try {
-      const result = saveOnboardingData(finalData);
-      if ((await result).success) {
-        router.push("profile");
+      const result = await saveOnboardingData(finalData);
+      if (result.success) {
+        router.push(ROUTES.PROFILE.ROOT);
       } else {
         console.log("result.error");
       }

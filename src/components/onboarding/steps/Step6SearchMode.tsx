@@ -1,32 +1,25 @@
+"use client";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { SEARCH_VACANCY_TYPE } from "../constants/jobOptions";
 import { useState } from "react";
 import clsx from "clsx";
-import { ArrowLeft, Check } from "lucide-react";
+import { FormWrapper } from "../../shared/FormWrapper";
+import { Check } from "lucide-react";
 
 export function Step6SearchMode() {
-  const { prevStep, formData, updatedFields } = useOnboardingStore();
+  const { formData, updatedFields } = useOnboardingStore();
   const [selected, setSelected] = useState<string>(
     formData.onBoarding.searchMode || "",
   );
-  const [error, setError] = useState<boolean | null>(null);
 
   return (
-    <div className="w-full h-full flex justify-center items-start">
-      <div className="relative flex flex-col max-w-[448px] text-main py-8 px-6 rounded-lg bg-white">
-        <button
-          type="button"
-          className="
-            cursor-pointer absolute
-            max-sm:top-6 max-sm:left-6 
-            sm:top-3 sm:left-3
-            "
-          onClick={() => prevStep()}
-        >
-          <ArrowLeft size={26} className="text-blue-600" />
-        </button>
+    <FormWrapper
+      className="w-full h-full flex justify-center items-start"
+      as="form"
+    >
+      <div className="relative flex flex-col max-w-[448px] text-main pt-8 px-6 rounded-lg bg-white">
         <label className="text-2xl font-bold cursor-text mb-5 pt-4">
-          Select searc vacancy type
+          Select search vacancy type
         </label>
         <div className="flex flex-col gap-4 items-start mb-8">
           {SEARCH_VACANCY_TYPE.map((item) => {
@@ -35,11 +28,12 @@ export function Step6SearchMode() {
             return (
               <div
                 className={clsx(
-                  "flex items-start p-4 rounded-lg w-full h-full outline-none",
+                  "flex items-center p-4 rounded-lg justify-between cursor-pointer w-full h-full outline-none",
                   currentMode
                     ? "ring-blue-600 ring-2"
                     : "ring ring-input-border",
                 )}
+                key={item.id}
                 onClick={(e) => {
                   setSelected(newId);
                   e.stopPropagation();
@@ -47,30 +41,30 @@ export function Step6SearchMode() {
                     searchMode: newId,
                   });
                 }}
-                key={item.id}
               >
-                <button className="w-full cursor-pointer h-full text-left flex flex-row justify-center items-center gap-5">
-                  <div>
-                    <span className="text-lg font-semibold">{item.name}</span>
-                    <p className="text-sm">{item.description}</p>
-                  </div>
-                  <div
-                    className={clsx(
-                      "p-1 h-5 w-5 rounded-full flex items-center justify-center",
-                      currentMode ? "bg-blue-500" : "border border-secondary",
-                    )}
-                  >
-                    {currentMode && (
-                      <Check size={12} className="text-white" strokeWidth={4} />
-                    )}
-                  </div>
-                </button>
+                <div>
+                  <span className="text-lg font-semibold">{item.name}</span>
+                  <p className="text-sm max-w-[325px] text-wrap">
+                    {item.description}
+                  </p>
+                </div>
+                <div
+                  className={clsx(
+                    "p-1 h-5 w-5 shrink-0 rounded-full flex items-center border justify-center",
+                    currentMode
+                      ? "bg-blue-500 border border-blue-500"
+                      : "border border-secondary",
+                  )}
+                >
+                  {currentMode && (
+                    <Check size={10} className="text-white" strokeWidth={4} />
+                  )}
+                </div>
               </div>
             );
           })}
         </div>
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
       </div>
-    </div>
+    </FormWrapper>
   );
 }

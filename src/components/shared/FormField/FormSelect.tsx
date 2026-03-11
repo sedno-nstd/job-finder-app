@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { CustomSelect } from "../../ui/CustomSelect";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
 
@@ -10,6 +11,7 @@ interface SharedFormSelect<T extends FieldValues> {
   label: string;
   isOpen: boolean;
   setIsOpen: (val: boolean) => void;
+  className?: string;
 }
 
 export function FormSelect<T extends FieldValues>({
@@ -18,6 +20,7 @@ export function FormSelect<T extends FieldValues>({
   label,
   isOpen,
   setIsOpen,
+  className,
 }: SharedFormSelect<T>) {
   const { setValue, watch } = useFormContext<T>();
 
@@ -34,7 +37,7 @@ export function FormSelect<T extends FieldValues>({
         isOpen={isOpen}
         data={data}
         defaultLabel={label}
-        className="max-w-[194px]"
+        className={clsx("max-w-[194px]", className)}
       />
     </>
   );

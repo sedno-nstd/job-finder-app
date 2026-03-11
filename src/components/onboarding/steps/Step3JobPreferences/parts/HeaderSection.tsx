@@ -1,7 +1,7 @@
 export function HeaderSection() {
   return (
     <div
-      className="flex flex-col pt-8 px-6 shrink-0 gap-3 mb-2
+      className="flex flex-col pt-8  shrink-0 gap-3 mb-2
       max-sm:mt-6 sm:mt-5
       "
     >

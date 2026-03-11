@@ -24,7 +24,9 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 } */
 
-body {
+html,
+body,
+:root {
   height: 100%;
 }
 input::-webkit-outer-spin-button,
@@ -43,6 +45,10 @@ input[type="number"] {
   --color-input-border: var(--color-border-input);
 
   --color-focus-blue: #2563eb;
+
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-400: #9ca3af;
 }
 :root {
   --scrollbar-bg: transparent;

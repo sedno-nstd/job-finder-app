@@ -1,8 +1,8 @@
 "use server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
-import { authConfig } from "../config/auth";
-import { MainUserData, OnboardingData, UserProfile } from "../types/user";
+import { MainUserData, OnboardingData, UserProfile } from "@/src/types/user";
+import { authConfig } from "@/src/config/auth";
 
 export async function getFullUserData() {
   const session = await getServerSession(authConfig);
@@ -12,7 +12,7 @@ export async function getFullUserData() {
 
   try {
     const data = await prisma.detailInfo.findUnique({
-      where: { userId },
+      where: { userId: userId },
       include: {
         desiredJob: true,
         relocationLocations: true,
@@ -30,7 +30,7 @@ export async function getFullUserData() {
       continueWithoutResume: !!data.resumeUrl,
       readyForWorkAbroad: !!data.readyForWorkAbroad,
       readyToRelocate: !!data.readyToRelocate,
-      resume: { name: "", size: "", url: data.resumeUrl },
+      resume: { name: "", size: "", url: data.resumeUrl || "" },
     };
 
     const userProfile: UserProfile = {

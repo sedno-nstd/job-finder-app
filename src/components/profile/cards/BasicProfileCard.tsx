@@ -1,9 +1,10 @@
 import { PencilIcon } from "lucide-react";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 interface Props {
   title: string;
-  information?: string | null | string[];
+  information?: ReactNode;
   step: number;
   href: string;
 }

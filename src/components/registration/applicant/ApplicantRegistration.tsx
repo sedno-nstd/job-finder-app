@@ -7,7 +7,7 @@ export default function ApplicantRegistration() {
   const role = searchParams.get("role") || "applicant";
 
   return (
-    <div className="h-full w-full flex items-center justify-center relative">
+    <div className="h-full w-full flex items-center justify-center relative mt-10">
       <div className="flex flex-col p-8 bg-white shadow-xl rounded-3xl border border-gray-100 w-full max-w-[400px]">
         <h1 className="text-2xl font-bold text-center mb-2">Create Account</h1>
         <p className="text-gray-500 text-center mb-8 text-sm">

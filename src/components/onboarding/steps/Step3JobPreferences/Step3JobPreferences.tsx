@@ -4,7 +4,6 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { step3Schema, Step3Values } from "../../schemas/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { JobSelectionList } from "./parts/JobSelectionList";
-import { StickySearchBar } from "./parts/StickySearchBar";
 import { useJobSelection } from "./hooks/useJobSelection";
 import { SelectedJobList } from "./parts/SelectedJobList";
 import { useStickyObserver } from "./hooks/useStickyObserver";
@@ -29,7 +28,7 @@ export function Step3JobPreferences() {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center text-main">
+    <div className="flex-1 max-w-[448px]  flex items-center justify-center text-main">
       <FormProvider {...methods}>
         <Step3Content onSubmit={onSubmit} prevStep={prevStep} />
       </FormProvider>
@@ -58,7 +57,11 @@ function Step3Content({
   const { isSticky, sentinelRef } = useStickyObserver({ joobs });
 
   return (
-    <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+    <FormWrapper
+      onSubmit={handleSubmit(onSubmit)}
+      className="pb-6 mb-6"
+      as="form"
+    >
       <HeaderSection />
 
       <SelectedJobList
@@ -68,7 +71,6 @@ function Step3Content({
       />
       {joobs.length === 0 && <div ref={sentinelRef} className="h-px w-full" />}
 
-      <StickySearchBar isSticky={isSticky} query={query} setQuery={setQuery} />
       <JobSelectionList name="desiredJob" />
 
       <FormNavigation

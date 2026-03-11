@@ -26,10 +26,7 @@ export function Step2Personal() {
       readyForWorkAbroad: formData.onBoarding.readyForWorkAbroad ?? false,
     },
   });
-  const {
-    handleSubmit,
-    formState: { isValid },
-  } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = (data: Step2Values) => {
     updatedFields("onBoarding", data);
@@ -37,12 +34,13 @@ export function Step2Personal() {
   };
   return (
     <div
-      className="w-full pb-10 min-h-full flex justify-center items-start text-[#2d3540] bg-[#eff2f6]
+      className="w-full max-w-[448px] pb-10 min-h-full flex justify-center items-start text-[#2d3540] bg-[#eff2f6]
     max-sm:jutisy-center max-sm:items-center
     "
     >
       <FormProvider {...methods}>
         <FormWrapper
+          as="form"
           className="py-6"
           label={`Exectly ${formData.onBoarding.firstName}! Tell us a little about
             yourself.`}

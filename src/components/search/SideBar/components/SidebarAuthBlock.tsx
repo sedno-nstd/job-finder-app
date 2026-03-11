@@ -4,6 +4,7 @@ import { RolePicker } from "./RolePicker";
 import { useUserState } from "@/src/store/useUserState";
 import { useRouter } from "next/navigation";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
+import { ROUTES } from "@/src/config/router";
 
 interface AuthProps {
   showRolePicker: boolean;
@@ -31,7 +32,7 @@ export function AuthBlock({ setShowRolePicker, showRolePicker }: AuthProps) {
           className="rounded-lg cursor-pointer py-2 bg-blue-700 text-white font-medium hover:bg-blue-800 transition-all"
           onClick={() => {
             handleCreateProfile();
-            router.push("/registration");
+            router.push(ROUTES.AUTH.REGISTER);
           }}
         >
           Create profile

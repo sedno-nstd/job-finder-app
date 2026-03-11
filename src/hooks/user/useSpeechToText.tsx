@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { useCallback, useState } from "react";
 
 declare global {
   interface Window {
@@ -7,24 +7,35 @@ declare global {
   }
 }
 
-const startListening = () => {
-  const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
+export function useSpeechToText(lang = "en-US") {
+  const [isListening, setIsListening] = useState(false);
 
-  if (!SpeechRecognition) return;
+  const startListening = useCallback(
+    (onResult: (transcript: string) => void) => {
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
 
-  const methods = useFormContext();
+      if (!SpeechRecognition) {
+        console.warn("Speech recognition not supported in this browser.");
+        return;
+      }
 
-  const recognition = new SpeechRecognition();
-  recognition.lang = "en-US";
-  recognition.interimResults = false;
+      const recognition = new SpeechRecognition();
+      recognition.lang = lang;
+      recognition.interimResults = false;
 
-  recognition.onresult = (event: any) => {
-    const transcript = event.results[0][0].transcript;
+      recognition.onstart = () => setIsListening(true);
+      recognition.onend = () => setIsListening(false);
 
-    const currentText = methods.getValues("description");
-    methods.setValue("description", currentText + " " + transcript);
-  };
+      recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        onResult(transcript);
+      };
 
-  recognition.start();
-};
+      recognition.start();
+    },
+    [lang],
+  );
+
+  return { isListening, startListening };
+}

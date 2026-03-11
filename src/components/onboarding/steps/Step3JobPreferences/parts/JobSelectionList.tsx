@@ -39,6 +39,7 @@ export function JobSelectionList({ name }: Props) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         searchIcon={Search}
+        placeholder="Search..."
       />
       <div className="m-2">
         {error && <p className="text-red-500 text-xs">{String(error)}</p>}

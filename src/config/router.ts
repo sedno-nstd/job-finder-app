@@ -16,6 +16,13 @@ export const ROUTES = {
     },
     PERSONAL: "/profile/Personal",
     JOB: "/profile/JobExpectations",
+    SKILLS: "/profile/SkillsOverview",
+    SEARCH_TYPE: "/profile/search-type",
+    DESIRED_JOB: {
+      EDIT: "/profile/desired-job",
+      ADD_WORKED_PLACE: "/profile/desired-job",
+    },
+    EXPIERENCE: "/profile/job-expierence",
   },
   EMPLOYER: {
     ROOT: "/employerProfile",

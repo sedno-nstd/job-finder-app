@@ -15,10 +15,13 @@ interface Props {
 export function Step5SelectMode({ name }: Props) {
   const { updatedFields, formData, nextStep, prevStep } = useOnboardingStore();
   const [error, setError] = useState(false);
+
   const methods = useForm<Step5Values>({
     resolver: zodResolver(step5Schema),
     defaultValues: {
-      employmentType: formData.onBoarding.employmentType || [],
+      employmentType: (formData.onBoarding.employmentType || []).map(
+        (item: any) => (typeof item === "string" ? item : item.id),
+      ),
     },
   });
 
@@ -27,7 +30,7 @@ export function Step5SelectMode({ name }: Props) {
     formState: { errors },
   } = methods;
 
-  const onSubmit = (data: Step5Values) => {
+  const onSubmit = async (data: Step5Values) => {
     try {
       updatedFields("onBoarding", data);
       nextStep();
@@ -41,16 +44,19 @@ export function Step5SelectMode({ name }: Props) {
     <div className="w-full h-full flex items-center text-main justify-center">
       <FormProvider {...methods}>
         <FormWrapper
-          className="py-8"
           onSubmit={handleSubmit(onSubmit)}
-          onBack={prevStep}
-          label={`Your wishes regarding ${(<br />)} employment`}
+          as="form"
+          className="py-8 max-w-[448px]"
+          label={`Your wishes regarding employment`}
         >
-          <label className="text-2xl  font-bold cursor-text pt-3">
-            Your wishes regarding <br /> employment
-          </label>
-          <EmploymentTypeGroup name={name} variant="list" />
-          <FormNavigation variant="registration" isError={error} />
+          <div className="mt-4">
+            <EmploymentTypeGroup name={name} variant="list" />
+          </div>
+          <FormNavigation
+            variant="registration"
+            isError={error}
+            onBack={prevStep}
+          />
         </FormWrapper>
       </FormProvider>
     </div>

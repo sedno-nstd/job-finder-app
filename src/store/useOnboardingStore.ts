@@ -35,7 +35,7 @@ const initialFormData: MainUserData = {
 
     salaryAmount: "",
     salaryCurrency: "USD",
-    salaryPeriod: "Month",
+    salaryPeriod: "month",
 
     aboutMe: "",
     phone: null,

@@ -20,7 +20,7 @@ function VacancyCardComponent({
   VacancyClasses,
 }: VacancyProps) {
   return (
-    <Link href={`/vacancies/${vacancy.id}`} className="block mt-4 w-fit">
+    <Link href={`/vacancies/${vacancy.id}`} className="block mt-4 w-fit w-full">
       <div
         className={clsx(
           "p-4 w-full rounded-2xl flex flex-col bg-white shadow",

@@ -1,12 +1,16 @@
 "use client";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mic } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { AboutSchema, AboutValue } from "../../schemas/About";
-import { saveOnboardingData } from "@/src/actions/onboarding";
+import { saveOnboardingData } from "@/src/actions/applicant/onboarding";
 import { MainUserData } from "@/src/types/user";
 import { useRouter } from "next/navigation";
+import { VoiceTextArea } from "@/src/components/shared/VoiceTextArea";
+import { useState } from "react";
+import { FormWrapper } from "@/src/components/shared/FormWrapper";
+import { FormNavigation } from "@/src/components/shared/FormNavigation";
+import { ROUTES } from "@/src/config/router";
 
 export function SkillsOverview() {
   const { formData } = useOnboardingStore();
@@ -20,11 +24,8 @@ export function SkillsOverview() {
     },
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  const { handleSubmit, watch, setValue } = methods;
+  const about = watch("about");
 
   const onSubmit = async (data: AboutValue) => {
     const currentStore = useOnboardingStore.getState();
@@ -41,43 +42,23 @@ export function SkillsOverview() {
       const result = await saveOnboardingData(fullDataToSave);
 
       if (result.success) {
-        router.push("./");
-      } else {
-        console.log(result.error);
+        router.push(ROUTES.PROFILE.ROOT);
       }
     } catch (err) {
       console.log(err);
     }
   };
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="px-6 pt-8 pb-8 w-full rounded-lg max-w-[448px] text-main bg-white flex flex-col"
-    >
-      <label
-        htmlFor=""
-        className="text-main text-2xl mb-4 max-w-[400px] text-wrap"
-      >
-        Long story short what employeer need to know about you and your skills
-      </label>
-      <div className="w-full h-full relative mb-2">
-        <textarea
-          id=""
-          {...register("about")}
-          className="border border-[#5a6f87] h-[150px] relative px-2 pt-2 w-full resize-none outline-none overflow-hidden"
-        ></textarea>
-        <div className="absolute left-2 bottom-2 flex flex-row gap-2 items-center cursor-pointer">
-          <Mic size={18} className="text-blue-600" />
-          <span className="text-lg text-blue-600 font-medium">Append</span>
-        </div>
-      </div>
-      <button
-        disabled={isSubmitting}
-        type="submit"
-        className="flex-1 w-full cursor-pointer bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 text-white rounded-lg py-2 transition-all font-medium"
-      >
-        Save
-      </button>
-    </form>
+    <FormWrapper onSubmit={handleSubmit(onSubmit)} as="form">
+      <VoiceTextArea
+        placeHolderClasses="text-2xl font-medium"
+        className="pt-6"
+        value={about}
+        onChange={(val) => setValue("about", val, { shouldValidate: true })}
+        placeholder="Enter text"
+        label="Briefly, what should employers know about you and your skills?"
+      />
+      <FormNavigation variant="update" secondButtonClasses="mt-4 mb-6" />
+    </FormWrapper>
   );
 }

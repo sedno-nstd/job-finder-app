@@ -1,6 +1,5 @@
 "use client";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
-import { EXPERIENCE_OPTIONS } from "../../constants/jobOptions";
 import { FormProvider, useForm } from "react-hook-form";
 import { step4Schema, Step4Values } from "../../schemas/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +8,7 @@ import { LastWorkPlace } from "./parts/LastWorkPlace";
 import { FormNavigation } from "@/src/components/shared/FormNavigation";
 import { FormWrapper } from "@/src/components/shared/FormWrapper";
 import { ProfessionField } from "./parts/ProfessionField";
-import { CustomSelect } from "@/src/components/ui/CustomSelect";
+import { WorkExpierence } from "./parts/WorkExpierence";
 
 export function Step4Experience() {
   const { formData, nextStep, updatedFields, prevStep } = useOnboardingStore();
@@ -26,7 +25,7 @@ export function Step4Experience() {
     },
   });
 
-  const { handleSubmit, setValue, watch } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = (data: Step4Values) => {
     try {
@@ -40,53 +39,31 @@ export function Step4Experience() {
       setError(true);
     }
   };
-  const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const experienceOptions = EXPERIENCE_OPTIONS.map((item) => ({
-    id: item.value,
-    label: item.label,
-    value: item.value,
-  }));
-  const experienceValue = watch("experienceDuration");
 
   return (
-    <div className="flex-1 flex items-center justify-center text-main">
+    <div className="h-full flex w-full max-w-[448px]  flex-col items-center justify-center text-main">
       <FormProvider {...methods}>
-        <FormWrapper onSubmit={handleSubmit(onSubmit)} onBack={prevStep}>
-          <div className="max-sm:mt-2 sm:mt-2">
-            <h1 className="text-3xl font-medium mb-5 mt-4">
-              Last worked place
-            </h1>
-          </div>
+        <FormWrapper
+          as="form"
+          onSubmit={handleSubmit(onSubmit)}
+          onBack={prevStep}
+          className="mb-6 pb-6"
+        >
+          <h1 className="text-3xl font-medium mb-5 mt-4">Last worked place</h1>
 
-          <div className="flex flex-col mb-5 w-full">
-            <LastWorkPlace />
-          </div>
+          <LastWorkPlace
+            name="lastWorkplace"
+            label="Last worked place"
+            className="mt-6 mb-6"
+          />
 
-          <div className="mb-6 w-full">
-            <ProfessionField name="previousPosition" />
-          </div>
+          <ProfessionField
+            name="previousPosition"
+            label="Previous position"
+            className="mb-6"
+          />
 
-          <div className="mb-5 w-full max-sm:mb-8">
-            <label
-              htmlFor=""
-              className="text-sm font-medium mb-2 max-sm:text-base"
-            >
-              Duration of stay
-            </label>
-            <CustomSelect
-              data={experienceOptions}
-              id={experienceValue}
-              setSelect={(val) => {
-                setValue("experienceDuration", val, { shouldValidate: true });
-                setIsSelectOpen(false);
-              }}
-              isOpen={isSelectOpen}
-              setIsOpen={setIsSelectOpen}
-              defaultLabel="Select experience"
-              position="bottom"
-              showArrow={true}
-            />
-          </div>
+          <WorkExpierence name="experienceDuration" label="Duration of stay" />
           <FormNavigation
             variant="registration"
             isSubmitting={isSubmitting}

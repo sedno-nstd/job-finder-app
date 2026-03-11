@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 
 export const authConfig: AuthOptions = {
   adapter: PrismaAdapter(prisma),
+  debug: true,
   session: {
     strategy: "jwt",
   },
@@ -14,7 +15,7 @@ export const authConfig: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = (user as any).role;
+        token.role = (user as any).role || "applicant";
         token.companyName = (user as any).companyName;
       }
       return token;

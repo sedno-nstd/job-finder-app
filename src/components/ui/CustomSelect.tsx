@@ -34,7 +34,7 @@ export function CustomSelect({
   return (
     <div
       className={clsx(
-        "relative w-full px-4 h-[40px] z-10 duration-200 transition-all cursor-pointer hover:border-blue-600 justify-between flex flex-row items-center border",
+        "relative w-full px-4 h-[40px] select-none z-10 duration-200 transition-all cursor-pointer hover:border-blue-600 justify-between flex flex-row items-center border",
         isOpen ? "border-blue-600" : "border-gray-300",
         className,
       )}
@@ -67,7 +67,7 @@ export function CustomSelect({
                   key={item.id}
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelect(item.value);
+                    setSelect(item.id);
                   }}
                 >
                   {item.value}

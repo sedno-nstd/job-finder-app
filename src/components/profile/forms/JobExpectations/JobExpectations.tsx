@@ -3,20 +3,22 @@ import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { saveOnboardingData } from "@/src/actions/applicant/onboarding";
-import {
-  CURRENCY_OPTIONS,
-  PERIOD_OPTIONS,
-} from "../../constants/jobExpectations";
-import { FormField } from "../../../ui/FormField";
+import { SALARY_SELECTS } from "../../constants/jobExpectations";
 import { useState } from "react";
 import { SalarySchema, SalaryValues } from "../../schemas/jobExpectations";
 import { FormSelect } from "@/src/components/shared/FormField/FormSelect";
 import { FormWrapper } from "@/src/components/shared/FormWrapper";
 import { EmploymentTypeGroup } from "@/src/components/shared/FormField/EmploymentTypeGroup";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/src/config/router";
+import { FormNavigation } from "@/src/components/shared/FormNavigation";
+import { DesiredSalary } from "./parts/DesiredSalary";
 
 export function JobExpectations() {
   const { formData, updatedFields } = useOnboardingStore();
   const [openMenu, setOpenMenu] = useState<"currency" | "period" | null>(null);
+  const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   const methods = useForm<SalaryValues>({
     mode: "onChange",
@@ -29,7 +31,7 @@ export function JobExpectations() {
     },
   });
 
-  const { handleSubmit, register } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = async (values: SalaryValues) => {
     try {
@@ -55,59 +57,53 @@ export function JobExpectations() {
       const result = await saveOnboardingData(dataToSend);
 
       if (!result.success) throw new Error("Error to confirm");
+
+      setSuccess(true);
+      router.push(ROUTES.PROFILE.ROOT);
     } catch (err) {
+      setSuccess(false);
       console.log("Failed to save:", err);
     }
   };
+
   return (
     <div className="w-full h-full text-main flex items-center justify-center">
       <FormProvider {...methods}>
         <FormWrapper
+          as="form"
           className="py-6"
           onSubmit={handleSubmit(onSubmit)}
           label="Desired salary and employment type"
         >
           <div className="flex flex-col">
-            <div className="flex flex-col mb-3">
-              <span className="font-semibold mb-2">Desired salary</span>
-              <FormField
-                type="text"
-                placeholder="For example, 12000"
-                {...register("amount")}
-                className="h-[40px] border"
-              />
-            </div>
-            <div className="flex flex-row justify-between gap-3 mb-5">
-              <FormSelect
-                name="currency"
-                data={CURRENCY_OPTIONS}
-                label="USD"
-                isOpen={openMenu === "currency"}
-                setIsOpen={() =>
-                  setOpenMenu(openMenu === "currency" ? null : "currency")
-                }
-              />
-              <FormSelect
-                name="period"
-                data={PERIOD_OPTIONS}
-                label="Per month"
-                isOpen={openMenu === "period"}
-                setIsOpen={() =>
-                  setOpenMenu(openMenu === "period" ? null : "period")
-                }
-              />
+            <DesiredSalary />
+            <div className="flex flex-row justify-between mb-6">
+              {SALARY_SELECTS.map((item) => (
+                <FormSelect
+                  key={item.name}
+                  data={item.data}
+                  isOpen={openMenu === item.name}
+                  label={item.defaultLabel}
+                  name={item.name}
+                  setIsOpen={() =>
+                    setOpenMenu(openMenu === item.name ? null : item.name)
+                  }
+                />
+              ))}
             </div>
           </div>
           <div className="mb-4">
-            <span className="mb-2">Desired employment type</span>
+            <span className="mb-2 font-medium">Desired employment type</span>
           </div>
-          <EmploymentTypeGroup name="employmentTypes" variant="list" />
-          <button
-            type="submit"
-            className="flex-1 w-full cursor-pointer bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 text-white rounded-lg py-2 transition-all font-medium"
-          >
-            Save
-          </button>
+          <EmploymentTypeGroup
+            name="employmentTypes"
+            variant="list"
+            className="mb-6"
+          />
+          <FormNavigation
+            variant="update"
+            buttonText={success ? "Complete" : "Save"}
+          />
         </FormWrapper>
       </FormProvider>
     </div>

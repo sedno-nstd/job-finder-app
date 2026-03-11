@@ -30,7 +30,6 @@ export function OnBoarding() {
       const result = await saveOnboardingData(dataToSend);
 
       if (result && result.success) {
-        console.log("Success! Updating session and redirecting...");
         await update();
         router.push("/vacancies");
       } else {
@@ -42,15 +41,23 @@ export function OnBoarding() {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-full overflow-x-hidden">
+    <div className="flex flex-col w-full min-h-screen h-full overflow-x-hidden">
       <OnboardingProgress totalSteps={6} currentStep={step} />
-      <div className="flex-1">
+      <div className="w-full flex justify-center flex-col items-center">
         {step === 1 && <Step1Identity />}
-        {step === 2 && <Step2Personal />}
+        {step === 2 && (
+          <div className="w-full h-full flex justify-center items-start">
+            <Step2Personal />
+          </div>
+        )}
         {step === 3 && <Step3JobPreferences />}
         {step === 4 && <Step4Experience />}
         {step === 5 && <Step5SelectMode name="employmentType" />}
-        {step === 6 && <Step6SearchMode />}
+        {step === 6 && (
+          <div className="w-full max-w-[448px]">
+            <Step6SearchMode />
+          </div>
+        )}
         {step === 6 && (
           <div className="w-full justify-center flex pt-4">
             <button

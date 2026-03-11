@@ -12,6 +12,7 @@ interface VacanciesProps {
   emptyState?: React.ReactNode;
   safetyData?: any[];
   onReset?: () => void;
+  className?: string;
 }
 
 export function VacancyList({
@@ -22,6 +23,7 @@ export function VacancyList({
   emptyState,
   onReset,
   safetyData,
+  className,
 }: VacanciesProps) {
   const { tooggleFavorites, isFavorite } = useAuthVacancy();
   const [mounted, setMounted] = useState(false);
@@ -72,7 +74,7 @@ export function VacancyList({
     <div className="flex flex-col w-full">
       {vacancies.map((v) => (
         <VacancyCard
-          VacancyClasses="max-w-[640px]"
+          VacancyClasses="max-w-[640px] w-full"
           key={v.id}
           vacancy={v}
           isFavorite={isFavorite(v.id)}
