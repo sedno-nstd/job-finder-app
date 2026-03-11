@@ -5,21 +5,21 @@ import { VacancyList } from "../vacancy/list/VacancyList";
 import { useRecommendation } from "@/src/hooks/vacancy/useRecomendation";
 import { useRecommendationStore } from "@/src/store/useRecomandeStorage";
 import { vacancies } from "@/src/domain/vacancy/types";
-import { getFullUserData } from "@/src/actions/getFullUserData";
+import { getFullUserData } from "@/src/actions/applicant/getFullUserData";
 import { useRouter } from "next/navigation";
-import { GetAllVacancies } from "@/src/actions/GetAllVacancies";
+import { GetAllVacancies } from "@/src/actions/vacancies/GetAllVacancies";
 import { Vacancy } from "@/src/config/types";
 
 export function Recomande() {
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState<OnboardingData>(null);
+  const [userData, setUserData] = useState<OnboardingData | null>(null);
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const { vacancies: storeVacancies } = useRecommendationStore();
   const [visibleCount, setVisibleCount] = useState(5);
   const router = useRouter();
 
   const recommended = useRecommendation({
-    user: userData,
+    user: userData || null,
     vacancy: vacancies,
   });
 

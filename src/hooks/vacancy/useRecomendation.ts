@@ -2,7 +2,7 @@ import { Vacancy } from "../../config/types";
 import { OnboardingData } from "../../types/user";
 
 interface Props {
-  user: OnboardingData;
+  user: OnboardingData | null;
   vacancy: Vacancy[];
 }
 
