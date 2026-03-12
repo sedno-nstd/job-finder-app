@@ -60,6 +60,7 @@ export function EmployerRegistration() {
 
   return (
     <FormWrapper
+      as="form"
       onSubmit={handleSubmit(onSubmit)}
       className="w-full rounded-lg p-8 flex flex-col justify-center items-center bg-white"
     >
