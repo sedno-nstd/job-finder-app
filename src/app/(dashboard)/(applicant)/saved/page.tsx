@@ -1,5 +1,4 @@
 "use client";
-export const dynamic = "force-dynamic";
 import { VacancyList } from "@/src/components/vacancy/list/VacancyList";
 import { useAuthVacancy } from "@/src/store/useFavorites";
 import { Heart } from "lucide-react";
