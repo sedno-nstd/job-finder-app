@@ -1,4 +1,5 @@
 import { UserHeader } from "@/src/components/layout/UserHeader";
+export const dynamic = "force-dynamic";
 
 export default function DashboardLayout({
   children,
