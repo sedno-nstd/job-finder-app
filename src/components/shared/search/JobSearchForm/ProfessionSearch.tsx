@@ -35,9 +35,7 @@ export function ProfessionSearch({
         onChange={(e) => prof.setQuery(e.target.value)}
         icon={Search}
         onFocus={() => prof.setIsFocused(true)}
-        placeholder={
-          isMounted ? placeholder || t("profession_placeholder") : ""
-        }
+        placeholder={isMounted ? placeholder || t("profession") : ""}
         variant="auth"
         className="border-y h-full border-l border-input-border relative focus:border-blue-600 placeholder:text-gray-400 rounded-l-lg b px-[43px]
             "

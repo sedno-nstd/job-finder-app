@@ -33,9 +33,7 @@ export function LocatioNSearch({
       <div className="w-full">
         <Input
           icon={MapPin}
-          placeholder={
-            isMounted ? placeholder || t("profession_placeholder") : ""
-          }
+          placeholder={isMounted ? placeholder || t("location") : ""}
           variant="auth"
           value={loc.query}
           onChange={(e) => loc.setQuery(e.target.value)}

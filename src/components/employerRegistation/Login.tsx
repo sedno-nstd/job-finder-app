@@ -1,9 +1,7 @@
 "use client";
 import { BriefcaseBusiness } from "lucide-react";
 import { FormWrapper } from "../shared/FormWrapper";
-import { EmployerLoginValue } from "./schema/type";
 import { useState } from "react";
-import { GetEmployer } from "@/src/actions/employer/user/getEmployer";
 import { EmployerLoginData } from "./constans/type";
 import clsx from "clsx";
 import { ROUTES } from "@/src/config/router";
