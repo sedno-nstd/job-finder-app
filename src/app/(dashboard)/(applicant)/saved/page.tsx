@@ -1,4 +1,5 @@
 "use client";
+
 import { VacancyList } from "@/src/components/vacancy/list/VacancyList";
 import { useAuthVacancy } from "@/src/store/useFavorites";
 import { Heart } from "lucide-react";
