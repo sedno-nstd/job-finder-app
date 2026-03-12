@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@/src/app/globals.css";
 import { NextAuthProvider } from "../components/providers/NextAuthProvider";
 import I18nProvider from "../components/providers/I18nProvider";
+export const dynamic = "force-dynamic";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
