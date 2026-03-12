@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { Responde } from "@/src/components/responde/Responde";
 
 export default function Page() {

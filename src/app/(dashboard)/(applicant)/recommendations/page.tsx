@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { Recomande } from "@/src/components/recommendations/Recomande";
 
 export default function Page() {
