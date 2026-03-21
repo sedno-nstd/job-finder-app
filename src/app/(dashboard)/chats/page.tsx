@@ -12,20 +12,22 @@ export default async function ChatsPage({
   searchParams: Promise<{ id: string }>;
 }) {
   const session = await getServerSession(authConfig);
-
+  const myRole = (session?.user as any)?.role;
   const myId = (session?.user as any)?.id;
 
-  const chat = await UserChats(myId);
-  const selectedChatId = (await searchParams).id;
-  const currencyChat = chat.find((c) => c.id === selectedChatId);
+  const chats = await UserChats(myId);
+  const { id: selectedChatId } = await searchParams;
 
+  const currentChat = chats.find((c) => c.id === selectedChatId);
   const messages = selectedChatId ? await GetChatMessages(selectedChatId) : [];
-  const opponent = currencyChat?.users.find((u) => u.id !== myId);
+
+  const opponent =
+    myRole === "employer" ? currentChat?.user : currentChat?.employer;
 
   return (
-    <div className="flex w-full h-[calc(100vh-160px)] grid-cols-2 border bg-white border-[#6380a61a] rounded-xl">
+    <div className="flex w-full h-[calc(100vh)] grid-cols-2 border bg-white border-[#6380a61a] rounded-xl">
       <div className="w-[350px] border-r border-[#6380a61a] h-full flex flex-col">
-        <ChatList chats={chat} userId={myId} />
+        <ChatList chats={chats} userId={myId} />
       </div>
       <div className="flex-1 flex flex-col relative bg-[#fcfcfc]">
         {selectedChatId && opponent ? (
@@ -33,8 +35,12 @@ export default async function ChatsPage({
             <ChatMessages messages={messages} myId={myId} />
 
             <div>
-              {currencyChat && (
-                <ChatInput chatId={currencyChat?.id} myId={myId} />
+              {currentChat && (
+                <ChatInput
+                  chatId={currentChat?.id}
+                  myId={myId}
+                  myRole={myRole}
+                />
               )}
             </div>
           </>

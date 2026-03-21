@@ -2,7 +2,13 @@
 import { createMessage } from "@/src/actions/common/chat";
 import { useState } from "react";
 
-export function ChatInput({ chatId, myId }: { chatId: string; myId: string }) {
+interface Props {
+  myRole: string;
+  chatId: string;
+  myId: string;
+}
+
+export function ChatInput({ chatId, myId, myRole }: Props) {
   const [messageValue, setMssageValue] = useState("");
 
   const handleSubmit = async (e?: React.FormEvent) => {
@@ -12,7 +18,12 @@ export function ChatInput({ chatId, myId }: { chatId: string; myId: string }) {
     const currentText = messageValue;
     setMssageValue("");
 
-    await createMessage(chatId, myId, currentText);
+    await createMessage(
+      chatId,
+      myId,
+      currentText,
+      myRole as "employer" | "applicant",
+    );
   };
 
   return (
@@ -26,13 +37,13 @@ export function ChatInput({ chatId, myId }: { chatId: string; myId: string }) {
           value={messageValue}
           onChange={(e) => setMssageValue(e.target.value)}
           className="flex-1 bg-transparent border-none outline-none text-sm py-1 text-black placeholder:text-gray-400"
-          placeholder="Напишите сообщение..."
+          placeholder="Write the message..."
         />
         <button
           className="text-blue-600 hover:text-blue-700 font-medium text-sm px-2 cursor-pointer"
           type="submit"
         >
-          Отправить
+          Sent
         </button>
       </div>
     </form>

@@ -1,26 +1,68 @@
 "use server";
 import { prisma } from "@/lib/prisma";
+import { authConfig } from "@/src/config/auth";
+import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 
 export async function UserChats(userId: string) {
-  if (!userId || userId === "undefined") {
-    return [];
-  }
-  const userChats = await prisma.user.findUnique({
-    where: { id: userId },
+  if (!userId || userId === "undefined") return [];
+
+  const chats = await prisma.conversation.findMany({
+    where: {
+      OR: [{ employerId: userId }, { userId: userId }],
+    },
     include: {
-      conversations: {
+      employer: true,
+      user: {
         include: {
-          users: true,
-          messages: {
-            take: 1,
-            orderBy: { createdAt: "desc" },
-          },
+          detailInfo: true,
         },
       },
+      vacancy: {
+        select: { title: true },
+      },
+      messages: {
+        take: 1,
+        orderBy: { createdAt: "desc" },
+      },
     },
+    orderBy: { updatedAt: "desc" },
   });
-  return userChats?.conversations || [];
+  return chats || [];
+}
+
+export async function CreateChat(applicantId: string, vacancyId: string) {
+  try {
+    const session = await getServerSession(authConfig);
+    const employerId = (session?.user as any)?.id;
+
+    if (!employerId) return { error: "Not authorized" };
+
+    const existConversation = await prisma.conversation.findFirst({
+      where: {
+        vacancyId: vacancyId,
+        employerId: employerId,
+        userId: applicantId,
+      },
+    });
+
+    if (existConversation) {
+      return { success: true, chatId: existConversation.id };
+    }
+
+    const newConversation = await prisma.conversation.create({
+      data: {
+        vacancyId: vacancyId,
+        employerId: employerId,
+        userId: applicantId,
+      },
+    });
+
+    return { success: true, chatId: newConversation.id };
+  } catch (err) {
+    console.error(err);
+    return { success: false, error: "Internal Server Error" };
+  }
 }
 
 export async function GetChatMessages(chatId: string) {
@@ -28,7 +70,8 @@ export async function GetChatMessages(chatId: string) {
     const messages = await prisma.message.findMany({
       where: { chatId: chatId },
       include: {
-        author: true,
+        authorUser: true,
+        authorEmployer: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -45,6 +88,7 @@ export async function createMessage(
   chatId: string,
   authorId: string,
   text: string,
+  role: "employer" | "applicant",
 ) {
   if (!text.trim()) return;
   try {
@@ -52,7 +96,8 @@ export async function createMessage(
       data: {
         chatId: chatId,
         text: text,
-        authorId: authorId,
+        authorEmployerId: role === "employer" ? authorId : null,
+        authorUserId: role === "applicant" ? authorId : null,
       },
     });
     revalidatePath("/chats");
@@ -61,42 +106,21 @@ export async function createMessage(
   }
 }
 
-export async function RespondCreate(
-  myId: string,
-  vacancyId: string,
-  // messageText: string,
-) {
+export async function RespondCreate(myId: string, vacancyId: string) {
   return await prisma.$transaction(async (tx) => {
     const vacancy = await tx.vacancy.findUnique({
       where: { id: vacancyId },
     });
 
     if (!vacancy?.id) throw new Error("Vacancy not found");
-    const chat = await tx.conversation.create({
-      data: {
-        vacancyId: vacancy.id,
-        users: {
-          connect: [{ id: myId }, { id: vacancy.authorId }],
-        },
-      },
-    });
-
-    // await tx.message.create({
-    //   data: {
-    //     text: messageText,
-    //     authorId: myId,
-    //     chatId: chat.id,
-    //   },
-    // });
 
     const application = await tx.application.create({
       data: {
         vacancyId: vacancy.id,
         applicantId: myId,
-        // message: messageText,
         status: "pending",
       },
     });
-    return { success: true, chatId: chat.id, applicationId: application.id };
+    return { success: true, applicationId: application.id };
   });
 }
