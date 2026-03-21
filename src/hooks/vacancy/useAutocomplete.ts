@@ -7,7 +7,7 @@ interface Options {
 
 interface Props {
   data: Options[];
-  count: number;
+  count?: number;
 }
 
 export function useAutocomplete({ data, count = 10 }: Props) {

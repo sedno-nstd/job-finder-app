@@ -1,9 +1,13 @@
 import { ROUTES } from "@/src/config/router";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { useUserState } from "@/src/store/useUserState";
+import clsx from "clsx";
 import { useRouter } from "next/navigation";
 
-export function RolePicker() {
+interface Props {
+  className?: string;
+}
+export function RolePicker({ className }: Props) {
   const { startRegistration } = useUserState();
   const { updatedFields } = useOnboardingStore();
   const router = useRouter();
@@ -22,7 +26,12 @@ export function RolePicker() {
     }
   };
   return (
-    <div className="absolute justify-center rounded-lg bg-white left-1/2 -translate-x-1/2 w-full">
+    <div
+      className={clsx(
+        "absolute justify-center rounded-lg bg-white w-full",
+        className,
+      )}
+    >
       <div className="rounded-lg flex flex-col border-[1px] border-[rgba(99,128,166,0.1)] min-w-max duration-200 transition-all c">
         <button
           onClick={() => handleRoleSelect("applicant")}

@@ -52,7 +52,9 @@ export function AuthBlock({ setShowRolePicker, showRolePicker }: AuthProps) {
             <ArrowRight size={20} />
           </button>
 
-          {showRolePicker && <RolePicker />}
+          {showRolePicker && (
+            <RolePicker className="left-1/2 -translate-x-1/2" />
+          )}
         </div>
       </div>
     </div>

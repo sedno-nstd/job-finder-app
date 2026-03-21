@@ -1,6 +1,7 @@
-import { vacancies } from "@/src/domain/vacancy/types";
+import { GetAllVacancies } from "@/src/actions/vacancies/GetAllVacancies";
 import { useSearchStore } from "@/src/store/useSearchStore";
 import { getFilteredVacancies } from "@/src/utils/vacancy-filters";
+import { Vacancy } from "@prisma/client";
 import clsx from "clsx";
 import { useEffect, useMemo, useState } from "react";
 
@@ -9,6 +10,19 @@ interface Props {
 }
 
 export function VacancyCount({ className }: Props) {
+  const [vacancies, setVacancies] = useState<Vacancy[] | null>(null);
+
+  useEffect(() => {
+    const handleGEtVacancies = async () => {
+      const res = await GetAllVacancies();
+
+      if (!res) console.log("Error to get vacancies");
+
+      setVacancies(res as unknown as Vacancy[]);
+    };
+
+    handleGEtVacancies();
+  }, []);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -19,7 +33,7 @@ export function VacancyCount({ className }: Props) {
 
   const filteredCount = useMemo(() => {
     const filtered = getFilteredVacancies(
-      vacancies,
+      vacancies || [],
       finalSearch.prof,
       finalSearch.loc,
     );

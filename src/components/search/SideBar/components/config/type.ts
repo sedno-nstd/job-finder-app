@@ -29,7 +29,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     name: "my-vacancies",
     label: "My Vacancies",
-    href: "/employer/my-vacancies",
+    href: "/employer/vacancies-page",
     icon: Briefcase,
     role: "employer",
   },

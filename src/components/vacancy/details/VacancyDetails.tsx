@@ -1,31 +1,51 @@
+"use client";
 import { VacancyDetailedHeader } from "@/src/components/vacancy/details/components/VacancyDetailedHeader";
 import { Respond } from "@/src/components/vacancy/details/components/RespondButton";
 import { getJobLocationStyles } from "@/src/domain/vacancy/utils/jobLocationTheme";
 import clsx from "clsx";
 import { MapPin } from "lucide-react";
-import { getServerSession } from "next-auth";
-import { authConfig } from "@/src/config/auth";
 import { EmployerVacancy } from "@/src/types/employer";
 import { VacancyApplicants } from "./components/VacancyApplicants";
+import { FullPageLoader } from "../../ui/base/Loader";
+import { useSession } from "next-auth/react";
 
 interface Vacancy {
   vacancy: EmployerVacancy;
+  initialIsFavorite: boolean;
+  className?: string;
 }
 
-export default async function VacancyDetails({ vacancy }: Vacancy) {
+export default function VacancyDetails({
+  vacancy,
+  initialIsFavorite,
+  className,
+}: Vacancy) {
   const jobStyles = getJobLocationStyles(vacancy.employmentType);
-  const session = await getServerSession(authConfig);
+  const { data: session, status } = useSession();
   const isOwner = session?.user?.id === vacancy.employerId;
 
+  if (status === "loading") {
+    return <FullPageLoader />;
+  }
+
   return (
-    <div className="flex flex-col bg-white rounded-lg w-full border border-slate-200">
+    <div
+      className={clsx(
+        "flex flex-col bg-white rounded-lg w-full border border-slate-200",
+        className,
+      )}
+    >
       <div className="px-6 py-4 relative border-b-[1px] border-[#6380a626]">
         <div className="flex flex-row items-center justify-between mb-3">
           <div className="flex flex-row items-center gap-5">
             <h1 className="text-2xl font-medium text-[#2d3540]">
               {vacancy.title}
             </h1>
-            <VacancyDetailedHeader vacancy={vacancy} isOwner={isOwner} />
+            <VacancyDetailedHeader
+              vacancy={vacancy}
+              isOwner={isOwner}
+              initialIsFavorite={initialIsFavorite}
+            />
           </div>
         </div>
 

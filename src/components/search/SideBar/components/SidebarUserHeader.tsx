@@ -23,6 +23,7 @@ export function SideUserheader({
       <div className="mr-[12px] shrink-0">
         {userImage ? (
           <img
+            referrerPolicy="no-referrer"
             src={userImage}
             alt="Avatar"
             className="w-12 h-12 rounded-full border border-gray-200"

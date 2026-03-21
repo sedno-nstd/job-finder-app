@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
-import { Input } from "../../../ui/JobSearchForm";
-import { SearchHistory } from "../../../ui/SearchHistory";
-import { SearchSuggestions } from "../../../ui/SearchSuggestions";
+import { Input } from "../../../ui/search/JobSearchForm";
+import { SearchHistory } from "../../../ui/search/SearchHistory";
+import { SearchSuggestions } from "../../../ui/shared/SearchSuggestions";
 import { useJobSearch } from "../../../../hooks/useJobSearch";
 import clsx from "clsx";
 

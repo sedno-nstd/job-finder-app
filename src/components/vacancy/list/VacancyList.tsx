@@ -1,8 +1,11 @@
 "use client";
 import { VacancyCard } from "./VacancyCard";
-import { useAuthVacancy } from "@/src/store/useFavorites";
 import { Vacancy } from "@/src/config/types";
 import { useEffect, useState } from "react";
+import {
+  AddFavoriteVacancies,
+  CheckFavoriteVacancy,
+} from "@/src/actions/applicant/favoriteVacancies";
 
 interface VacanciesProps {
   vacancies: Vacancy[];
@@ -25,12 +28,23 @@ export function VacancyList({
   safetyData,
   className,
 }: VacanciesProps) {
-  const { tooggleFavorites, isFavorite } = useAuthVacancy();
+  const [isFavorite, setIsFavorite] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-  }, [setMounted]);
+
+    const handleFetchFavorites = async () => {
+      const res = await CheckFavoriteVacancy();
+
+      if (res.success && res.vacancies) {
+        const ids = res.vacancies.map((v: any) => v.id);
+        setIsFavorite(ids);
+      }
+    };
+
+    handleFetchFavorites();
+  }, []);
 
   if (!mounted) {
     return (
@@ -51,7 +65,7 @@ export function VacancyList({
 
   if (vacancies.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
+      <div className="flex w-full mt-10 flex-col items-center justify-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
         <h3 className="text-xl font-bold text-gray-800">No vacancies yet</h3>
 
         <p className="text-gray-500 mb-6">
@@ -71,14 +85,23 @@ export function VacancyList({
   }
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full max-w-[632px]">
       {vacancies.map((v) => (
         <VacancyCard
-          VacancyClasses="max-w-[640px] w-full"
+          VacancyClasses="max-w-[632px]"
           key={v.id}
           vacancy={v}
-          isFavorite={isFavorite(v.id)}
-          toggleFavorites={tooggleFavorites}
+          isFavorite={isFavorite.includes(v.id)}
+          toggleFavorites={async () => {
+            const res = await AddFavoriteVacancies(v.id);
+            if (res.success) {
+              setIsFavorite((prev) =>
+                prev.includes(v.id)
+                  ? prev.filter((id) => id !== v.id)
+                  : [...prev, v.id],
+              );
+            }
+          }}
           DescriptionClasses="max-w-[600px]"
         />
       ))}

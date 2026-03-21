@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserSidebar } from "../../shared/UserSidebar";
 import { NAV_ITEMS } from "./components/config/type";
 import { useSession } from "next-auth/react";
@@ -10,9 +10,14 @@ import { AuthBlock } from "./components/SidebarAuthBlock";
 import { SideUserheader } from "./components/SidebarUserHeader";
 import { useOutsideClick } from "@/src/hooks/ui/useOutsideClick";
 
-export function Sidebar() {
+interface Props {
+  className?: string;
+}
+
+export function Sidebar({ className }: Props) {
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const [mounted, setMounted] = useState(false);
 
   const user = session?.user;
   const userRole = (user as any)?.role;
@@ -21,16 +26,22 @@ export function Sidebar() {
   const [showRolePicker, setShowRolePicker] = useState(false);
   const menuRef = useOutsideClick<HTMLDivElement>(() => setShowUserMenu(false));
 
-  if (status === "loading") return <div className="p-6">Loading...</div>;
-
   const filteredNavItems = NAV_ITEMS.filter((item) => {
     const allowedRoles: string[] = ["everyone", userRole];
 
     return allowedRoles.includes(item.role);
   });
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || status === "loading") {
+    return <div className="flex flex-col p-6 h-full w-[244px]" />;
+  }
+
   return (
-    <div className="flex flex-col p-6 h-full">
+    <div className={clsx("flex flex-col p-0 xl:p-6 h-full", className)}>
       {user ? (
         <div className="relative" ref={menuRef}>
           <SideUserheader

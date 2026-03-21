@@ -10,7 +10,6 @@ import { Vacancy } from "@/src/config/types";
 
 export default function VacanciesPage() {
   const [vacancies, setVacansies] = useState<Vacancy[]>([]);
-  const [loading, setLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(5);
   const { location: userCoords, getLocation } = useUserLocation();
   const { resetFilters } = useSearchStore();
@@ -27,17 +26,15 @@ export default function VacanciesPage() {
       try {
         const data = await GetAllVacancies();
         setVacansies(data);
-        setLoading(false);
+
         if (!data) throw new Error();
       } catch (err) {
-        setLoading(false);
         console.log(err);
       }
     };
     fetchData();
   }, []);
 
-  if (loading) return <div>Loading vacancy page</div>;
   return (
     <div className="w-full h-full">
       <SearchHeader getLocation={getLocation} />

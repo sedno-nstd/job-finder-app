@@ -1,18 +1,30 @@
 "use client";
 import { Vacancy } from "@/src/config/types";
-import { useAuthVacancy } from "@/src/store/useFavorites";
 import clsx from "clsx";
 import { Heart } from "lucide-react";
 import { VacancyAdminMenu } from "./VacancyAdminMenu";
+import { AddFavoriteVacancies } from "@/src/actions/applicant/favoriteVacancies";
+import { useState } from "react";
 
 interface HeaderProps {
   vacancy: Vacancy;
   isOwner?: boolean;
+  initialIsFavorite: boolean;
 }
 
-export function VacancyDetailedHeader({ vacancy, isOwner }: HeaderProps) {
-  const { tooggleFavorites, isFavorite } = useAuthVacancy();
-  const favorite = isFavorite(vacancy.id);
+export function VacancyDetailedHeader({
+  vacancy,
+  isOwner,
+  initialIsFavorite,
+}: HeaderProps) {
+  const [favorite, setFavorite] = useState(initialIsFavorite);
+  const handleAddVacancy = async () => {
+    setFavorite(!favorite);
+    const res = await AddFavoriteVacancies(vacancy.id);
+    if (!res.success) {
+      setFavorite(favorite);
+    }
+  };
 
   if (isOwner) {
     return <VacancyAdminMenu vacancyId={vacancy.id} />;
@@ -24,15 +36,15 @@ export function VacancyDetailedHeader({ vacancy, isOwner }: HeaderProps) {
         className="group hover:bg-[#6380a61A] p-2 rounded-lg cursor-pointer transition-colors duration-200 flex items-center justify-center"
         onClick={(e) => {
           e.preventDefault();
-          tooggleFavorites(vacancy);
+          handleAddVacancy();
         }}
       >
         <Heart
           strokeWidth={2.5}
-          fill={favorite ? "#ef4444" : "none"}
+          fill={initialIsFavorite ? "#ef4444" : "none"}
           className={clsx(
             "group-hover:text-black/80 transition-colors duration-200 ",
-            favorite ? "text-red-500" : "text-[#6380a6]",
+            initialIsFavorite ? "text-red-500" : "text-[#6380a6]",
           )}
         />
       </span>

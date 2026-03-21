@@ -21,22 +21,24 @@ export const useUserHistory = create<Props>()(
       options: [],
       setOptions: (obj) =>
         set((state) => {
-          const emptyData =
-            state.region.trim() === "" && state.profession.trim() === "";
+          const profession = obj.profession ?? state.profession;
+          const region = obj.region ?? state.region;
+
+          const emptyData = !profession.trim() && !region.trim();
           const dublicateOpt = state.options.some(
             (item) =>
               item.profession === obj.profession && item.region === obj.region,
           );
 
-          if (dublicateOpt || emptyData) {
-            return {};
-          }
+          if (dublicateOpt || emptyData) return state;
+
+          const newItem = { profession, region };
 
           return {
             ...state,
-            options: [obj, ...state.options].slice(0, 10),
-            profession: obj.profession || "",
-            region: obj.region || "",
+            options: [newItem, ...state.options].slice(0, 10),
+            profession: profession || "",
+            region: region || "",
           };
         }),
       clear: () => set({ options: [] }),
