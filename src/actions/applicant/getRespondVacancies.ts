@@ -5,9 +5,16 @@ import { EmploymentTypeId } from "../../domain/vacancy/mock";
 import { getServerSession } from "next-auth";
 import { authConfig } from "../../config/auth";
 
-export async function getRespondVacancies(userId: string) {
+export async function getRespondVacancies() {
+  const session = await getServerSession(authConfig);
+  const myId = session?.user.id;
+  if (!myId)
+    return {
+      success: false,
+      error: true,
+    };
   const applications = await prisma?.application.findMany({
-    where: { applicantId: userId },
+    where: { applicantId: myId },
     include: {
       vacancy: true,
     },

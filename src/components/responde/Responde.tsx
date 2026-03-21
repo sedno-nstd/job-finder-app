@@ -4,71 +4,75 @@ import { Vacancy } from "@/src/config/types";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { VacancyList } from "../vacancy/list/VacancyList";
-import { Flame } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
+import { FullPageLoader } from "../ui/base/Loader";
+import { Input } from "../ui/search/JobSearchForm";
+import { SortSelector } from "./parts/SortSelector";
+import { useRespondeData } from "./hooks/useRespondeData";
 
 export function Responde() {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
-  const [loading, setLoading] = useState(false);
-  const { data } = useSession();
-  const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
-  const user = data?.user;
+  const { data: session } = useSession();
+
+  const {
+    filteredVacancies,
+    searchCompany,
+    searchTitle,
+    setSearchCompany,
+    setSearchTitle,
+    setSortBy,
+    sortType,
+  } = useRespondeData(vacancies as any);
+
   useEffect(() => {
-    const handleUpload = async () => {
-      if (!user?.id) throw new Error("User does not exist");
+    if (!session?.user?.id) return;
 
+    const fetchVacancies = async () => {
       try {
         setLoading(true);
-        const data = await getRespondVacancies(user?.id);
-
-        setVacancies(data || []);
+        const data = await getRespondVacancies();
+        setVacancies(data as unknown as Vacancy[]);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    handleUpload();
-  }, [user?.id]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    fetchVacancies();
+  }, [session?.user?.id]);
 
-  if (vacancies.length === 0) {
-    return (
-      <div className="max-w-[448px] w-full flex-col bg-white p-6 flex items-center justify-center">
-        <div className="w-20 h-20 flex items-center justify-center rounded-full bg-[#6380a61a]/70">
-          <Flame size={40} className="text-[#5a6f87]" />
-        </div>
-        <span className="text-2xl leading-8 font-bold mt-6 mb-2">
-          No responses yet
-        </span>
-        <div className="flex justify-center text-center mb-6">
-          <p className="max-w-[320px] text-base leading-6">
-            Start your career journey by responding to interesting vacancies
-          </p>
-        </div>
-        <button
-          onClick={() => router.push("/vacancies")}
-          className="w-full rounded-lg border border-[#0B64D9]/30 text-[#0b64d9] hover:text-white cursor-pointer duration-200 transition-colors hover:bg-blue-600 h-[48px] font-bold"
-        >
-          Go to search
-        </button>
-      </div>
-    );
-  }
+  if (loading) return <FullPageLoader message="Loading your applications..." />;
 
   return (
-    <div className="flex flex-col mb-10">
-      <span className="text-xl font-semibold">
-        {vacancies.length} Respondes
-      </span>
+    <div className="flex flex-col mb-10 justify-center items-center">
+      <div className="w-full flex flex-row items-center gap-4 mb-6">
+        <Input
+          variant="default"
+          icon2={Search}
+          icon2ClassName="hover:bg-gray-300 duration-200 text-gray-500"
+          className="border text-main w-[350px] h-[48px]"
+          placeholder="Search job title"
+          value={searchTitle}
+          onChange={(e) => setSearchTitle(e.target.value)}
+        />
+        <Input
+          variant="default"
+          icon2={Search}
+          icon2ClassName="hover:bg-gray-300 duration-200 text-gray-500"
+          className="border w-[350px] text-main h-[48px]"
+          placeholder="Search company name"
+          value={searchCompany}
+          onChange={(e) => setSearchCompany(e.target.value)}
+        />
+        <SortSelector sortType={sortType} setSortBy={setSortBy} />
+      </div>
       <VacancyList
-        visibleCount={vacancies.length}
-        total={vacancies.length}
-        vacancies={vacancies}
+        visibleCount={filteredVacancies.length}
+        total={filteredVacancies.length}
+        vacancies={filteredVacancies as unknown as Vacancy[]}
       />
     </div>
   );

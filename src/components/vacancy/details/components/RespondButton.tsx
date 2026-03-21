@@ -15,7 +15,7 @@ export function Respond({ vacancyId }: { vacancyId: string }) {
   const [actionLoading, setActionLoading] = useState(false);
   useEffect(() => {
     const checkStatus = async () => {
-      if (!user?.id) throw new Error("User does not exist");
+      if (!user?.id) return;
 
       try {
         const alreadyResponde = await hasUserApplied(vacancyId);
@@ -56,16 +56,16 @@ export function Respond({ vacancyId }: { vacancyId: string }) {
 
   if (isInitialLoading && !user)
     return (
-      <div className="text-green-600 font-bold">
-        The application has been sent.
-      </div>
+      <a className="text-red-500 font-bold" href="/applicantRegistration">
+        create account
+      </a>
     );
 
   return (
     <div>
       {!isSent ? (
         <button
-          className="rounded-lg bg-blue-600 text-white w-full h-[40px] disabled:bg-blue-400"
+          className="rounded-lg cursor-pointer bg-blue-600 text-white w-full h-[40px] disabled:bg-blue-400"
           onClick={handleApply}
           disabled={actionLoading || isInitialLoading}
         >
