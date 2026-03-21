@@ -2,9 +2,10 @@
 import { useMemo } from "react";
 import { EmployerVacancyCard } from "./EmployerVacancyCard";
 import clsx from "clsx";
+import { EmployerVacancy } from "@/src/types/employer";
 
 interface Props {
-  vacancies: any[];
+  vacancies: EmployerVacancy[];
   className?: string;
   showMore?: () => void;
   hasMore?: boolean;
@@ -19,6 +20,7 @@ export function EmployerVacancyList({
   const renderedList = useMemo(() => {
     return vacancies.map((v) => (
       <EmployerVacancyCard
+        VacancyClasses="w-full"
         key={v.id}
         vacancy={v}
         views={v.views}
