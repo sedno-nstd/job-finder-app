@@ -15,6 +15,11 @@ export const employerRegistrationData = [
     placeholder: "At least 5 characters",
   },
   {
+    value: "phone",
+    label: "Phone number",
+    placeholder: "phone",
+  },
+  {
     value: "companyName",
     label: "Company legal name",
     placeholder: "Example: Global Tech Solutions",

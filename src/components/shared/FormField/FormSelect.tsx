@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { CustomSelect } from "../../ui/CustomSelect";
+import { CustomSelect } from "../../ui/shared/CustomSelect";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
 
 interface SharedFormSelect<T extends FieldValues> {

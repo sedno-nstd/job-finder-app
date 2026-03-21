@@ -9,13 +9,16 @@ import { useJobSearch } from "../hooks/useJobSearch";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { ROUTES } from "../config/router";
+import { RolePicker } from "../components/search/SideBar/components/RolePicker";
 
 export default function Home() {
   const { data } = useSession();
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showRolePicker, setShowRolePicker] = useState(false);
   const profileRef = useOutsideClick(() => setShowProfileModal(false));
+  const pickerRef = useOutsideClick<HTMLDivElement>(() =>
+    setShowRolePicker(false),
+  );
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
 
@@ -35,7 +38,20 @@ export default function Home() {
             setShowProfileModal={setShowProfileModal}
           />
         ) : (
-          <Link href={ROUTES.AUTH.REGISTER}>Enter</Link>
+          <div className="relative" ref={pickerRef}>
+            <button
+              onClick={() => setShowRolePicker(!showRolePicker)}
+              className="text-slate-700 font-medium hover:text-blue-600 transition-colors cursor-pointer"
+            >
+              Enter
+            </button>
+
+            {showRolePicker && (
+              <div className="absolute right-full mr-20 mt-2 z-50">
+                <RolePicker />
+              </div>
+            )}
+          </div>
         )}
       </header>
 
@@ -87,7 +103,7 @@ export default function Home() {
                 handleSearch();
                 router.push("/vacancies");
               }}
-              className="w-full md:w-[200px] bg-blue-600 text-white font-semibold 
+              className="w-full cursor-pointer md:w-[200px] bg-blue-600 text-white font-semibold 
                          mt-[-1px] lg:mt-0
                          rounded-b-lg md:rounded-bl-none md:rounded-r-lg 
                          hover:bg-blue-700 transition-colors duration-200 

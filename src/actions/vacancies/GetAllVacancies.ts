@@ -1,6 +1,6 @@
 "use server";
-import { JobLevel } from "../config/types";
-import { EmploymentTypeId } from "../domain/vacancy/mock";
+import { JobLevel } from "../../config/types";
+import { EmploymentTypeId } from "../../domain/vacancy/mock";
 
 export async function GetAllVacancies() {
   const vacancies = await prisma?.vacancy.findMany({

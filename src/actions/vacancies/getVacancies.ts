@@ -5,6 +5,13 @@ export async function GetVacancies({ vacancyId }: { vacancyId: string }) {
     where: {
       id: vacancyId,
     },
+    include: {
+      application: {
+        include: {
+          applicant: true,
+        },
+      },
+    },
   });
   if (!vacancy) return null;
 

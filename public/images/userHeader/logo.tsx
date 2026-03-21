@@ -8,8 +8,8 @@ interface LogoProps {
 
 export const JoobleLogo: React.FC<LogoProps> = ({
   className,
-  height,
-  width,
+  height = 36,
+  width = 108,
 }) => {
   const joobleBlue = "#1A73E8";
   const joobleGreen = "#67bb5f";
@@ -22,6 +22,7 @@ export const JoobleLogo: React.FC<LogoProps> = ({
         viewBox="0 0 108 36"
         xmlns="http://www.w3.org/2000/svg"
         className={className}
+        preserveAspectRatio="xMidYMid meet"
       >
         <text
           x="0"

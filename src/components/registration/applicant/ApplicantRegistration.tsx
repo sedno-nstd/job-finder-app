@@ -17,7 +17,7 @@ export default function ApplicantRegistration() {
         <button
           className="flex items-center justify-center gap-3 w-full py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all font-medium text-gray-700"
           onClick={() => {
-            signIn("google");
+            signIn("google", { callbackUrl: "/auth/check-status" });
           }}
         >
           <svg width="20" height="20" viewBox="0 0 24 24">

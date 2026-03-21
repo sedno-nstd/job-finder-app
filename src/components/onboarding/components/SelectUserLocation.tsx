@@ -2,10 +2,10 @@
 import { useMemo, useState } from "react";
 import { COUNTRY_USER } from "../constants/locationData";
 import { Trash } from "lucide-react";
-import { FormField } from "../../ui/FormField";
+import { FormField } from "../../ui/base/FormField";
 import { useFormContext } from "react-hook-form";
 import { useOutsideClick } from "@/src/hooks/ui/useOutsideClick";
-import { SearchSuggestions } from "../../ui/SearchSuggestions";
+import { SearchSuggestions } from "../../ui/shared/SearchSuggestions";
 
 interface Props {
   value: string;

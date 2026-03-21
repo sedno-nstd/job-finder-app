@@ -14,7 +14,7 @@ import { FormWrapper } from "@/src/components/shared/FormWrapper";
 import { saveOnboardingData } from "@/src/actions/applicant/onboarding";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/src/config/router";
-import { FormField } from "@/src/components/ui/FormField";
+import { FormField } from "@/src/components/ui/base/FormField";
 
 interface DesiredJobProps {
   className?: string;

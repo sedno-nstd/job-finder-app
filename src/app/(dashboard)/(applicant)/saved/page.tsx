@@ -1,14 +1,29 @@
 "use client";
-
+import { CheckFavoriteVacancy } from "@/src/actions/applicant/favoriteVacancies";
 import { VacancyList } from "@/src/components/vacancy/list/VacancyList";
+import { Vacancy } from "@/src/config/types";
 import { useAuthVacancy } from "@/src/store/useFavorites";
 import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Page() {
-  const { favoriteVacancies } = useAuthVacancy();
-  const isEmpty = favoriteVacancies.length === 0;
+  const [data, setData] = useState<Vacancy[]>([]);
+  const [error, setError] = useState(false);
+  const isEmpty = data.length === 0;
   const router = useRouter();
+
+  useEffect(() => {
+    setError(false);
+    const handleCheckFavorite = async () => {
+      const res = await CheckFavoriteVacancy();
+
+      if (res.success && res.vacancies) {
+        setData(res.vacancies as unknown as Vacancy[]);
+      }
+    };
+    handleCheckFavorite();
+  }, []);
 
   return (
     <main className="w-full h-full bg-[#eff2f6] flex flex-col items-center pt-20 pb-10 px-4">
@@ -40,17 +55,17 @@ export default function Page() {
             Saved
           </span>
           <span className="text-[#5a6f87] text-lg mb-6">
-            {favoriteVacancies.length > 1
-              ? `${favoriteVacancies.length} saved vacancies`
-              : `${favoriteVacancies.length} saved vacancy`}
+            {data.length > 1
+              ? `${data.length} saved vacancies`
+              : `${data.length} saved vacancy`}
           </span>
 
           <div>
             <VacancyList
-              safetyData={favoriteVacancies}
-              vacancies={favoriteVacancies}
-              total={favoriteVacancies.length}
-              visibleCount={favoriteVacancies.length}
+              safetyData={data}
+              vacancies={data}
+              total={data.length}
+              visibleCount={data.length}
               setVisibleCount={() => {}}
             />
           </div>

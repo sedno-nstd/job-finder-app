@@ -47,6 +47,7 @@ export function Login({ className }: Props) {
   };
   return (
     <FormWrapper
+      as="div"
       label="Enter for employer"
       className={clsx(
         "w-full text-[#0b0d0e] p-8 flex flex-col justify-center items-center bg-white",
@@ -75,7 +76,7 @@ export function Login({ className }: Props) {
           <div className="w-full flex flex-col first:mb-8" key={item.name}>
             <span className="mb-2 font-medium">{item.label}</span>
             <input
-              type={item.name === "passrods" ? "password" : "text"}
+              type={item.name === "password" ? "password" : "text"}
               name={item.name}
               value={formData[item.name as keyof typeof formData]}
               onChange={handleChange}

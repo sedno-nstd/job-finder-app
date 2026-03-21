@@ -1,6 +1,6 @@
 import { MultiSelectionGrid } from "@/src/components/shared/FormField/MultiSelectionGrid";
 import { SelectedItemsList } from "@/src/components/shared/FormField/SelectedItemsList";
-import { FormField } from "@/src/components/ui/FormField";
+import { FormField } from "@/src/components/ui/base/FormField";
 import { stacks } from "@/src/domain/vacancy/types";
 import { useMultiSelect } from "@/src/hooks/forms/useMultiSelect";
 import { useAutocomplete } from "@/src/hooks/vacancy/useAutocomplete";

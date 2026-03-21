@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { SelectedItemsList } from "@/src/components/shared/FormField/SelectedItemsList";
 import { useMultiSelect } from "@/src/hooks/forms/useMultiSelect";
 import { MultiSelectionGrid } from "@/src/components/shared/FormField/MultiSelectionGrid";
-import { FormField } from "@/src/components/ui/FormField";
+import { FormField } from "@/src/components/ui/base/FormField";
 import { Search } from "lucide-react";
 import { useAutocomplete } from "@/src/hooks/vacancy/useAutocomplete";
 

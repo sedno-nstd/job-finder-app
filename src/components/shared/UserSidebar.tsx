@@ -15,12 +15,18 @@ export function UserSidebar({ className }: Props) {
   const { reset } = useOnboardingStore();
   const router = useRouter();
 
+  const myId = (session?.user as any)?.id;
   const role = (session?.user as any)?.role || "applicant";
 
   const links = [
     ...SIDEBAR_LINKS[role as keyof typeof SIDEBAR_LINKS],
     ...SIDEBAR_LINKS.common,
   ];
+
+  const handleNavigation = (href: string | ((id: string) => string)) => {
+    const destination = typeof href === "function" ? href(myId) : href;
+    router.push(destination);
+  };
 
   const handleOut = async () => {
     reset();
@@ -41,7 +47,7 @@ export function UserSidebar({ className }: Props) {
           <div
             key={`${link.href}-${index}`}
             className="hover:bg-[#6380a61a] flex flex-row gap-[6px] cursor-pointer p-3"
-            onClick={() => router.push(link.href)}
+            onClick={() => handleNavigation(link.href)}
           >
             <link.icon size={22} className="text-[#a1afc1]" />
             <span className="text-[#2a3540] font-normal">{link.label}</span>

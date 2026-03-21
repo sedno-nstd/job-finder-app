@@ -16,7 +16,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/profile", req.url));
   }
 
-  const employerClose = ["/applicantRegistration", "/onBoarding"];
+  const employerClose = ["/applicantRegistration", "/onBoarding", "/responses"];
   if (
     isAuth &&
     token?.role === "employer" &&
@@ -25,9 +25,24 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/employer", req.url));
   }
 
+  const authRoutes = ["/applicantRegistration", "/employerRegistration"];
+  if (isAuth && authRoutes.some((p) => pathname.startsWith(p))) {
+    const destination = token?.role === "employer" ? "/employer" : "/vacancies";
+    return NextResponse.redirect(new URL(destination, req.url));
+  }
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/profile", "/profile/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/profile",
+    "/profile/:path*",
+    "/employer/:path*",
+    "/applicantRegistration",
+    "/employerRegistration",
+    "/onBoarding",
+    "/responses",
+    "/responses/:path*",
+  ],
 };

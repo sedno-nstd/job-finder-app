@@ -1,4 +1,4 @@
-import { FormField } from "@/src/components/ui/FormField";
+import { FormField } from "@/src/components/ui/base/FormField";
 import clsx from "clsx";
 import { useFormContext } from "react-hook-form";
 

@@ -1,5 +1,5 @@
 import { JoobleLogo } from "@/public/images/userHeader/logo";
-import { EmployerRegistration } from "@/src/components/employerRegistation/Registration";
+import { EmployerRegistration } from "@/src/components/employerRegistation/registration/Registration";
 import { ROUTES } from "@/src/config/router";
 
 export default function Page() {

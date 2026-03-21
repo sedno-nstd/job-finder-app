@@ -7,6 +7,7 @@ import { EmployerVacancyList } from "../dashboard/EmployerVacancyList";
 import { useRouter } from "next/navigation";
 import { EmployerUrgentVacanciesList } from "../ui/EmployerUrgentVacanciesList";
 import { EmployerVacancy } from "@/src/types/employer";
+import { ROUTES } from "@/src/config/router";
 
 export default function EmployerPage() {
   const { data: session, status } = useSession();
@@ -106,7 +107,7 @@ export default function EmployerPage() {
         </div>
 
         <button
-          onClick={() => router.push("/create-vacancy")}
+          onClick={() => router.push("/employer/create-vacancy")}
           className="mt-6 cursor-pointer md:mt-0 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all active:scale-95"
         >
           Post a Vacancy
@@ -119,7 +120,12 @@ export default function EmployerPage() {
               <h2 className="font-bold text-slate-800 text-lg">
                 Current Vacancies
               </h2>
-              <button className="text-sm text-blue-600 font-semibold hover:underline cursor-pointer">
+              <button
+                onClick={() => {
+                  router.push(ROUTES.EMPLOYER.VACANCIES);
+                }}
+                className="text-sm text-blue-600 font-semibold hover:underline cursor-pointer"
+              >
                 Manage All
               </button>
             </div>

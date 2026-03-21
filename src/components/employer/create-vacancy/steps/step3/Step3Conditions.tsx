@@ -3,10 +3,10 @@ import { useEmployerVacancyStore } from "@/src/store/employer/useEmployerVacancy
 import clsx from "clsx";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
-import { SalarySection } from "./steps/SalarySection";
-import { CurrencyPeriod } from "./steps/CurrencyPeriod";
-import { Description } from "./steps/Description";
-import { Negoitable } from "./steps/Negoitable";
+import { SalarySection } from "./parts/SalarySection";
+import { CurrencyPeriod } from "./parts/CurrencyPeriod";
+import { Description } from "./parts/Description";
+import { Negoitable } from "./parts/Negoitable";
 import { FormNavigation } from "@/src/components/shared/FormNavigation";
 
 interface Props {

@@ -1,4 +1,4 @@
-import { CustomSelect } from "@/src/components/ui/CustomSelect";
+import { CustomSelect } from "@/src/components/ui/shared/CustomSelect";
 import { useFormContext } from "react-hook-form";
 import { EXPERIENCE_OPTIONS } from "../../../constants/jobOptions";
 import { useState } from "react";

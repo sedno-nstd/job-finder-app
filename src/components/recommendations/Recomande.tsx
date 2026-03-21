@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { VacancyList } from "../vacancy/list/VacancyList";
 import { useRecommendation } from "@/src/hooks/vacancy/useRecomendation";
 import { useRecommendationStore } from "@/src/store/useRecomandeStorage";
-import { vacancies } from "@/src/domain/vacancy/types";
 import { getFullUserData } from "@/src/actions/applicant/getFullUserData";
 import { useRouter } from "next/navigation";
 import { GetAllVacancies } from "@/src/actions/vacancies/GetAllVacancies";
@@ -24,18 +23,22 @@ export function Recomande() {
   });
 
   useEffect(() => {
-    setLoading(true);
-    const fetchUser = async () => {
-      const res = await getFullUserData();
-      const vacancyRes = await GetAllVacancies();
+    let isMounted = true;
 
+    const fetchUser = async () => {
       try {
-        if (res.success && res.data) {
-          setUserData(res.data.onBoarding);
-          setVacancies(vacancyRes);
-          setLoading(false);
-        } else {
-          console.log(res.error);
+        const [res, vacancyRes] = await Promise.all([
+          getFullUserData(),
+          GetAllVacancies(),
+        ]);
+        if (isMounted) {
+          if (res.success && res.data) {
+            setUserData(res.data.onBoarding);
+            setVacancies(vacancyRes);
+            setLoading(false);
+          } else {
+            console.log(res.error);
+          }
         }
       } catch (err) {
         console.log(err);

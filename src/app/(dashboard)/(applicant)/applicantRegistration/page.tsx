@@ -1,6 +1,6 @@
 "use client";
 export const dynamic = "force-dynamic";
-import { EmployerRegistration } from "@/src/components/employerRegistation/Registration";
+import { EmployerRegistration } from "@/src/components/employerRegistation/registration/Registration";
 import { OnBoarding } from "@/src/components/onboarding/OnBoarding";
 import ApplicantRegistration from "@/src/components/registration/applicant/ApplicantRegistration";
 import { useUserState } from "@/src/store/useUserState";
@@ -15,7 +15,9 @@ function RegistrationContent() {
   const { isFullRegistration } = useUserState();
   const { data: session } = useSession();
 
-  if (session && isFullRegistration) {
+  const isOnboardingParam = searchParams.get("onboarding") === "true";
+
+  if ((session && isFullRegistration) || isOnboardingParam) {
     return <OnBoarding />;
   }
 

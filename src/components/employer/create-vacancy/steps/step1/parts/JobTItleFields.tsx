@@ -1,5 +1,5 @@
-import { FormField } from "@/src/components/ui/FormField";
-import { SearchSuggestions } from "@/src/components/ui/SearchSuggestions";
+import { FormField } from "@/src/components/ui/base/FormField";
+import { SearchSuggestions } from "@/src/components/ui/shared/SearchSuggestions";
 import { POPULAR_PROFESSIONS } from "@/src/config/searchOptions";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -34,7 +34,6 @@ export function JobTitleFields({ name, placeholder = "title" }: Props) {
         onFocus={() => setIsFocused(true)}
         onBlur={() => setTimeout(() => setIsFocused(false), 200)}
         placeholder={placeholder}
-        className="px-4"
       />
       <SearchSuggestions
         data={filteredProfession}

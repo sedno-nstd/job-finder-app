@@ -32,11 +32,13 @@ export default function Profile() {
     fetchGetData();
   }, []);
 
+  console.log(data?.onBoarding);
+
   if (!profileData) return <p>Loading...</p>;
 
   const user = session?.user;
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center bg-[#eff2f6] pb-10">
+    <div className="w-full h-full mt-10 flex flex-col justify-center items-center bg-[#eff2f6] pb-10">
       <div className="max-w-[448px] w-full flex flex-col gap-6">
         <ProfileIdentityCard
           avatarUrl={data.userProfile.customImage || ""}

@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { LucideProps, Search } from "lucide-react";
 import React, { forwardRef } from "react";
 
@@ -7,7 +8,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   searchIcon?: React.ElementType<LucideProps>;
   hasIcon?: boolean;
-  type?: "text" | "number";
+  type?: "text" | "number" | "password";
 }
 
 export const FormField = forwardRef<HTMLInputElement, Props>(
@@ -25,7 +26,12 @@ export const FormField = forwardRef<HTMLInputElement, Props>(
     ref,
   ) => {
     return (
-      <div className="w-full flex relative flex-col">
+      <div className={clsx("w-full flex relative flex-col", className)}>
+        {label && (
+          <label className="mb-2 block font-semibold text-slate-700 text-sm">
+            {label}
+          </label>
+        )}
         <div className="relative flex items-center w-full">
           <input
             ref={ref}

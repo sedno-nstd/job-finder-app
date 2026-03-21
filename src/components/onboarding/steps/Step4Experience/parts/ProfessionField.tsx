@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { FormField } from "@/src/components/ui/FormField";
-import { SearchSuggestions } from "@/src/components/ui/SearchSuggestions";
+import { FormField } from "@/src/components/ui/base/FormField";
+import { SearchSuggestions } from "@/src/components/ui/shared/SearchSuggestions";
 import { POPULAR_PROFESSIONS } from "@/src/config/searchOptions";
 import clsx from "clsx";
 

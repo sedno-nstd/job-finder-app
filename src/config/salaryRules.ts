@@ -9,18 +9,12 @@ export const SALARY_RULES = {
   EUR: { hour: { min: 6, range: 30 }, month: { min: 1100, range: 4500 } },
 };
 
-const EXCHANGE_RATE = {
-  USD: 41.5,
-  EUR: 44.2,
-  UAH: 1,
-};
-
 const US_UAH = 41.5;
 const H_IN_M = 168;
 
 export const getSalaryInUah = (
   vacancy: Vacancy,
-  targetPeriod: "hour" | "month"
+  targetPeriod: "hour" | "month",
 ) => {
   if (!vacancy.salaryFrom) return 0;
 

@@ -12,7 +12,6 @@ import {
   createVacancyAction,
   CreateVacancyInput,
 } from "@/src/actions/employer/vacancies/createVacancy";
-import { FormNavigation } from "../../shared/FormNavigation";
 import { useRouter } from "next/navigation";
 import { updateVacancy } from "@/src/actions/employer/vacancies/updateVacancy";
 import { ROUTES } from "@/src/config/router";
@@ -22,7 +21,7 @@ interface Props {
 }
 
 export function EmployerVacancyForm({ initialData }: Props) {
-  const { step, reset, prevStep } = useEmployerVacancyStore();
+  const { step, reset } = useEmployerVacancyStore();
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -79,7 +78,6 @@ export function EmployerVacancyForm({ initialData }: Props) {
       console.error(err);
       setError(true);
       console.log("errors:", errors);
-      console.log("isValid:", isValid);
     } finally {
       setIsSubmitting(false);
     }
