@@ -10,85 +10,87 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"  //postgresql
+  provider = "postgresql" //postgresql
   url      = env("DATABASE_URL")
 }
 
 model User {
- id            String @id @default(cuid())
- name          String 
- email         String @unique
- phone         String? @unique
- emailVerified DateTime? 
- image         String?   
- accounts      Account[] 
- sessions      Session[]
- conversations Conversation[]
- messages      Message[]
- detailInfo    DetailInfo?
- verificationTokens VerificationToken[]
- applications Application[]
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  phone         String?   @unique
+  emailVerified DateTime?
+  image         String?
+
+  accounts Account[]
+  sessions Session[]
+
+  conversations Conversation[] @relation("UserChats")
+  messages      Message[]      @relation("UserMessages")
+
+  detailInfo DetailInfo?
+
+  verificationTokens VerificationToken[]
+  applications       Application[]
+  favoriteVacancies  Vacancy[]           @relation("UserFavorites")
 }
 
 model Employer {
-  id String @id @default(cuid())
-  name String 
-  email String @unique
-  password String
-  phone String 
+  id          String @id @default(cuid())
+  name        String
+  email       String @unique
+  password    String
+  phone       String
   companyName String @unique
 
-  resetToken        String?   @unique
-  resetTokenExpiry  DateTime?
+  resetToken       String?   @unique
+  resetTokenExpiry DateTime?
 
   vacancies Vacancy[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  conversations Conversation[] @relation("EmployerChats")
+  messages      Message[]      @relation("EmployerMessages")
 }
 
-
 model DetailInfo {
-  id                 String   @id @default(cuid())
-  userId             String   @unique
-  user               User     @relation(fields: [userId], references: [id])
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
 
-  firstName          String
-  lastName           String
-  resumeUrl          String?
+  firstName String
+  lastName  String
+  resumeUrl String?
 
-
-  location           String
-  gender             String
-  dateOfBirth        String
-  readyToRelocate    Boolean   @default(false)
+  location            String
+  gender              String
+  dateOfBirth         String
+  readyToRelocate     Boolean              @default(false)
   relocationLocations RelocationLocation[]
-  readyForWorkAbroad Boolean   @default(false)
+  readyForWorkAbroad  Boolean              @default(false)
 
-  desiredJob         DesiredJob[]  
-
+  desiredJob DesiredJob[]
 
   lastWorkplace      String
   previousPosition   String
-  experienceDuration String  
-  
-  employmentType     EmploymentType[]
-  
-  searchMode         String
-  role               String
-  isCompleted        Boolean  @default(false)
+  experienceDuration String
 
+  employmentType EmploymentType[]
 
+  searchMode  String
+  role        String
+  isCompleted Boolean @default(false)
 
   customImage String?
 
-  salaryAmount String?
-  salaryCurrency String @default("USD")
-  salaryPeriod String @default("month")
+  salaryAmount   String?
+  salaryCurrency String  @default("USD")
+  salaryPeriod   String  @default("month")
 
   aboutMe String?
 }
-
 
 model RelocationLocation {
   id           String     @id @default(cuid())
@@ -105,25 +107,25 @@ model DesiredJob {
 }
 
 model EmploymentType {
-  id           String @id @default(cuid())
+  id           String     @id @default(cuid())
   name         String
   detailInfoId String
-  detailInfo   DetailInfo @relation(fields: [detailInfoId],references: [id])
+  detailInfo   DetailInfo @relation(fields: [detailInfoId], references: [id])
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String? 
-  access_token       String? 
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? 
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -139,44 +141,51 @@ model Session {
 }
 
 model VerificationToken {
-  id         String    @id @default(cuid())
-  target     String   @unique
-  type       String
-  token      String   @unique
-  expires    DateTime
-  userId     String  
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id      String   @id @default(cuid())
+  target  String   @unique
+  type    String
+  token   String   @unique
+  expires DateTime
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Message {
- id        String @id @default(cuid())
- text      String
+  id   String @id @default(cuid())
+  text String
 
- author    User @relation(fields: [authorId], references: [id])
- authorId  String
+  authorUserId String?
+  authorUser   User?   @relation("UserMessages", fields: [authorUserId], references: [id])
 
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
-
- chat      Conversation @relation(fields: [chatId], references: [id])
- chatId    String
-}
-
-model Conversation {
-  id        String @id @default(cuid())
-  users     User[]
-  messages  Message[]
+  authorEmployerId String?
+  authorEmployer   Employer? @relation("EmployerMessages", fields: [authorEmployerId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  chat   Conversation @relation(fields: [chatId], references: [id])
+  chatId String
+}
+
+model Conversation {
+  id       String    @id @default(cuid())
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employerId String
+  employer   Employer @relation("EmployerChats", fields: [employerId], references: [id])
+
+  userId String
+  user   User   @relation("UserChats", fields: [userId], references: [id])
 
   vacancy   Vacancy? @relation(fields: [vacancyId], references: [id])
   vacancyId String?
 }
 
 model Application {
-  id  String @id @default(cuid())
+  id          String   @id @default(cuid())
   createdAt   DateTime @default(now())
   applicantId String
   applicant   User     @relation(fields: [applicantId], references: [id])
@@ -184,34 +193,33 @@ model Application {
   vacancy     Vacancy  @relation(fields: [vacancyId], references: [id])
   message     String?
   status      String   @default("pending")
-  
 }
 
-
 model Vacancy {
-  id          String   @id @default(cuid())
-  title       String
-  company     String
-  description String
-  salaryFrom  Int?
-  salaryTo    Int?
-  currency    String   @default("UAH")
-  salaryPeriod String  @default("month")
-  negotiable  Boolean  @default(false)
-  city        String?
-  country     String
-  level       String @default("junior")
-  stack       String @default("")
-  employmentType String  
-  postedAt    DateTime @default(now())
-  expiresAt   DateTime
-  views       Int @default(0)
-  employerId  String
+  id             String   @id @default(cuid())
+  title          String
+  company        String
+  description    String
+  salaryFrom     Int?
+  salaryTo       Int?
+  currency       String   @default("UAH")
+  salaryPeriod   String   @default("month")
+  negotiable     Boolean  @default(false)
+  city           String?
+  country        String
+  level          String   @default("junior")
+  stack          String   @default("")
+  employmentType String
+  postedAt       DateTime @default(now())
+  expiresAt      DateTime
+  views          Int      @default(0)
+  employerId     String
 
-  viewLogs      ViewLog[]
-  employer      Employer          @relation(fields: [employerId], references: [id])
-  application   Application[]
-  conversation  Conversation[]
+  viewLogs     ViewLog[]
+  employer     Employer       @relation(fields: [employerId], references: [id])
+  application  Application[]
+  favoritedBy  User[]         @relation("UserFavorites")
+  conversation Conversation[]
 }
 
 model ViewLog {
@@ -220,7 +228,7 @@ model ViewLog {
   createdAt DateTime @default(now())
 
   vacancyId String
-  vacancy   Vacancy  @relation(fields: [vacancyId], references: [id], onDelete: Cascade) // Связь + удаление
+  vacancy   Vacancy @relation(fields: [vacancyId], references: [id], onDelete: Cascade) // Связь + удаление
 
-  @@unique([vacancyId, userIp]) 
+  @@unique([vacancyId, userIp])
 }
