@@ -21,18 +21,18 @@ This project simulates a real job board system. The main goal was to build compl
 ### 🌐 Public & Discovery
 | Main Landing | Job Listings |
 | :---: | :---: |
-| ![Main Page](/public/screenshots/main.png) | ![Job Listings](/public/screenshots/job-listings.png) |
+| ![Main Page](./public/screenshots/main.png) | ![Job Listings](./public/screenshots/job-listings.png) |
 
 ---
 
 ### 🏢 Employer Dashboard
 | Employer Profile | Applicants Dashboard |
 | :---: | :---: |
-| ![Employer Hub](/public/screenshots/employer-hub.png) | ![ATS Dashboard](/public/screenshots/ats-dashboard.png) |
+| ![Employer Hub](./public/screenshots/employer-hub.png) | ![ATS Dashboard](./public/screenshots/ats-dashboard.png) |
 
 | Vacancy Applications | Candidate Profile |
 | :---: | :---: |
-| ![Vacancy Applications](/public/screenshots/vacancy-applications.png) | ![Applicant Profile](/public/screenshots/applicant-profile.png) |
+| ![Vacancy Applications](./public/screenshots/vacancy-applications.png) | ![Applicant Profile](./public/screenshots/applicant-profile.png) |
 
 ---
 
