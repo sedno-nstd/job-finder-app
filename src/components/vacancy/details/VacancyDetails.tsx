@@ -55,23 +55,19 @@ export default function VacancyDetails({
               Salary Negotiable
             </span>
           ) : (
-            <div className="flex items-center gap-1 text-gray-500 font-medium mb-4">
+            <div className="flex items-center gap-1 text-slate-900 font-bold text-xl mb-4">
               <span className="text-blue-600">
                 {vacancy.currency === "USD" ? "$" : "UAH"}
               </span>
-              <span className="text-sm">
-                {vacancy.salaryPeriod === "hour" ? "hr" : "mo"}
+              <span>
+                {vacancy.salaryFrom}{" "}
+                {vacancy.salaryTo ? `— ${vacancy.salaryTo}` : ""}
+              </span>
+              <span className="text-sm text-gray-500 font-normal ml-1">
+                / {vacancy.salaryPeriod === "hour" ? "hr" : "mo"}
               </span>
             </div>
           )}
-          <div className="flex items-center gap-1 text-gray-500 font-medium mb-4">
-            <span className="text-blue-600">
-              {vacancy.currency === "USD" ? "$" : "UAH"}
-            </span>
-            <span className="text-sm">
-              {vacancy.salaryPeriod === "hour" ? "hr" : "mo"}
-            </span>
-          </div>
         </div>
         <div>
           <span className="text-blue-600 font-semibold">{vacancy.company}</span>

@@ -41,7 +41,7 @@ export default async function EditVacancyPage({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto h-full flex flex-col justify-center items-center">
       <h1 className="text-2xl font-bold text-center text-slate-800">
         Edit Vacancy: {vacancy.title}
       </h1>

@@ -22,7 +22,7 @@ export default async function middleware(req: NextRequest) {
     token?.role === "employer" &&
     employerClose.some((p) => pathname.startsWith(p))
   ) {
-    return NextResponse.redirect(new URL("/employer", req.url));
+    return NextResponse.redirect(new URL("/employer/employerProfile", req.url));
   }
 
   const authRoutes = ["/applicantRegistration", "/employerRegistration"];
