@@ -17,6 +17,7 @@ export async function getFullUserData() {
         desiredJob: true,
         relocationLocations: true,
         employmentType: true,
+        user: true,
       },
     });
 
@@ -35,6 +36,8 @@ export async function getFullUserData() {
 
     const userProfile: UserProfile = {
       ...data,
+      phone: data.user?.phone,
+      email: data.user?.email,
       customImage: data?.customImage || null,
       salaryAmount: data?.salaryAmount || undefined,
       salaryCurrency: data?.salaryCurrency || (null as any),
@@ -42,7 +45,13 @@ export async function getFullUserData() {
       aboutMe: data?.aboutMe || undefined,
     };
 
-    return { success: true, data: { onBoarding, userProfile } as MainUserData };
+    return {
+      success: true,
+      data: {
+        onBoarding,
+        userProfile,
+      } as MainUserData,
+    };
   } catch (error) {
     return { success: false, error: "DB Error" };
   }

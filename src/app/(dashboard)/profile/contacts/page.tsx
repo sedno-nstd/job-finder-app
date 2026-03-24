@@ -1,24 +1,36 @@
 "use client";
+import { FindApplicantPhone } from "@/src/actions/applicant/phone/getApplicantPhone";
 import {
   ContactField,
   EmailData,
 } from "@/src/components/profile/forms/Contacts/contactsData";
+import { FullPageLoader } from "@/src/components/ui/base/Loader";
 import { ROUTES } from "@/src/config/router";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
   const { data: session, status } = useSession();
+  const [livePhone, setLivePhone] = useState<string | null>(null);
 
-  if (status === "loading") {
-    return (
-      <div className="p-10 text-center animate-pulse">Loading session...</div>
-    );
-  }
+  useEffect(() => {
+    const fetchPhone = async () => {
+      if (session?.user?.email) {
+        const res = await FindApplicantPhone();
 
+        if (res && "phone" in res && res.phone) {
+          setLivePhone(res.phone);
+        }
+      }
+    };
+    fetchPhone();
+  }, [session]);
+
+  if (status === "loading") return <FullPageLoader />;
   const contactFields: ContactField[] = [
     {
       label: "Phone",
-      value: session?.user?.phone,
+      value: livePhone || session?.user?.phone,
       href: ROUTES.PROFILE.CONTACTS.PhoneEdit,
       hasBorderBot: true,
     },

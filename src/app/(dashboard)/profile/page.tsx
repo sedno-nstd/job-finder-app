@@ -68,7 +68,12 @@ export default function Profile() {
         <BasicProfileCard
           href={ROUTES.PROFILE.CONTACTS.ROOT}
           title="Contacts"
-          information={user?.email}
+          information={
+            <div className="flex flex-col gap-2">
+              <span>{data.userProfile.email}</span>
+              <span>{data.userProfile.phone}</span>
+            </div>
+          }
           step={step}
         />
         <BasicProfileCard

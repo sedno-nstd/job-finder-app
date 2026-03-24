@@ -16,7 +16,7 @@ interface Props {
 
 export function EmailData({ fields = [] }: Props) {
   return (
-    <FormWrapper className="max-w-[448px] bg-white mt-10" label="Contacts">
+    <FormWrapper className="max-w-[448px] py-6 bg-white mt-10" label="Contacts">
       {fields.map((item, index) => (
         <div
           key={index}

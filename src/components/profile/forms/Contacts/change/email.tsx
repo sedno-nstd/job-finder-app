@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { InfoIcon } from "lucide-react";
 import { ROUTES } from "@/src/config/router";
-import { RequestEmailUpdate } from "@/src/app/api/user/request-email/route";
+import { RequestEmailUpdate } from "@/src/actions/common/request-email/requestEmail";
 
 export function EmailSection() {
   const { data: session } = useSession();

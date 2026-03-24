@@ -1,3 +1,5 @@
+"use server";
+import { authConfig } from "@/src/config/auth";
 import { getServerSession } from "next-auth";
 import z from "zod";
 
@@ -6,7 +8,9 @@ const phoneSchema = z
   .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone format");
 
 export async function EnterPhone(newPhone: string) {
-  const session = await getServerSession();
+  const session = await getServerSession(authConfig);
+
+  console.log("Server Session:", session);
 
   if (!session?.user.id) throw new Error("Unauthorized");
 
@@ -44,7 +48,7 @@ export async function EnterPhone(newPhone: string) {
     console.log(`[SMS] Code for ${newPhone}: ${otpCode}`);
     return { success: true };
   } catch (err) {
-    console.error("PHONE_REQUEST_ERROR:", err);
+    console.error(err);
     return { success: false, error: "Internal server error. Try again later." };
   }
 }

@@ -1,7 +1,9 @@
+"use server";
+import { authConfig } from "@/src/config/auth";
 import { getServerSession } from "next-auth";
 
 export async function UpdatePhone(token: string, newPhone: string) {
-  const session = await getServerSession();
+  const session = await getServerSession(authConfig);
 
   if (!session?.user.id) throw new Error("user does not exist");
 

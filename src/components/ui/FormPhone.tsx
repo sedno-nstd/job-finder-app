@@ -3,6 +3,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import PhoneInputWithCountrySelect from "react-phone-number-input";
 import { countries, Country } from "@/src/components/constans/flags";
 import { CountrySelect } from "./PhoneForm/CountrySelect";
+import "react-phone-number-input/style.css";
 
 interface PhoneFormProps {
   name: string;

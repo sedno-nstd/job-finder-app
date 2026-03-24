@@ -37,7 +37,7 @@ export default function ApplicantRegistration() {
       await signIn("credentials", {
         email: formData.email,
         password: formData.password,
-        callbackUrl: "/auth/check-status",
+        callbackUrl: "/vacancies",
       });
     } else {
       setError(res.message || "Something went wrong");
