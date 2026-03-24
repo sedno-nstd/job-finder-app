@@ -32,7 +32,7 @@ export default async function Page({
       <VacancyDetails
         vacancy={vacancy}
         initialIsFavorite={isFavorite}
-        className="max-w-[448px]"
+        className="max-w-[640px]"
       />
     </div>
   );

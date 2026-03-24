@@ -2,7 +2,7 @@
 export const dynamic = "force-dynamic";
 import { EmployerRegistration } from "@/src/components/employerRegistation/registration/Registration";
 import { OnBoarding } from "@/src/components/onboarding/OnBoarding";
-import ApplicantRegistration from "@/src/components/registration/applicant/ApplicantRegistration";
+import ApplicantRegistration from "@/src/components/registration/applicant/registration/ApplicantRegistration";
 import { useUserState } from "@/src/store/useUserState";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";

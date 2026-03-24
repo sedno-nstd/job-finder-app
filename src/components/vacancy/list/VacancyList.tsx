@@ -88,7 +88,7 @@ export function VacancyList({
     <div className="flex flex-col w-full max-w-[632px]">
       {vacancies.map((v) => (
         <VacancyCard
-          VacancyClasses="max-w-[632px]"
+          VacancyClasses="max-w-[632px] w-full"
           key={v.id}
           vacancy={v}
           isFavorite={isFavorite.includes(v.id)}

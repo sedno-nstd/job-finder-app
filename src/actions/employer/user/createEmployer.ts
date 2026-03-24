@@ -9,29 +9,15 @@ export async function createEmployer(
     "id" | "updatedAt" | "createdAt" | "vacancies"
   >,
 ) {
-  const emailExists = await prisma.employer.findUnique({
-    where: { email: data.email },
-  });
-
-  const emailInEmployer = await prisma.employer.findUnique({
-    where: { email: data.email },
-  });
-  const emailInUser = await prisma.user.findUnique({
-    where: { email: data.email },
-  });
+  const [emailInEmployer, emailInUser] = await Promise.all([
+    prisma.employer.findUnique({ where: { email: data.email } }),
+    prisma.user.findUnique({ where: { email: data.email } }),
+  ]);
 
   if (emailInEmployer || emailInUser) {
     return {
       success: false,
       message: "This account with this email already exist",
-    };
-  }
-
-  if (emailExists) {
-    return {
-      success: false,
-      field: "email",
-      message: "Email already in use",
     };
   }
 
@@ -43,7 +29,7 @@ export async function createEmployer(
     return {
       success: false,
       field: "companyName",
-      message: "Company already exists",
+      message: "Company with this name already exists",
     };
   }
 

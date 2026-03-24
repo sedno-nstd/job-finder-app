@@ -2,6 +2,7 @@
 import { authConfig } from "@/src/config/auth";
 import { prisma } from "src/lib/prisma";
 import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
 
 export async function AddFavoriteVacancies(vacancyId: string) {
   const session = await getServerSession(authConfig);
@@ -27,6 +28,8 @@ export async function AddFavoriteVacancies(vacancyId: string) {
           : { connect: { id: vacancyId } },
       },
     });
+    revalidatePath(`/vacancies/${vacancyId}`);
+
     return { success: true, data: updatedUser };
   } catch (error) {
     console.error("Failed to add in the favorite", error);

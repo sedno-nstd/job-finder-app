@@ -18,6 +18,7 @@ export function Login({ className }: Props) {
     email: "",
     password: "",
   });
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,6 +34,7 @@ export function Login({ className }: Props) {
       });
 
       if (res?.error) {
+        setError("Invalid email or password");
         console.error("Error sign in", res.error);
         return;
       }
@@ -64,7 +66,7 @@ export function Login({ className }: Props) {
         <div className="text-sm sm:text-base md:text-lg flex flex-wrap justify-center gap-x-1 font-medium text-gray-800">
           <span>Search job? Go to</span>
           <a
-            href="/registration"
+            href={ROUTES.AUTH.REGISTER}
             className="text-blue-500 hover:underline font-semibold whitespace-nowrap"
           >
             applicant section
@@ -92,10 +94,13 @@ export function Login({ className }: Props) {
       >
         Forgot password?
       </a>
+      {error && (
+        <p className="text-red-500 mt-6 mb-4 font-medium text-md">{error}</p>
+      )}
       <button
         onClick={() => onSubmit()}
         type="button"
-        className="w-full h-[48px] mt-6 cursor-pointer bg-blue-500 transition-all duration-200 font-medium hover:bg-blue-600 text-white"
+        className="w-full h-[48px]  cursor-pointer bg-blue-500 transition-all duration-200 font-medium hover:bg-blue-600 text-white"
       >
         Sign in to dashboard
       </button>

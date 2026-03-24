@@ -3,14 +3,11 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/src/config/auth";
 import { MainUserData } from "@/src/types/user";
+import { onboardingDbSchema } from "@/src/components/onboarding/schemas/schemas";
 
-const mapCreate = (arr: string[]) => ({
-  create: arr.map((name) => ({ name })) || [],
-});
-
-const mapUpdate = (arr: string[]) => ({
+const syncRelations = (arr: string[] = []) => ({
   deleteMany: {},
-  create: arr.map((name) => ({ name })) || [],
+  create: arr.map((name) => ({ name })),
 });
 
 export async function saveOnboardingData(fullData: MainUserData) {
@@ -22,45 +19,42 @@ export async function saveOnboardingData(fullData: MainUserData) {
 
   const { onBoarding, userProfile } = fullData;
 
-  const {
-    continueWithoutResume,
-    relocationLocations,
-    desiredJob,
-    employmentType,
-    resume,
-    ...cleanOnBoarding
-  } = onBoarding;
-
-  const { phone, ...cleanUserProfile } = userProfile;
-
-  const finalFields = {
-    ...cleanOnBoarding,
-    ...cleanUserProfile,
-    resumeUrl: typeof resume === "string" ? resume : resume?.url || null,
-  };
-
-  const { id: _i, userId: _u, ...cleanData } = finalFields as any;
+  const finalDetailData = onboardingDbSchema.parse({
+    ...onBoarding,
+    ...userProfile,
+    resumeUrl: onBoarding.resume?.url || null,
+    isCompleted: true,
+    role: "applicant",
+  });
 
   try {
     await prisma.user.update({
       where: { id: userId },
       data: {
-        phone: phone,
+        phone: userProfile.phone,
         detailInfo: {
           upsert: {
             update: {
-              ...cleanData,
-              isCompleted: true,
-              relocationLocations: mapUpdate(relocationLocations),
-              desiredJob: mapUpdate(desiredJob),
-              employmentType: mapUpdate(employmentType),
+              ...finalDetailData,
+              relocationLocations: syncRelations(
+                onBoarding.relocationLocations,
+              ),
+              desiredJob: syncRelations(onBoarding.desiredJob),
+              employmentType: syncRelations(onBoarding.employmentType),
             },
             create: {
-              ...cleanData,
-              isCompleted: true,
-              relocationLocations: mapCreate(relocationLocations),
-              desiredJob: mapCreate(desiredJob),
-              employmentType: mapCreate(employmentType),
+              ...finalDetailData,
+              relocationLocations: {
+                create: onBoarding.relocationLocations.map((name) => ({
+                  name,
+                })),
+              },
+              desiredJob: {
+                create: onBoarding.desiredJob.map((name) => ({ name })),
+              },
+              employmentType: {
+                create: onBoarding.employmentType.map((name) => ({ name })),
+              },
             },
           },
         },

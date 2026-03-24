@@ -58,7 +58,7 @@ export const authConfig: AuthOptions = {
   },
   providers: [
     CredentialsProvider({
-      name: "Employer login",
+      name: "Credentials",
       credentials: {
         email: { label: "email", type: "text" },
         password: { label: "password", type: "password" },
@@ -70,22 +70,40 @@ export const authConfig: AuthOptions = {
           where: { email: credentials.email },
         });
 
-        if (!employer) return null;
+        if (employer) {
+          const validPassword = await bcrypt.compare(
+            credentials.password,
+            employer.password,
+          );
+          if (validPassword) {
+            return {
+              id: employer.id,
+              email: employer.email,
+              name: employer.name,
+              companyName: employer.companyName,
+              role: "employer",
+            };
+          }
+        }
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
 
-        const validPassword = await bcrypt.compare(
-          credentials.password,
-          employer.password,
-        );
-
-        if (!validPassword) return null;
-
-        return {
-          id: employer.id,
-          email: employer.email,
-          companyName: employer.companyName,
-          name: employer.name,
-          role: "employer",
-        };
+        if (user && user.password) {
+          const validPassword = await bcrypt.compare(
+            credentials.password,
+            user.password,
+          );
+          if (validPassword) {
+            return {
+              id: user.id,
+              email: user.email,
+              name: user.name,
+              role: "applicant",
+            };
+          }
+        }
+        return null;
       },
     }),
     GoogleProvider({

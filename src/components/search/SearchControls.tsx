@@ -1,7 +1,6 @@
 "use client";
 import { useTranslation } from "react-i18next";
 import { useJobSearch } from "@/src/hooks/useJobSearch";
-import { useSearchStore } from "@/src/store/useSearchStore";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useSpeechToText } from "@/src/hooks/user/useSpeechToText";
@@ -9,6 +8,8 @@ import { SearchResponsive } from "./VacancySearch/parts/ModalSection";
 import { LocationSearchField } from "./VacancySearch/parts/Inputs/LocationSearchField";
 import { ProfSearchField } from "./VacancySearch/parts/Inputs/ProfSearchField";
 import { ModalButton } from "./VacancySearch/parts/ui/ModalButton";
+import { useUserState } from "@/src/store/useUserState";
+import { useSearchStore } from "@/src/store/useSearchStore";
 
 interface Props {
   openModal: boolean;
@@ -17,7 +18,8 @@ interface Props {
 
 export function VacancySearch({ openModal, setisOpen }: Props) {
   const { isListening, startListening } = useSpeechToText("en-US");
-  const { prof, loc, locRef, profRef, selectOption } = useJobSearch();
+  const { prof, loc, locRef, profRef, selectOption, handleSearch } =
+    useJobSearch();
   const { triggerSearch } = useSearchStore();
   const { t } = useTranslation("common");
   const [isMounted, setIsMounted] = useState(false);
@@ -33,7 +35,7 @@ export function VacancySearch({ openModal, setisOpen }: Props) {
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+  }, [isMounted]);
 
   const SearchFields = (isMobile: boolean) => (
     <div
@@ -58,11 +60,9 @@ export function VacancySearch({ openModal, setisOpen }: Props) {
           isMobile={isMobile}
         />
       </div>
-
       {!isMobile && (
         <div className="mx-1.5 min-w-[1px] py-0.5 bg-gray-400/70 h-[37px] w-[1px]" />
       )}
-
       <div
         className={clsx(
           "relative h-[56px]  w-full max-w-[640px] xl:w-[436px] ",
@@ -78,8 +78,12 @@ export function VacancySearch({ openModal, setisOpen }: Props) {
           isMobile={isMobile}
         />
       </div>
-
-      <ModalButton setisOpen={setisOpen} triggerSearch={triggerSearch} />
+      <ModalButton
+        setisOpen={setisOpen}
+        triggerSearch={() => {
+          (handleSearch(), triggerSearch());
+        }}
+      />
     </div>
   );
 

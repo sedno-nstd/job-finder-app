@@ -6,11 +6,15 @@ import {
 } from "@/src/actions/applicant/getRespondVacancies";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { getFullUserData } from "@/src/actions/applicant/getFullUserData";
+import { useRouter } from "next/navigation";
 
 export function Respond({ vacancyId }: { vacancyId: string }) {
   const { data } = useSession();
+  const router = useRouter();
   const user = data?.user;
   const [isSent, setIsSent] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   useEffect(() => {
@@ -33,6 +37,13 @@ export function Respond({ vacancyId }: { vacancyId: string }) {
     if (!user?.id) throw new Error("User does not exist");
 
     try {
+      const profile = await getFullUserData();
+      if (!profile.success || !profile.data?.onBoarding) {
+        setShowWarning(true);
+
+        setTimeout(() => router.push("/onBoarding"), 2000);
+        return;
+      }
       await RespondCreate(user.id, vacancyId);
       setIsSent(true);
     } catch (err) {
@@ -63,6 +74,11 @@ export function Respond({ vacancyId }: { vacancyId: string }) {
 
   return (
     <div>
+      {showWarning && (
+        <p className="text-amber-600 text-lg font-medium animate-pulse text-center mb-4">
+          ⚠️ Complete your profile to apply. Redirecting...
+        </p>
+      )}
       {!isSent ? (
         <button
           className="rounded-lg cursor-pointer bg-blue-600 text-white w-full h-[40px] disabled:bg-blue-400"

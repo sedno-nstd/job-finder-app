@@ -3,6 +3,42 @@ import { authConfig } from "@/src/config/auth";
 import { ApplicantResponse } from "@/src/types/user";
 import { getServerSession } from "next-auth";
 import { prisma } from "src/lib/prisma";
+
+export async function GetAllApplicants() {
+  const session = await getServerSession(authConfig);
+  if (!session?.user)
+    return {
+      success: false,
+      error: true,
+    };
+
+  const groupedVacancies = await prisma.vacancy.findMany({
+    where: { employerId: session.user.id },
+    select: {
+      id: true,
+      title: true,
+      _count: {
+        select: { application: true },
+      },
+      application: {
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        include: {
+          applicant: {
+            select: {
+              name: true,
+              image: true,
+              id: true,
+              detailInfo: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return { success: true, data: groupedVacancies };
+}
 export async function GetApplicants(vacancyId: string) {
   const session = await getServerSession(authConfig);
   const myId = session?.user.id;

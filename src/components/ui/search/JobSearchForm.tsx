@@ -66,7 +66,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               icon2Function && icon2Function();
             }}
             className={cn(
-              "cursor-pointer absolute p-2 rounded-lg right-2 top-1/2 -translate-y-1/2 flex items-center justify-center duration-200 transition-colors",
+              "cursor-pointer mr-1.5 absolute p-2 rounded-lg right-2 top-1/2 -translate-y-1/2 flex items-center justify-center duration-200 transition-colors",
               icon2ClassName,
             )}
           >

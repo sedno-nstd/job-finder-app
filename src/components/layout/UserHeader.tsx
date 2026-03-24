@@ -65,11 +65,7 @@ export function UserHeader() {
           </button>
         </div>
       </div>
-      <div
-        className="flex items-center shrink-0
-      max-lg:hidden
-      "
-      >
+      <div className="flex items-center shrink-0 max-lg:hidden ">
         <HeaderNavigation
           profileRef={profileRef}
           setShowProfileModal={setShowProfileModal}

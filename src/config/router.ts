@@ -1,7 +1,8 @@
 export const ROUTES = {
+  VACANCIES: "/vacancies",
   HOME: "/",
   AUTH: {
-    LOGIN: "/auth/login",
+    LOGIN: "/applicantLogin",
     REGISTER: "/applicantRegistration",
     EMPLOYER_REG: "/employerRegistration",
   },
@@ -24,6 +25,9 @@ export const ROUTES = {
     },
     EXPIERENCE: "/profile/job-expierence",
   },
+  ON_BOARDING: {
+    AUTH: "/onBoarding",
+  },
   EMPLOYER: {
     ROOT: "/employer/employerProfile",
     PROFILE: "/employer/profile",
@@ -32,7 +36,10 @@ export const ROUTES = {
     LOGIN: "/employer/employerRegistration/login",
     FORGOTPASSWORD: "/employer/employerRegistration/forgot-password",
     RESETPASSWORD: "/employer/employerRegistration/reset-password",
+    ALL_APPLICANTS: "/employer/applicants",
     APPLICANTS: (id: string) => `/employer/vacancies/${id}/applicants`,
+    APPLICANT_PROFILE: (vId: string, aId: string) =>
+      `/employer/vacancies/${vId}/applicants/${aId}`,
   },
   SETTINGS: "/settings",
 } as const;

@@ -18,10 +18,12 @@ export function OnBoarding() {
 
   const handleFinish = async () => {
     try {
+      const { continueWithoutResume, ...restOnboarding } = formData.onBoarding;
+
       const dataToSend = {
         ...formData,
         onBoarding: {
-          ...formData.onBoarding,
+          ...restOnboarding,
           resume: formData.onBoarding.resume?.url || null,
           role: "applicant",
         },

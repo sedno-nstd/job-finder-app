@@ -7,13 +7,15 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 interface ApplicantsListProps {
   initialApplicants: ApplicantResponse[];
   currentPage: number;
-  vacancyId: string;
+  vacancyId?: string;
+  haveVacancyTitle?: boolean;
 }
 
 export function ApplicantsList({
   initialApplicants,
   currentPage,
   vacancyId,
+  haveVacancyTitle = false,
 }: ApplicantsListProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -37,8 +39,12 @@ export function ApplicantsList({
 
   if (initialApplicants.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-16 bg-white border-2 border-dashed border-slate-200 rounded-2xl">
-        it's all
+      <div className="flex flex-col items-center justify-center p-16 bg-white border-2 border-dashed border-slate-200 rounded-2xl text-center">
+        <span className="text-slate-500 font-medium">
+          {vacancyId
+            ? "No candidates have applied for this vacancy yet"
+            : "You don't have any applications yet"}
+        </span>
       </div>
     );
   }
@@ -55,7 +61,8 @@ export function ApplicantsList({
       <div className="flex flex-col gap-3">
         {visibleApplicants.map((app, index) => (
           <ApplicantCard
-            vacancyId={vacancyId}
+            vacancyTitle={haveVacancyTitle && (app.vacancyTitle as any)}
+            vacancyId={vacancyId || (app.vacancyId as string)}
             key={app.id}
             applicant={app}
             appliedAt={app.createdAt}

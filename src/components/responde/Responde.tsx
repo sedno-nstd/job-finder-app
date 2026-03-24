@@ -52,8 +52,8 @@ export function Responde() {
         <Input
           variant="default"
           icon2={Search}
-          icon2ClassName="hover:bg-gray-300 duration-200 text-gray-500"
-          className="border text-main w-[350px] h-[48px]"
+          icon2ClassName="hover:bg-gray-200 duration-200 text-gray-500"
+          className="border text-main w-[350px] h-[48px] pr-4"
           placeholder="Search job title"
           value={searchTitle}
           onChange={(e) => setSearchTitle(e.target.value)}
@@ -61,7 +61,7 @@ export function Responde() {
         <Input
           variant="default"
           icon2={Search}
-          icon2ClassName="hover:bg-gray-300 duration-200 text-gray-500"
+          icon2ClassName="hover:bg-gray-200 duration-200 text-gray-500"
           className="border w-[350px] text-main h-[48px]"
           placeholder="Search company name"
           value={searchCompany}

@@ -16,7 +16,7 @@ export default async function Page({ params, searchParams }: Props) {
   const applicants = await GetApplicants(id);
 
   if ("error" in applicants) {
-    return <ErrorBlock message="Ошибка доступа" />;
+    return <ErrorBlock message="Access error" />;
   }
 
   return (

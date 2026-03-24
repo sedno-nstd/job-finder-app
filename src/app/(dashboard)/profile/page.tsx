@@ -3,10 +3,12 @@ import { getFullUserData } from "@/src/actions/applicant/getFullUserData";
 import { BasicProfileCard } from "@/src/components/profile/cards/BasicProfileCard";
 import { ExperienceCard } from "@/src/components/profile/cards/ExperienceCard";
 import { ProfileIdentityCard } from "@/src/components/profile/cards/ProfileIdentityCard";
+import { FullPageLoader } from "@/src/components/ui/base/Loader";
 import { ROUTES } from "@/src/config/router";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { MainUserData } from "@/src/types/user";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Profile() {
@@ -32,9 +34,26 @@ export default function Profile() {
     fetchGetData();
   }, []);
 
-  console.log(data?.onBoarding);
-
-  if (!profileData) return <p>Loading...</p>;
+  if (!profileData)
+    return (
+      <div className="fixed inset-0 flex flex-col items-center justify-center z-50">
+        <div className="flex flex-col items-center gap-6">
+          <FullPageLoader />
+          <Link
+            href={ROUTES.ON_BOARDING.AUTH}
+            className="group flex items-center gap-2 text-blue-600 font-semibold transition-all duration-300 "
+          >
+            <span className="relative">
+              Complete Full Registration
+              <span className="absolute -bottom-1 left-0 h-0.5 bg-blue-600 origin-leftscale-x-0 group-hover:scale-x-100transition-transform duration-300" />
+            </span>
+            <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
+          </Link>
+        </div>
+      </div>
+    );
 
   const user = session?.user;
   return (

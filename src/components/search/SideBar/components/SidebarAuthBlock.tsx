@@ -5,6 +5,7 @@ import { useUserState } from "@/src/store/useUserState";
 import { useRouter } from "next/navigation";
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { ROUTES } from "@/src/config/router";
+import { useOutsideClick } from "@/src/hooks/ui/useOutsideClick";
 
 interface AuthProps {
   showRolePicker: boolean;
@@ -15,6 +16,10 @@ export function AuthBlock({ setShowRolePicker, showRolePicker }: AuthProps) {
   const { startRegistration } = useUserState();
   const { updatedFields } = useOnboardingStore();
   const router = useRouter();
+
+  const closeRef = useOutsideClick<HTMLDivElement>(() =>
+    setShowRolePicker(false),
+  );
 
   const handleCreateProfile = () => {
     startRegistration("applicant", true);
@@ -38,7 +43,7 @@ export function AuthBlock({ setShowRolePicker, showRolePicker }: AuthProps) {
           Create profile
         </button>
 
-        <div className="relative">
+        <div className="relative" ref={closeRef}>
           <button
             onClick={() => setShowRolePicker(!showRolePicker)}
             className={clsx(

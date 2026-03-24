@@ -3,8 +3,14 @@ import { useState } from "react";
 import { FormWrapper } from "../shared/FormWrapper";
 import { verifyAndResetPassword } from "@/src/actions/employer/user/EmployerPasswordReset";
 import { useRouter } from "next/navigation";
+import clsx from "clsx";
 
-export function ResetPassword({ token }: { token: string }) {
+interface Props {
+  token?: string;
+  className?: string;
+}
+
+export function ResetPassword({ className, token }: Props) {
   const [newPassword, setNewPassword] = useState("");
   const router = useRouter();
   const [status, setStatus] = useState<{
@@ -34,7 +40,10 @@ export function ResetPassword({ token }: { token: string }) {
   };
 
   return (
-    <FormWrapper label="Reset your password" className="py-8">
+    <FormWrapper
+      label="Reset your password"
+      className={clsx("py-8", className)}
+    >
       <p className="text-sm text-gray-500 mb-4">
         Please enter your new password below.
       </p>

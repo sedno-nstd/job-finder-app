@@ -27,7 +27,7 @@ export const SIDEBAR_LINKS = {
     },
     {
       label: "Applicants",
-      href: ROUTES.EMPLOYER.APPLICANTS,
+      href: ROUTES.EMPLOYER.ALL_APPLICANTS,
       icon: SendHorizontal,
     },
   ],

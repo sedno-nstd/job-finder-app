@@ -38,7 +38,7 @@ export default function VacanciesPage() {
   return (
     <div className="w-full h-full">
       <SearchHeader getLocation={getLocation} />
-      <div className="pt-3">
+      <div className="pt-3 w-full">
         <VacancyList
           onReset={resetFilters}
           safetyData={vacancies}

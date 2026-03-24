@@ -1,5 +1,7 @@
 import { Input } from "@/src/components/ui/search/JobSearchForm";
+import { SearchHistory } from "@/src/components/ui/search/SearchHistory";
 import { SearchSuggestions } from "@/src/components/ui/shared/SearchSuggestions";
+import { useUserHistory } from "@/src/hooks/user/useUserHistory";
 import { TFunction } from "i18next";
 import { MapPin, X } from "lucide-react";
 
@@ -32,6 +34,7 @@ export function LocationSearchField({
   t,
   isMobile,
 }: LocationSearchFieldProps) {
+  const history = useUserHistory();
   return (
     <>
       <Input
@@ -51,13 +54,13 @@ export function LocationSearchField({
         className={isMobile ? "w-full max-w-[640px] border" : "w-full"}
       />
       <SearchSuggestions
-        sliceOptions={5}
-        isShowOptions={loc.showSuggestions}
-        data={loc.suggestions}
-        isOpen={loc.isFocused}
+        sliceOptions={10}
         query={loc.query}
+        isShowOptions={loc.showSuggestions}
+        isOpen={loc.showSuggestions}
         setQuery={loc.setQuery}
-        className="text-main"
+        className="max-w-[816px] text-main"
+        data={loc.suggestions}
       />
     </>
   );

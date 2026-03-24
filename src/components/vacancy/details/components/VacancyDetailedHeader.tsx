@@ -19,10 +19,19 @@ export function VacancyDetailedHeader({
 }: HeaderProps) {
   const [favorite, setFavorite] = useState(initialIsFavorite);
   const handleAddVacancy = async () => {
-    setFavorite(!favorite);
-    const res = await AddFavoriteVacancies(vacancy.id);
-    if (!res.success) {
-      setFavorite(favorite);
+    const previousState = favorite;
+    setFavorite(!previousState);
+
+    try {
+      const res = await AddFavoriteVacancies(vacancy.id);
+
+      if (!res.success) {
+        setFavorite(previousState);
+        console.error("Error to add:", res.error);
+      }
+    } catch (error) {
+      setFavorite(previousState);
+      console.error("Сетевая ошибка:", error);
     }
   };
 

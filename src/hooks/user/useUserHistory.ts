@@ -25,9 +25,9 @@ export const useUserHistory = create<Props>()(
           const region = obj.region ?? state.region;
 
           const emptyData = !profession.trim() && !region.trim();
+
           const dublicateOpt = state.options.some(
-            (item) =>
-              item.profession === obj.profession && item.region === obj.region,
+            (item) => item.profession === profession && item.region === region,
           );
 
           if (dublicateOpt || emptyData) return state;

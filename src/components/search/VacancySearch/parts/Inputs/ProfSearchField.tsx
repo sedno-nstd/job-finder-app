@@ -64,7 +64,7 @@ export function ProfSearchField({
             query={prof.query}
             isShowOptions={prof.showSuggestions}
             isOpen={prof.showSuggestions}
-            setQuery={prof.setQuery}
+            setQuery={(val: string) => selectOption({ profession: val })}
             className="max-w-[816px] text-main"
             data={prof.suggestions}
           />
@@ -72,6 +72,7 @@ export function ProfSearchField({
       ) : (
         history.options.length > 0 && (
           <SearchHistory
+            className="z-50"
             data={history.options}
             isOpen={prof.isFocused && prof.query.length === 0}
             setQuery={selectOption}

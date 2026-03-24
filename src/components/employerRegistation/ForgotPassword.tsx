@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { FormWrapper } from "../shared/FormWrapper";
 import { requestPasswordReset } from "@/src/actions/employer/user/EmployerPasswordReset";
+import clsx from "clsx";
 
-export function ForgotPassword() {
+export function ForgotPassword({ className }: { className?: string }) {
   const [value, setValue] = useState("");
   const [error, setError] = useState(false);
   const [isSent, setIsSent] = useState(false);
@@ -27,7 +28,7 @@ export function ForgotPassword() {
   };
   return (
     <FormWrapper
-      className="w-full h-full bg-white py-8 "
+      className={clsx("w-full bg-white py-8 ", className)}
       label="Password restore"
     >
       <span className="text-wrap">

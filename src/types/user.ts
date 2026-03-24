@@ -56,6 +56,8 @@ export interface ApplicantResponse {
   createdAt: Date;
   status: string;
   message: string | null;
+  vacancyId?: string;
+  vacancyTitle?: string;
   applicant: {
     id: string;
     name: string;
@@ -75,6 +77,8 @@ export interface UserProfile {
   aboutMe?: string;
 
   phone?: string | null;
+  password?: string;
+  email?: string;
 }
 
 export interface MainUserData {

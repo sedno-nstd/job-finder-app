@@ -101,3 +101,32 @@ export const step6Schema = z.object({
 });
 
 export type step6Values = z.infer<typeof step6Schema>;
+
+export const onboardingDbSchema = z
+  .object({
+    firstName: step1Schema.shape.firstName,
+    lastName: step1Schema.shape.lastName,
+
+    gender: step2Schema.shape.gender,
+    location: step2Schema.shape.location,
+    dateOfBirth: step2Schema.shape.dateOfBirth,
+    readyToRelocate: step2Schema.shape.readyToRelocate,
+    readyForWorkAbroad: step2Schema.shape.readyForWorkAbroad,
+
+    lastWorkplace: step4Schema.shape.lastWorkplace,
+    previousPosition: step4Schema.shape.previousPosition,
+    experienceDuration: step4Schema.shape.experienceDuration,
+
+    searchMode: step6Schema.shape.searchMode,
+
+    role: z.string().default("applicant"),
+    isCompleted: z.boolean().default(true),
+
+    salaryCurrency: z.string().default("USD"),
+    salaryPeriod: z.string().default("month"),
+
+    salaryAmount: z.string().nullable().optional(),
+    aboutMe: z.string().nullable().optional(),
+    resumeUrl: z.string().nullable().optional(),
+  })
+  .strip();

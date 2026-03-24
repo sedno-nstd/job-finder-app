@@ -3,12 +3,14 @@ import { Briefcase, DollarSign, User } from "lucide-react";
 import clsx from "clsx";
 import { ApplicantResponse } from "@/src/types/user";
 import Link from "next/link";
+import { ROUTES } from "@/src/config/router";
 
 interface Props {
   applicant: ApplicantResponse;
   appliedAt: Date;
   isNewBatch: boolean;
   vacancyId: string;
+  vacancyTitle?: string;
 }
 
 export function ApplicantCard({
@@ -16,10 +18,14 @@ export function ApplicantCard({
   appliedAt,
   isNewBatch,
   vacancyId,
+  vacancyTitle,
 }: Props) {
   return (
     <Link
-      href={`/employer/vacancies/${vacancyId}/applicants/${applicant.applicant.id}`}
+      href={ROUTES.EMPLOYER.APPLICANT_PROFILE(
+        vacancyId,
+        applicant.applicant.id,
+      )}
     >
       <div
         className={clsx(
@@ -44,9 +50,16 @@ export function ApplicantCard({
           <div className="flex-1 min-w-0">
             <h3 className="text-lg font-bold text-slate-900 truncate">
               {applicant.applicant.name}
+              {vacancyTitle && (
+                <span className="ml-2 text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-medium uppercase tracking-wider">
+                  on {vacancyTitle}
+                </span>
+              )}
             </h3>
             <p className="text-blue-600 font-medium text-sm">
-              {applicant.applicant.detailInfo?.desiredJob.join(", ")}
+              {applicant.applicant.detailInfo?.desiredJob?.length
+                ? applicant.applicant.detailInfo.desiredJob.join(", ")
+                : "Position not specified"}
             </p>
           </div>
 
