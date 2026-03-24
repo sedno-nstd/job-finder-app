@@ -40,7 +40,7 @@ function VacanciesContent({ children }: { children: React.ReactNode }) {
       </div>
       <div
         className={clsx(
-          "w-full px-4 xl:max-w-[1280px] xl:py-6 xl:mt-10 max-xl:mt-10 max-md:mt-10 max-sm:mt-10",
+          "w-full px-4 xl:max-w-[1280px] xl:py-6 max-xl:mt-10 max-md:mt-10 max-sm:mt-10",
           "xl:grid xl:gap-6",
           isDetailPage
             ? "xl:grid-cols-[244px_1fr_300px]"

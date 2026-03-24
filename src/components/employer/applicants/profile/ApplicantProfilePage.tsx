@@ -27,6 +27,9 @@ export default async function ApplicantProfilePage({
     notFound();
   }
 
+  const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(applicant.name || "User")}&background=0b64d9&color=fff&size=256`;
+  const avatarSrc = applicant.image || fallbackAvatar;
+
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-8 space-y-8">
       <Link
@@ -40,10 +43,11 @@ export default async function ApplicantProfilePage({
       <div className="bg-white rounded-[2rem] p-8 md:p-10 border border-slate-100 flex flex-col md:flex-row items-center md:items-start gap-8">
         <div className="relative w-36 h-36 rounded-full overflow-hidden border-4 border-slate-50 shadow-sm flex-shrink-0">
           <Image
-            src={applicant.image || "/default-avatar.png"}
+            src={avatarSrc}
             alt={applicant.name || "Applicant"}
             fill
             className="object-cover"
+            unoptimized
           />
         </div>
 

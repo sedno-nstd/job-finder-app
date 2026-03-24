@@ -37,7 +37,7 @@ function EmployerVacancyCardComponents({
         </Link>
       </div>
 
-      <span className="text-xl font-medium">
+      <span className="text-xl font-medium mr-2">
         {vacancy.negotiable ? (
           <span className="text-gray-500 italic">Negotiable</span>
         ) : (
@@ -59,7 +59,9 @@ function EmployerVacancyCardComponents({
       </span>
 
       <span className="mt-2 text-base">{vacancy.employmentType}</span>
-      <p className={clsx("", DescriptionClasses)}>{vacancy.description}</p>
+      <p className={clsx("mt-4 mb-2", DescriptionClasses)}>
+        {vacancy.description}
+      </p>
       <span className="mt-2 font-medium">
         <span className="text-[13px]">Company:</span> {vacancy.company}
       </span>

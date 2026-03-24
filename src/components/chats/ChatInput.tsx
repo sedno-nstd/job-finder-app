@@ -29,7 +29,7 @@ export function ChatInput({ chatId, myId, myRole }: Props) {
   return (
     <form
       className="p-4 border-t border-[#6380a61a] bg-white"
-      onClick={handleSubmit}
+      onSubmit={handleSubmit}
     >
       <div className="flex items-center gap-2 bg-[#f4f4f5] rounded-xl px-4 py-2 focus-within:ring-1 focus-within:ring-blue-500 transition-all">
         <input

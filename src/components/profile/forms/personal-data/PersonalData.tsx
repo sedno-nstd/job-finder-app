@@ -8,14 +8,13 @@ import { RelocationSection } from "../../../onboarding/steps/Step2Personal/parts
 import { useOnboardingStore } from "@/src/store/useOnboardingStore";
 import { saveOnboardingData } from "@/src/actions/applicant/onboarding";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getFullUserData } from "@/src/actions//applicant/getFullUserData";
 import { UploadAvatar } from "./parts/UploadAvatar";
 import { ROUTES } from "@/src/config/router";
 
 export function PersonalData() {
   const { formData, updatedFields } = useOnboardingStore();
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   const onBoarding = formData?.onBoarding;
@@ -56,7 +55,6 @@ export function PersonalData() {
           resumeUrl: serverOnboarding.resume?.url || null,
         });
       }
-      setIsLoading(false);
     }
     initData();
   }, [updatedFields, methods]);

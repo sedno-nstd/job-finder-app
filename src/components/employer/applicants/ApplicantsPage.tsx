@@ -24,7 +24,7 @@ export default async function AllApplicantsPage() {
             <section key={vacancy.id} className="flex flex-col gap-4">
               <div className="flex justify-between items-end border-b pb-2">
                 <div>
-                  <h2 className="text-xl font-bold text-slate-800">
+                  <h2 className="text-xl font-bold text-blue-600">
                     {vacancy.title}
                   </h2>
                   <p className="text-sm text-slate-500">

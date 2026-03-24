@@ -25,7 +25,7 @@ export default async function ChatsPage({
     myRole === "employer" ? currentChat?.user : currentChat?.employer;
 
   return (
-    <div className="flex w-full h-[calc(100vh)] grid-cols-2 border bg-white border-[#6380a61a] rounded-xl">
+    <div className="flex w-full h-[calc(92vh)] grid-cols-2 border bg-white border-[#6380a61a] rounded-xl">
       <div className="w-[350px] border-r border-[#6380a61a] h-full flex flex-col">
         <ChatList chats={chats} userId={myId} />
       </div>

@@ -1,3 +1,4 @@
+import { ROUTES } from "@/src/config/router";
 import { useAvatarUpload } from "@/src/hooks/user/useAvatarUpload";
 import { useUserState } from "@/src/store/useUserState";
 import { useUploadThing } from "@/src/utils/uploadthing";
@@ -62,7 +63,7 @@ export function ProfileIdentityCard({ information, title, avatarUrl }: Props) {
         </div>
 
         <Link
-          href="/profile/Personal"
+          href={ROUTES.PROFILE.PERSONAL}
           className="text-blue-600 hover:text-blue-700 flex items-center gap-1 font-semibold text-sm transition-colors"
         >
           <PencilIcon size={16} />

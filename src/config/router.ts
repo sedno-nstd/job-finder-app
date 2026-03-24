@@ -15,7 +15,7 @@ export const ROUTES = {
       PhoneEdit: "/profile/contacts/change/phone",
       EMAILCONFIRMATION: "/profile/contacts/email-confirmation",
     },
-    PERSONAL: "/profile/Personal",
+    PERSONAL: "/profile/personal",
     JOB: "/profile/JobExpectations",
     SKILLS: "/profile/SkillsOverview",
     SEARCH_TYPE: "/profile/search-type",

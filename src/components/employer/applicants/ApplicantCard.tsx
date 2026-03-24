@@ -20,6 +20,9 @@ export function ApplicantCard({
   vacancyId,
   vacancyTitle,
 }: Props) {
+  const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(applicant.applicant.name)}&background=0b64d9&color=fff`;
+
+  const avatarSrc = applicant.applicant.image || fallbackAvatar;
   return (
     <Link
       href={ROUTES.EMPLOYER.APPLICANT_PROFILE(
@@ -35,16 +38,13 @@ export function ApplicantCard({
       >
         <div className="flex items-center gap-6">
           <div className="relative w-12 h-12 rounded-full overflow-hidden bg-slate-100 flex-shrink-0">
-            {applicant.applicant.image ? (
-              <Image
-                src={applicant.applicant.image}
-                alt={applicant.applicant.name}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <User className="w-full h-full p-2 text-slate-400" />
-            )}
+            <Image
+              src={avatarSrc}
+              alt={applicant.applicant.name}
+              fill
+              className="object-cover"
+              unoptimized
+            />
           </div>
 
           <div className="flex-1 min-w-0">
