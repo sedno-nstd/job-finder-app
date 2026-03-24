@@ -2,7 +2,6 @@
 import { CheckFavoriteVacancy } from "@/src/actions/applicant/favoriteVacancies";
 import { VacancyList } from "@/src/components/vacancy/list/VacancyList";
 import { Vacancy } from "@/src/config/types";
-import { useAuthVacancy } from "@/src/store/useFavorites";
 import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

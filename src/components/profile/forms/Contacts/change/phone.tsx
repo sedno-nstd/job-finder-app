@@ -16,10 +16,9 @@ export function ChangeApplicantPhone({ className }: { className?: string }) {
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   const router = useRouter();
-  const [initialState, setInitialState] = useState("");
 
   const methods = useForm({
-    defaultValues: { phone: initialState || "", token: "" },
+    defaultValues: { phone: "", token: "" },
   });
 
   const { register, getValues, reset } = methods;
