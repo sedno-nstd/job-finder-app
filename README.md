@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vacancy Search Platform
 
-## Getting Started
+A full-stack web app for finding jobs, managing vacancies, and communication between applicants and employers.
 
-First, run the development server:
+[🚀 Live Demo](https://job-finder-app.vercel.app) | [💻 Source Code](https://github.com/sedno-nstd/job-finder-app)
+
+---
+
+## 📌 Overview
+
+This project simulates a real job board system. The main goal was to build complete user flows, a secure authentication system, and a solid relational database — not just a UI.
+
+- Applicants can search, save, and apply for jobs, and manage their profiles  
+- Employers can create and manage vacancies, and review candidates  
+- Built-in chat allows direct communication between both sides  
+
+---
+
+## 📸 Interface Preview
+
+### 🌐 Public & Discovery
+| Main Landing | Job Listings |
+| :---: | :---: |
+| ![Main Page](./public/screenshots/main.png) | ![Job Listings](./public/screenshots/job-listings.png) |
+
+---
+
+### 🏢 Employer Dashboard
+| Employer Profile | Applicants Dashboard |
+| :---: | :---: |
+| ![Employer Hub](./public/screenshots/employer-hub.png) | ![ATS Dashboard](./public/screenshots/ats-dashboard.png) |
+
+| Vacancy Applications | Candidate Profile |
+| :---: | :---: |
+| ![Vacancy Applications](./public/screenshots/vacancy-applications.png) | ![Applicant Profile](./public/screenshots/applicant-profile.png) |
+
+---
+
+### 🛠 Vacancy Management
+| Create Vacancy | Edit Vacancy |
+| :---: | :---: |
+| ![Create Vacancy](./public/screenshots/create-vacancy.png) | ![Vacancy Edit](./public/screenshots/vacancy-edit.png) |
+
+---
+
+### 💬 Communication & Flow
+| Onboarding | Chat | My Applications |
+| :---: | :---: | :---: |
+| ![Onboarding](./public/screenshots/onboarding.png) | ![Messenger](./public/screenshots/messenger.png) | ![My Applications](./public/screenshots/my-applications.png) |
+
+---
+
+## ✨ Main Features
+
+### 🔐 Auth & Roles
+- Two roles: Applicant and Employer  
+- Separate onboarding flows  
+- Authentication via NextAuth (Credentials + Google)  
+- Middleware-protected routes  
+
+### 👨‍💻 Applicant Features
+- Vacancy search with filters (date, type, salary, location)  
+- Save / unsave vacancies  
+- Apply to jobs and track status  
+- Editable profile (skills, experience, contacts)  
+- Chat with employers  
+
+### 🏢 Employer Features
+- Create / edit / delete vacancies  
+- View applicants per vacancy  
+- Access applicant profiles  
+- Start conversations with candidates  
+
+---
+
+## 🛠 Tech Stack
+
+- **Framework:** Next.js 16 (App Router)  
+- **Frontend:** React 19, TypeScript, TailwindCSS  
+- **Backend:** Next.js Server Actions  
+- **Database:** PostgreSQL + Prisma  
+- **Auth:** NextAuth.js  
+- **State & Forms:** Zustand, React Hook Form + Zod  
+
+---
+
+## 🗄 Database Highlights
+
+- Relational structure: Users, Vacancies, Applications, Messages  
+- Favorites system via Many-to-Many relations  
+- Cascade deletes for related data (applications, chats)  
+- Optimized queries using Prisma `select` / `include`  
+
+---
+
+## 🎯 Focus Areas
+
+- Server-side mutations with Server Actions  
+- Handling relational data and async flows  
+- Separation of client and server logic  
+- Reusable component architecture  
+
+---
+
+## 🚧 Limitations
+
+- Chat is request-based (no WebSockets yet)  
+- Basic recommendation system  
+- Some UI parts can be improved  
+
+---
+
+## 🚀 Getting Started
 
 ```bash
+git clone https://github.com/sedno-nstd/job-finder-app
+cd job-finder-app
+
+npm install
+
+cp .env.example .env
+
+npx prisma migrate dev
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
