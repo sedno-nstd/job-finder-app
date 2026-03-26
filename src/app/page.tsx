@@ -76,7 +76,7 @@ export default function Home() {
           >
             <div ref={profRef} className="flex-[3]">
               <ProfessionSearch
-                className="w-full h-[56px]   max-xl:rounded-r-lg md:h-[64px] max-sm:border-r border-gray-400  max-sm:rounded-lg"
+                className="w-full h-[56px]  max-xl:rounded-r-lg md:h-[64px] max-sm:border-r border-gray-400  max-sm:rounded-lg"
                 clear={history.clear}
                 history={history}
                 isMounted={isMounted}
@@ -84,18 +84,23 @@ export default function Home() {
                 prof={prof}
                 t={t}
                 placeholder="What job interests you?"
-                borderClassName="rounded-l-lg border-hover:blue-500 border-r"
+                borderClassName="rounded-l-lg max-md:rounded-r-lg   max-sm:rounded-r-lg  border-hover:blue-500 max-xl:border-r"
               />
             </div>
 
-            <div ref={locRef} className="  md:mt-0 items-center">
+            <div
+              ref={locRef}
+              className="max-h-[56px]  max-md:mt-2 items-center"
+            >
               <LocatioNSearch
                 suggestionClassName="max-w-full md:max-w-[280px]"
                 placeholder="City"
                 isMounted={isMounted}
                 loc={loc}
                 t={t}
-                className="w-full h-[56px] max-xl:rounded-r-lg max-xl:mb-1  max-xl:rounded-l-lg max-xl:mt-2 md:h-[64px] md:border-l md:border-l-gray-300 max-sm:rounded-lg max-sm:mt-1 max-sm:mb-3"
+                className="w-full h-[56px] max-md:rounded-r-lg  max-md:rounded-l-lg md:h-[64px] md:border-l md:border-l-gray-300 max-sm:rounded-lg
+                max-sm:rounded-r-lg  max-sm:rounded-l-lg
+                "
               />
             </div>
 
@@ -108,7 +113,7 @@ export default function Home() {
                          mt-[-1px] lg:mt-0
                          rounded-b-lg md:rounded-bl-none md:rounded-r-lg 
                          hover:bg-blue-700 transition-colors duration-200 
-                         h-[56px] md:h-[64px] flex items-center justify-center"
+                         h-[56px] md:h-[64px] flex items-center justify-center max-md:mt-2"
             >
               {isMounted ? t("search") : "Search"}
             </button>

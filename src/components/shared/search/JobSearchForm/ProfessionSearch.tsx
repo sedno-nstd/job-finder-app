@@ -40,7 +40,7 @@ export function ProfessionSearch({
         placeholder={isMounted ? placeholder || t("profession") : ""}
         variant="auth"
         className={clsx(
-          "border-y h-full border-l border-input-border relative focus:border-blue-600 placeholder:text-gray-400 rounded-r-lg b px-[43px]",
+          "border-y h-full border-l border-input-border relative focus:border-blue-600 placeholder:text-gray-400  px-[43px]",
           borderClassName,
         )}
       />
