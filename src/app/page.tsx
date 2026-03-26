@@ -70,13 +70,13 @@ export default function Home() {
 
           <div
             className={clsx(
-              "mt-10 w-full flex flex-col md:flex-row items-stretch",
+              "mt-10 w-full flex flex-col md:flex-row  items-stretch",
               isMounted ? "opacity-100" : "opacity-0",
             )}
           >
             <div ref={profRef} className="flex-[3]">
               <ProfessionSearch
-                className="w-full h-[56px] md:h-[64px] max-sm:border-r max-sm:border-gray-400 max-sm:rounded-lg"
+                className="w-full h-[56px]   max-xl:rounded-r-lg md:h-[64px] max-sm:border-r border-gray-400  max-sm:rounded-lg"
                 clear={history.clear}
                 history={history}
                 isMounted={isMounted}
@@ -84,6 +84,7 @@ export default function Home() {
                 prof={prof}
                 t={t}
                 placeholder="What job interests you?"
+                borderClassName="rounded-l-lg border-hover:blue-500 border-r"
               />
             </div>
 
@@ -94,7 +95,7 @@ export default function Home() {
                 isMounted={isMounted}
                 loc={loc}
                 t={t}
-                className="w-full h-[56px]  md:h-[64px] md:border-l md:border-l-gray-300 max-sm:rounded-lg max-sm:mt-1 max-sm:mb-3"
+                className="w-full h-[56px] max-xl:rounded-r-lg max-xl:mb-1  max-xl:rounded-l-lg max-xl:mt-2 md:h-[64px] md:border-l md:border-l-gray-300 max-sm:rounded-lg max-sm:mt-1 max-sm:mb-3"
               />
             </div>
 

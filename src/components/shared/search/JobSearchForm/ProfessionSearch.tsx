@@ -16,6 +16,7 @@ interface LocatioNSearchProps {
   onSelect: (item: { profession?: string; region?: string }) => void;
   className?: string;
   placeholder?: string;
+  borderClassName?: string;
 }
 
 export function ProfessionSearch({
@@ -27,6 +28,7 @@ export function ProfessionSearch({
   onSelect,
   className,
   placeholder,
+  borderClassName,
 }: LocatioNSearchProps) {
   return (
     <div className={clsx("flex flex-col relative w-full h-[48px]", className)}>
@@ -37,8 +39,10 @@ export function ProfessionSearch({
         onFocus={() => prof.setIsFocused(true)}
         placeholder={isMounted ? placeholder || t("profession") : ""}
         variant="auth"
-        className="border-y h-full border-l border-input-border relative focus:border-blue-600 placeholder:text-gray-400 rounded-l-lg b px-[43px]
-            "
+        className={clsx(
+          "border-y h-full border-l border-input-border relative focus:border-blue-600 placeholder:text-gray-400 rounded-r-lg b px-[43px]",
+          borderClassName,
+        )}
       />
       {prof.showSuggestions && prof.isFocused ? (
         <div>
@@ -55,6 +59,7 @@ export function ProfessionSearch({
       ) : (
         history.options.length > 0 && (
           <SearchHistory
+            className="z-10"
             data={history.options}
             isOpen={prof.isFocused && prof.query.length === 0}
             setQuery={onSelect}
