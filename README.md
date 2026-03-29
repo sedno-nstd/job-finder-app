@@ -8,7 +8,8 @@ A full-stack web app for finding jobs, managing vacancies, and communication bet
 
 ## 📌 Overview
 
-This project simulates a real job board system. The main goal was to build complete user flows, a secure authentication system, and a solid relational database — not just a UI.
+A high-performance MVP for a job-matching platform. Developed to demonstrate advanced full-stack patterns: type-safe data fetching with Server Actions, 
+complex relational database schemas, and modular UI architecture.
 
 - Applicants can search, save, and apply for jobs, and manage their profiles  
 - Employers can create and manage vacancies, and review candidates  
