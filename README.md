@@ -2,7 +2,7 @@
 
 A full-stack web app for finding jobs, managing vacancies, and communication between applicants and employers.
 
-[🚀 Live Demo](https://vercel.com/sedno-nstds-projects/job-finder-app) | [💻 Source Code](https://github.com/sedno-nstd/job-finder-app)
+[🚀 Live Demo](job-finder-app-ten.vercel.app) | [💻 Source Code](https://github.com/sedno-nstd/job-finder-app)
 
 ---
 
